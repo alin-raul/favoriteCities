@@ -16,17 +16,17 @@ const TransitionLink = ({ children, href, ...props }) => {
 
     const mainContent = document.querySelector("main");
     mainContent?.classList.add("page-transition-start");
-    await sleep(250);
+    await sleep(400);
     mainContent?.classList.remove("page-transition-start");
     router.push(href);
     mainContent?.classList.add("page-transition-end");
-    await sleep(250);
+    await sleep(400);
     mainContent?.classList.remove("page-transition-end");
   };
 
   return (
     <Link
-      className=" hover:opacity-80 "
+      className="flex gap-2 opacity-60 hover:opacity-100"
       href={href}
       onClick={handleTransition}
       {...props}
