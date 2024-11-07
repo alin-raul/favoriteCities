@@ -52,10 +52,9 @@ export const Logo = () => {
 
 const Navbar = () => {
   return (
-    <div>
-      <div className="gradient absolute h-20 w-screen top-0 right-0 left-0 z-0"></div>
-      <nav className="max-w-screen-2xl m-auto px-4 fixed top-4 left-0 right-0 sm:px-8">
-        <div className="h-9 p-8 flex items-center justify-between w-full  backdrop-blur-md border rounded-2xl z-50 relative">
+    <div className="">
+      <nav className="max-w-screen-2xl m-auto fixed top-0 left-0 right-0 sm:top-4 sm:px-8 2xl:px-0 z-40">
+        <div className="h-9 p-8 flex items-center justify-between w-full  backdrop-blur-md relative sm:border sm:rounded-2xl">
           <NavLinks />
           <div className="gap-2 flex items-center">
             <ModeToggle />

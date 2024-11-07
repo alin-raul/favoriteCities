@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
             <Sidebar />
             <div className="px-4 sm:px-8">
               <Navbar />
+              <div className="z-0 gradient fixed h-20 w-screen top-0 right-0 left-0 "></div>
               <main className="max-w-screen-2xl m-auto">{children}</main>
             </div>
           </SidebarProvider>

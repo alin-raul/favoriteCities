@@ -61,12 +61,39 @@ main.page-transition-end {
   );
 }
 
-.bg-sidebar {
+/* .gradient::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5rem;
+  width: 100vw;
+  background: linear-gradient(to bottom, #000000 30%, transparent);
+  z-index: -1;
+  border: solid 1px;
+} */
+
+.bg-dynamic {
   background-color: #f8f9fa;
 }
 
-.dark .bg-sidebar {
+.dark .bg-dynamic {
   background: #0f0f0f;
+}
+
+.gradient-mask {
+  z-index: -1;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.5) 20%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0) 70%
+  ); /* For WebKit browsers */
 }
 
 @layer base {
