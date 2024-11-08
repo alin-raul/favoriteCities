@@ -82,7 +82,7 @@ main.page-transition-end {
   background: #0f0f0f;
 }
 
-.gradient-mask {
+/* .gradient-mask {
   z-index: -1;
   mask-image: linear-gradient(
     to top,
@@ -93,8 +93,8 @@ main.page-transition-end {
     to top,
     rgba(0, 0, 0, 0.6) 0%,
     rgba(0, 0, 0, 0) 70%
-  ); /* For WebKit browsers */
-}
+  ); 
+} */
 
 @layer base {
   :root {

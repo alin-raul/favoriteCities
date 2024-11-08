@@ -14,7 +14,7 @@ const Sidebar = () => {
     <>
       {isVisible && (
         <div
-          className={`z-50 absolute inset-0 bg-black/60 w-screen h-screen sm:hidden transition-opacity duration-300 ease-in-out ${
+          className={`z-50 absolute inset-0 bg-black/60 w-screen h-screen md:hidden transition-opacity duration-300 ease-in-out ${
             isVisible
               ? "opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
@@ -24,7 +24,7 @@ const Sidebar = () => {
       )}
 
       <nav
-        className={`bg-dynamic absolute h-screen w-72 p-6 z-50 transition-transform duration-300 ease-in-out transform sm:hidden ${
+        className={`bg-dynamic absolute h-screen w-72 p-6 z-50 transition-transform duration-300 ease-in-out transform md:hidden ${
           isVisible ? "translate-x-0" : "-translate-x-full"
         }`}
       >

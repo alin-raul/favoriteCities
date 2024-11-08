@@ -21,10 +21,11 @@ export default function RootLayout({ children }) {
         >
           <SidebarProvider>
             <Sidebar />
-            <div className="px-4 sm:px-8">
+            <div className="">
               <Navbar />
-              <div className="z-0 gradient fixed h-20 w-screen top-0 right-0 left-0 "></div>
-              <main className="max-w-screen-2xl m-auto">{children}</main>
+              <main className="max-w-screen-2xl m-auto px-4 sm:px-8">
+                {children}
+              </main>
             </div>
           </SidebarProvider>
         </ThemeProvider>

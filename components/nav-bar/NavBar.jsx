@@ -8,7 +8,7 @@ const NavLinks = () => {
   return (
     <div className="flex items-center gap-6">
       <BurgerMenu icon={<RxHamburgerMenu />} />
-      <div className="hidden items-center gap-6 sm:flex">
+      <div className="hidden items-center gap-6 md:flex">
         <TransitionLink href="/" className="flex items-center gap-1 font-bold">
           <Logo />
           FavCity
@@ -52,9 +52,9 @@ export const Logo = () => {
 
 const Navbar = () => {
   return (
-    <div className="">
-      <nav className="max-w-screen-2xl m-auto fixed top-0 left-0 right-0 sm:top-4 sm:px-8 2xl:px-0 z-40">
-        <div className="h-9 p-8 flex items-center justify-between w-full  backdrop-blur-md relative sm:border sm:rounded-2xl">
+    <div className="sticky top-0 left-0 right-0 ">
+      <nav className="flex items-center justify-center w-screen border-b-2 py-3 backdrop-blur-md relative z-40 ">
+        <div className="max-w-screen-2xl flex items-center justify-between w-full mx-2 sm:mx-8">
           <NavLinks />
           <div className="gap-2 flex items-center">
             <ModeToggle />
