@@ -82,20 +82,6 @@ main.page-transition-end {
   background: #0f0f0f;
 }
 
-/* .gradient-mask {
-  z-index: -1;
-  mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.5) 20%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0) 70%
-  ); 
-} */
-
 @layer base {
   :root {
     --background: 0 0% 100%;
