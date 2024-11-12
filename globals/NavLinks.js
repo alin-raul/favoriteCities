@@ -3,7 +3,7 @@ import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 const Links = [
   {
     title: "Home",
-    url: "/home",
+    url: "/",
     icon: Home,
   },
   {

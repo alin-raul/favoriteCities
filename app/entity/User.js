@@ -2,7 +2,7 @@ const { EntitySchema } = require("typeorm");
 
 const User = new EntitySchema({
   name: "User",
-  tableName: "users", // Optional: specify the database table name
+  tableName: "users",
   columns: {
     id: {
       type: "int",
@@ -11,11 +11,11 @@ const User = new EntitySchema({
     },
     name: {
       type: "varchar",
-      nullable: false, // Ensures name is required
+      nullable: false,
     },
     age: {
       type: "int",
-      nullable: false, // Ensures age is required
+      nullable: false,
     },
   },
 });

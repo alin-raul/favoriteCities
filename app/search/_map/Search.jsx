@@ -42,10 +42,10 @@ const Search = () => {
   };
 
   return (
-    <div className="h-auto p-4 w-80 z-0">
-      <div className="backdrop-blur-md m-auto border border-white/20 rounded-2xl shadow-md">
+    <div className="absolute right-0 left-0 w-full h-auto md:block md:p-4 md:w-80 z-0">
+      <div className="backdrop-blur-md m-auto border border-white/20 md:rounded-2xl shadow-md">
         <div className="p-4 flex flex-col justify-end items-center">
-          <div className="relative w-full max-w-md">
+          <div className="relative w-full ">
             <IoMdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="text"

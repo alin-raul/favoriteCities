@@ -22,10 +22,9 @@ export default function RootLayout({ children }) {
         >
           <SidebarProvider>
             <Sidebar />
-            <div>
-              <Navbar />
-              <main className="m-auto px-4 sm:px-8 ">{children}</main>
-            </div>
+
+            <Navbar />
+            <main className="m-auto px-4 sm:px-8 ">{children}</main>
           </SidebarProvider>
         </ThemeProvider>
       </body>

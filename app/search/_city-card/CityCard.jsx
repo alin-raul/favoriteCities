@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import TransitionLink from "@/components/utils/TransitionLink";
 
 const CityCard = ({ selectedCity }) => {
   const [weather, setWeather] = useState(null);
@@ -49,8 +50,8 @@ const CityCard = ({ selectedCity }) => {
   };
 
   return (
-    <div>
-      <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-80 p-4 bg-dynamic backdrop-blur-md rounded-lg shadow-lg z-20">
+    <div className="absolute left-0 top-22 p-4 w-80 ">
+      <div className="p-4 bg-dynamic backdrop-blur-md rounded-2xl shadow-lg z-20">
         <h3 className="text-lg font-semibold">
           {selectedCity.properties.name}
         </h3>
@@ -65,7 +66,7 @@ const CityCard = ({ selectedCity }) => {
           {selectedCity.geometry.coordinates[0].toFixed(4)})
         </p>
         <p className="text-sm opacity-50">
-          Bounding Box: [{selectedCity.properties.extent.join(", ")}]
+          Bounding Box: [{selectedCity.properties.extent?.join(", ")}]
         </p>
 
         <div className="mt-4">

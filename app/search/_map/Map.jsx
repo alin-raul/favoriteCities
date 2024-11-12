@@ -6,9 +6,14 @@ import YouAreHere from "@/components/location/YouAreHere";
 import { useTheme } from "next-themes";
 
 export default function MapDisplay() {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
   const darkMapStyle = "https://tiles.openfreemap.org/styles/dark";
+
+  const mapStyle =
+    (theme === "system" ? resolvedTheme : theme) === "dark"
+      ? darkMapStyle
+      : lightMapStyle;
 
   return (
     <Map
@@ -26,7 +31,7 @@ export default function MapDisplay() {
         left: "0",
         top: "0",
       }}
-      mapStyle={theme === "dark" ? darkMapStyle : lightMapStyle}
+      mapStyle={mapStyle}
     >
       <YouAreHere />
     </Map>
