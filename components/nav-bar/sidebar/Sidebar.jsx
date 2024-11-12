@@ -24,7 +24,7 @@ const Sidebar = () => {
       )}
 
       <nav
-        className={`bg-dynamic absolute h-screen w-72 p-6 z-50 transition-transform duration-300 ease-in-out transform md:hidden ${
+        className={`bg-dynamic backdrop-blur-md absolute h-screen w-72 p-6 z-50 transition-transform duration-300 ease-in-out transform md:hidden ${
           isVisible ? "translate-x-0" : "-translate-x-full"
         }`}
       >

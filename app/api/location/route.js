@@ -1,3 +1,5 @@
+import { middleOfEU } from "@/globals/constants";
+
 export async function getLocation() {
   try {
     const response = await fetch("http://ip-api.com/json/");

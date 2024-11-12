@@ -14,7 +14,7 @@ const NavLinks = () => {
           FavCity
         </TransitionLink>
         <TransitionLink href="/search">Search</TransitionLink>
-        <TransitionLink href="/city">City</TransitionLink>
+        <TransitionLink href="/cities">Cities</TransitionLink>
         <TransitionLink href="/favorites">Favorites</TransitionLink>
       </div>
     </div>
@@ -52,8 +52,8 @@ export const Logo = () => {
 
 const Navbar = () => {
   return (
-    <div className="sticky top-0 left-0 right-0 ">
-      <nav className="flex items-center justify-center w-screen border-b-2 py-3 backdrop-blur-md relative z-40 ">
+    <div className="sticky top-0 left-0 right-0 shadow-sm">
+      <nav className="flex items-center justify-center w-screen border-b border-white/20 py-3 backdrop-blur-md relative z-40 ">
         <div className="max-w-screen-2xl flex items-center justify-between w-full mx-2 sm:mx-8">
           <NavLinks />
           <div className="gap-2 flex items-center">

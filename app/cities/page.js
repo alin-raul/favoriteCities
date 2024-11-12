@@ -1,9 +1,9 @@
-import React from "react";
+import LocalCities from "./_local-cities/localCities";
 
 const City = () => {
   return (
     <div className="h-screen flex justify-center items-center">
-      <h1 className="font-black text-4xl">City</h1>
+      <LocalCities />
     </div>
   );
 };
