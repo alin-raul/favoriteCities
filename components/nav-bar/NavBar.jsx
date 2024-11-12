@@ -9,7 +9,10 @@ const NavLinks = () => {
     <div className="flex items-center gap-6">
       <BurgerMenu icon={<RxHamburgerMenu />} />
       <div className="hidden items-center gap-6 md:flex">
-        <TransitionLink href="/" className="flex items-center gap-1 font-bold">
+        <TransitionLink
+          href="/home"
+          className="flex items-center gap-1 font-bold"
+        >
           <Logo />
           FavCity
         </TransitionLink>

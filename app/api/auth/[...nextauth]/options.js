@@ -14,15 +14,19 @@ export const options = {
         username: {
           label: "Username",
           type: "text",
-          placeholder: "cool-username",
+          placeholder: "User Name",
         },
-        password: { label: "Password", type: "password" },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Type here...",
+        },
       },
       authorize: async (credentials) => {
         const user = {
           id: "6",
           name: "Raul",
-          username: "cool-username",
+          username: "ssupraem",
           password: "Shnitzel",
         };
 

@@ -50,7 +50,7 @@ const CityCard = ({ selectedCity }) => {
 
   return (
     <div>
-      <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-80 p-4 bg-dynamic rounded-lg shadow-lg z-20">
+      <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-80 p-4 bg-dynamic backdrop-blur-md rounded-lg shadow-lg z-20">
         <h3 className="text-lg font-semibold">
           {selectedCity.properties.name}
         </h3>
