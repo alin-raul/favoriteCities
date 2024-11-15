@@ -13,9 +13,24 @@ const NavLinks = () => {
           <Logo />
           FavCity
         </TransitionLink>
-        <TransitionLink href="/search">Search</TransitionLink>
-        <TransitionLink href="/cities">Cities</TransitionLink>
-        <TransitionLink href="/favorites">Favorites</TransitionLink>
+        <TransitionLink
+          href="/search"
+          className="flex gap-2 opacity-60 hover:opacity-100"
+        >
+          Search
+        </TransitionLink>
+        <TransitionLink
+          href="/cities"
+          className="flex gap-2 opacity-60 hover:opacity-100"
+        >
+          Cities
+        </TransitionLink>
+        <TransitionLink
+          href="/favorites"
+          className="flex gap-2 opacity-60 hover:opacity-100"
+        >
+          Favorites
+        </TransitionLink>
       </div>
     </div>
   );

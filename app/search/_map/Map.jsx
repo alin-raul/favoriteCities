@@ -4,16 +4,20 @@ import { Map } from "@vis.gl/react-maplibre";
 import { middleOfEU } from "@/globals/constants";
 import YouAreHere from "@/components/location/YouAreHere";
 import { useTheme } from "next-themes";
+import { useMemo } from "react";
 
 export default function MapDisplay() {
   const { theme, resolvedTheme } = useTheme();
-  const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
-  const darkMapStyle = "https://tiles.openfreemap.org/styles/dark";
 
-  const mapStyle =
-    (theme === "system" ? resolvedTheme : theme) === "dark"
+  // Use useMemo to only recalculate mapStyle when theme or resolvedTheme changes
+  const mapStyle = useMemo(() => {
+    const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
+    const darkMapStyle = "https://tiles.openfreemap.org/styles/dark";
+
+    return (theme === "system" ? resolvedTheme : theme) === "dark"
       ? darkMapStyle
       : lightMapStyle;
+  }, [theme, resolvedTheme]); // Depend on theme and resolvedTheme
 
   return (
     <Map
@@ -37,4 +41,3 @@ export default function MapDisplay() {
     </Map>
   );
 }
-MapDisplay;

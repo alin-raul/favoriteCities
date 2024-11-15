@@ -1,11 +1,11 @@
 export default function Home() {
   return (
-    <div className="max-w-screen-2xl flex flex-col align-middle h-96">
-      <div className="flex-grow flex flex-col justify-center font-mono text-md text-ellipsis p-4">
-        <h2 className="text-xl font-bold mt-10 mb-5 text-pretty">
+    <div className="max-w-screen-2xl flex flex-col justify-center items-center h-96 m-auto mt-60">
+      <div className="flex-grow flex flex-col font-mono text-md text-ellipsis p-4 m-auto">
+        <h2 className="text-2xl font-bold mt-10 mb-5 text-pretty">
           Discover Your Next Favorite City with Us!
         </h2>
-        <p className="text-pretty">
+        <p className="text-pretty mt-10">
           Welcome to Favorite Cities, the app that brings the world's most
           captivating cities right to your fingertips. Whether you're a seasoned
           traveler or dreaming up your first adventure, we’ve designed this app

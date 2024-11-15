@@ -25,12 +25,7 @@ const TransitionLink = ({ children, href, ...props }) => {
   };
 
   return (
-    <Link
-      className="flex gap-2 opacity-60 hover:opacity-100"
-      href={href}
-      onClick={handleTransition}
-      {...props}
-    >
+    <Link href={href} onClick={handleTransition} {...props}>
       {children}
     </Link>
   );

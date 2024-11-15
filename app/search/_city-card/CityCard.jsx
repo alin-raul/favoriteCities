@@ -43,8 +43,20 @@ const CityCard = ({ selectedCity }) => {
     if (cityExists) {
       alert("City is in your list already");
     } else {
-      storedCities.push(selectedCity);
-      localStorage.setItem("cities", JSON.stringify(storedCities));
+      const cityWithSelected = {
+        ...selectedCity,
+        selected: false,
+      };
+
+      storedCities.push(cityWithSelected);
+
+      const updatedCities = storedCities.map((city) => ({
+        ...city,
+        selected: city.selected ?? false,
+      }));
+
+      localStorage.setItem("cities", JSON.stringify(updatedCities));
+
       alert("City added to list");
     }
   };
