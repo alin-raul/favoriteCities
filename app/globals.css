@@ -76,6 +76,7 @@ main.page-transition-end {
 
 .bg-dynamic {
   background-color: #f8f9fae3;
+  backdrop-filter: blur(12px);
 }
 
 .dark .bg-dynamic {
@@ -84,6 +85,7 @@ main.page-transition-end {
 
 .bg-dynamic-h:hover {
   background-color: #ffffff;
+  backdrop-filter: blur(12px);
 }
 
 .dark .bg-dynamic-h:hover {
@@ -92,6 +94,7 @@ main.page-transition-end {
 
 .bg-dynamic-secondary {
   background-color: #ececec;
+  backdrop-filter: blur(12px);
 }
 
 .dark .bg-dynamic-secondary {

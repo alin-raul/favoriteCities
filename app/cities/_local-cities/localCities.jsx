@@ -3,12 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import TransitionLink from "@/components/utils/TransitionLink";
-import { TiStarFullOutline } from "react-icons/ti";
-import { CiStar } from "react-icons/ci";
+import FavoriteButton from "@/components/favoriteButon/FavoriteButton";
 
 const LocalCities = () => {
   const [cities, setCities] = useState([]);
-  console.log(cities);
 
   const router = useRouter();
 
@@ -38,7 +36,9 @@ const LocalCities = () => {
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <h1 className="text-2xl font-semibold mt-16">Saved Cities</h1>
+      <h1 className="text-2xl font-semibold mt-16">
+        Saved cities from localStorage
+      </h1>
       {cities.length === 0 ? (
         <p>No cities added yet.</p>
       ) : (
@@ -46,10 +46,10 @@ const LocalCities = () => {
           {cities.map((city, index) => (
             <TransitionLink
               href={`/cities/${city.properties.name}`}
-              className="w-full h-full p-4 rounded-xl shadow-lg mb-4 md:mb-0 flex flex-col justify-between bg-dynamic bg-dynamic-h z-0"
+              className="w-full h-full p-4 rounded-xl shadow-lg mb-4 md:mb-0 flex flex-col justify-between bg-dynamic bg-dynamic-h "
               key={index}
             >
-              <div className="relative z-10">
+              <div className="relative">
                 <h2 className="text-lg font-semibold">
                   {city.properties.name}
                 </h2>
@@ -63,31 +63,10 @@ const LocalCities = () => {
               </div>
 
               {/* Button/Star icon */}
-              <div className="flex justify-end mt-4 ">
-                <button
-                  className="group relative"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    handleToggleFavorite(city.properties.osm_id);
-                  }}
-                >
-                  {/* If selected, show the full star, and do not show hover */}
-                  {city.selected ? (
-                    <TiStarFullOutline className="h-6 w-6 absolute fill-yellow-500 bottom-0 right-0 group-hover:hidden" />
-                  ) : (
-                    // If not selected, show the empty star and allow hover to show the filled star
-                    <CiStar className="h-6 w-6 absolute bottom-0 right-0 group-hover:hidden" />
-                  )}
-
-                  {/* Show full star on hover only if the city is not selected */}
-                  <TiStarFullOutline
-                    className={`h-6 w-6 absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-                      city.selected ? "hidden" : ""
-                    }`}
-                  />
-                </button>
-              </div>
+              <FavoriteButton
+                handleToggleFavorite={handleToggleFavorite}
+                city={city}
+              />
             </TransitionLink>
           ))}
         </div>

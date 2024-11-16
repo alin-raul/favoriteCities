@@ -1,11 +1,11 @@
 const { DataSource } = require("typeorm");
-const { User } = require("../entity/User");
+const { City } = require("../entity/City");
 
 const AppDataSource = new DataSource({
   type: "sqlite",
   database: "./database.sqlite",
   synchronize: true,
-  entities: [User],
+  entities: [City],
   logging: true,
 });
 
