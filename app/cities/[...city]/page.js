@@ -35,7 +35,6 @@ const CityPage = async ({ params }) => {
     const latitude = location[0].geometry.coordinates[1];
     const longitude = location[0].geometry.coordinates[0];
 
-    // Include weather parameters like temperature, precipitation, etc.
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`;
     try {
       const response = await fetch(url);
@@ -46,7 +45,7 @@ const CityPage = async ({ params }) => {
       return data || {};
     } catch (error) {
       console.error("Error fetching weather data:", error.message);
-      return null; // Return null or default fallback data if needed
+      return null;
     }
   };
 

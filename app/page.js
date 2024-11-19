@@ -1,28 +1,12 @@
+import Search from "./search/_map/Search";
+
 export default function Home() {
   return (
-    <div className="max-w-screen-2xl flex flex-col justify-center items-center h-96 m-auto mt-60">
-      <div className="flex-grow flex flex-col font-mono text-md text-ellipsis p-4 m-auto">
-        <h2 className="text-2xl font-bold mt-10 mb-5 text-pretty">
-          Discover Your Next Favorite City with Us!
-        </h2>
-        <p className="text-pretty mt-10">
-          Welcome to Favorite Cities, the app that brings the world's most
-          captivating cities right to your fingertips. Whether you're a seasoned
-          traveler or dreaming up your first adventure, we’ve designed this app
-          to be your ultimate guide to finding, exploring, and saving all your
-          must-visit destinations. Dive into hand-picked city profiles that
-          feature not only the best sights and sounds but also hidden gems known
-          only to locals. From iconic landmarks and cozy cafes to bustling
-          markets and tranquil parks, every city has a unique story to tell—and
-          we're here to help you uncover it. With customizable city lists,
-          detailed maps, and real-time recommendations, Favorite Cities makes it
-          easy to curate and organize your travel bucket list. Love a city? Mark
-          it as a favorite and get personalized tips, local weather updates, and
-          new activity ideas every time you revisit the app. Our mission is
-          simple: to inspire, guide, and keep you connected to the places that
-          mean the most to you. So go ahead, explore the world, and let Favorite
-          Cities be your compass for every journey.
-        </p>
+    <div className="absolute top-0 left-0 right-0 flex flex-col justify-center items-center h-screen w-screen z-[-1]">
+      <div className="text-center">
+        <span className="font-bold text-2xl">⚠️ Work in progress ⚠️</span>{" "}
+        <br />
+        <span className="opacity-60">Main homepage is not ready yet :/</span>
       </div>
     </div>
   );

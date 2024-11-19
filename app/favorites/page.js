@@ -1,39 +1,24 @@
 import TransitionLink from "@/components/utils/TransitionLink";
+import { getFavoriteCities } from "@/globals/fetchDb";
+import DeleteFavorite from "@/components/deleteFavoritesButton/DeleteFavorites";
 
 const Favorites = async () => {
-  const getFavoriteCities = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/cities", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("Cities fetched");
-        return data;
-      } else {
-        console.error("Error loading cities:", data.message);
-      }
-    } catch (error) {
-      console.error("Failed to load cities:", error);
-    }
-  };
-
   const citiesData = await getFavoriteCities();
   const cities = citiesData.data;
-  // console.log(cities);
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <h1 className="text-2xl font-semibold mt-16">
-        Cities loaded from database
+      <h1 className="text-2xl font-semibold mt-16 text-center">
+        Your Favorite Cities
+        <br />
+        <span className="text-sm font-normal opacity-70">
+          *loaded from database*
+        </span>
       </h1>
       {cities.length === 0 ? (
-        <p>No cities added yet.</p>
+        <div className="absolute top-0 h-screen flex items-center opacity-60">
+          <p>No cities added yet.</p>
+        </div>
       ) : (
         <div className="mt-32 max-w-screen-2xl gap-2 justify-center items-center sm:grid lg:grid-cols-2 2xl:grid-cols-3">
           {cities.map((city, index) => (
@@ -51,6 +36,9 @@ const Favorites = async () => {
                   {city.geometry.coordinates[0].toFixed(4)})
                 </p>
                 <p>Bounding Box: [{city.extent.join(", ")}]</p>
+              </div>
+              <div className="flex justify-end mt-4">
+                <DeleteFavorite label="Remove" city={city} />
               </div>
             </TransitionLink>
           ))}

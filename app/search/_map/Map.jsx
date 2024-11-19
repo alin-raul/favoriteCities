@@ -9,7 +9,6 @@ import { useMemo } from "react";
 export default function MapDisplay() {
   const { theme, resolvedTheme } = useTheme();
 
-  // Use useMemo to only recalculate mapStyle when theme or resolvedTheme changes
   const mapStyle = useMemo(() => {
     const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
     const darkMapStyle = "https://tiles.openfreemap.org/styles/dark";
@@ -17,7 +16,7 @@ export default function MapDisplay() {
     return (theme === "system" ? resolvedTheme : theme) === "dark"
       ? darkMapStyle
       : lightMapStyle;
-  }, [theme, resolvedTheme]); // Depend on theme and resolvedTheme
+  }, [theme, resolvedTheme]);
 
   return (
     <Map

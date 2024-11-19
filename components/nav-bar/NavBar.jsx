@@ -1,40 +1,42 @@
+"use client";
+
 import TransitionLink from "../utils/TransitionLink";
+import navLinks from "@/globals/NavLinks";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../mode-toggle/ModeToggle";
 import BurgerMenu from "./BurgerMenu";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 const NavLinks = () => {
+  const pathname = usePathname();
+
   return (
     <div className="flex items-center gap-6">
       <BurgerMenu icon={<RxHamburgerMenu />} />
       <div className="hidden items-center gap-6 md:flex">
-        <TransitionLink href="/" className="flex items-center gap-1 font-bold">
-          <Logo />
-          FavCity
-        </TransitionLink>
-        <TransitionLink
-          href="/search"
-          className="flex gap-2 opacity-60 hover:opacity-100"
-        >
-          Search
-        </TransitionLink>
-        <TransitionLink
-          href="/cities"
-          className="flex gap-2 opacity-60 hover:opacity-100"
-        >
-          Cities
-        </TransitionLink>
-        <TransitionLink
-          href="/favorites"
-          className="flex gap-2 opacity-60 hover:opacity-100"
-        >
-          Favorites
-        </TransitionLink>
+        <ul className="flex">
+          <div className="flex items-center gap-1 ">
+            <Logo />
+            <TransitionLink href="/" isActive={pathname === "/"}>
+              {" "}
+              <span className="font-bold pr-2">FavCity</span>
+            </TransitionLink>
+          </div>
+          {navLinks.slice(1).map((item) => (
+            <li key={item.title} className={`p-2`}>
+              <TransitionLink href={item.url} isActive={pathname === item.url}>
+                {" "}
+                <span>{item.title}</span>
+              </TransitionLink>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 };
+
 export const Logo = () => {
   return (
     <div>
@@ -73,7 +75,9 @@ const Navbar = () => {
           <NavLinks />
           <div className="gap-2 flex items-center">
             <ModeToggle />
-            <Button variant="ghost">Sign In</Button>
+            <Button variant="ghost" disabled>
+              Sign In
+            </Button>
           </div>
         </div>
       </nav>

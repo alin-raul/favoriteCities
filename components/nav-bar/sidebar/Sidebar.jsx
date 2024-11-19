@@ -3,7 +3,7 @@
 import TransitionLink from "@/components/utils/TransitionLink";
 import { Logo } from "../NavBar";
 import { IoClose } from "react-icons/io5";
-import Links from "@/globals/NavLinks";
+import navLinks from "@/globals/NavLinks";
 import { useSidebar } from "@/context/SidebarContext";
 import BurgerMenu from "../BurgerMenu";
 
@@ -35,10 +35,9 @@ const Sidebar = () => {
         </div>
         <div className="p-4 ml-3">
           <ul>
-            {Links.map((item) => (
+            {navLinks.map((item) => (
               <li key={item.title} className="p-2" onClick={hideSidebar}>
                 <TransitionLink href={item.url}>
-                  {/* <item.icon /> */}
                   <span>{item.title}</span>
                 </TransitionLink>
               </li>

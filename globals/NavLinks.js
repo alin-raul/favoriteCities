@@ -1,6 +1,6 @@
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 
-const Links = [
+const navLinks = [
   {
     title: "Home",
     url: "/",
@@ -12,8 +12,8 @@ const Links = [
     icon: Search,
   },
   {
-    title: "City",
-    url: "/city",
+    title: "Cities",
+    url: "/cities",
     icon: Inbox,
   },
   {
@@ -23,4 +23,4 @@ const Links = [
   },
 ];
 
-export default Links;
+export default navLinks;

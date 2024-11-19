@@ -63,7 +63,7 @@ const CityCard = ({ selectedCity }) => {
 
   return (
     <div className="absolute left-0 top-22 p-4 w-80 ">
-      <div className="p-4 bg-dynamic backdrop-blur-md rounded-2xl shadow-lg z-20">
+      <div className="p-4 bg-dynamic border backdrop-blur-md rounded-2xl shadow-lg z-20">
         <h3 className="text-lg font-semibold">
           {selectedCity.properties.name}
         </h3>
