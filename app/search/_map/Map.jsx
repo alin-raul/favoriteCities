@@ -19,24 +19,26 @@ export default function MapDisplay() {
   }, [theme, resolvedTheme]);
 
   return (
-    <Map
-      initialViewState={{
-        longitude: middleOfEU[0],
-        latitude: middleOfEU[1],
-        zoom: 2,
-      }}
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "absolute",
-        zIndex: "-1",
-        right: "0",
-        left: "0",
-        top: "0",
-      }}
-      mapStyle={mapStyle}
-    >
-      <YouAreHere />
-    </Map>
+    <div className="relative">
+      <Map
+        initialViewState={{
+          longitude: middleOfEU[0],
+          latitude: middleOfEU[1],
+          zoom: 2,
+        }}
+        style={{
+          width: "100vw",
+          height: "calc(100vh - 56px)",
+          position: "absolute",
+          zIndex: "-1",
+          right: "0",
+          left: "0",
+          top: "0",
+        }}
+        mapStyle={mapStyle}
+      >
+        <YouAreHere />
+      </Map>
+    </div>
   );
 }

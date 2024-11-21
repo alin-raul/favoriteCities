@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
             <Sidebar />
 
             <Navbar />
-            <main className="m-auto px-4 sm:px-8 ">{children}</main>
+            <main>{children}</main>
           </SidebarProvider>
         </ThemeProvider>
       </body>

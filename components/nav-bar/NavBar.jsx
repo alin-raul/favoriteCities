@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../mode-toggle/ModeToggle";
 import BurgerMenu from "./BurgerMenu";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useRouter } from "next/navigation";
 
 const NavLinks = () => {
   const pathname = usePathname();
@@ -68,15 +69,17 @@ export const Logo = () => {
 };
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <div className="sticky top-0 left-0 right-0 shadow-sm">
-      <nav className="flex items-center justify-center w-screen border-b border-white/20 py-3 backdrop-blur-md relative z-40 ">
+      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md relative z-40 ">
         <div className="max-w-screen-2xl flex items-center justify-between w-full mx-2 sm:mx-8">
           <NavLinks />
           <div className="gap-2 flex items-center">
             <ModeToggle />
-            <Button variant="ghost" disabled>
-              Sign In
+            <Button variant="ghost" onClick={() => router.push("/login")}>
+              Login
             </Button>
           </div>
         </div>

@@ -30,7 +30,7 @@ const LocalCities = () => {
   };
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="w-full flex flex-col justify-center items-center relative">
       <h1 className="text-2xl font-semibold mt-16 text-center">
         Your Saved Cities
         <br />
@@ -39,7 +39,7 @@ const LocalCities = () => {
         </span>
       </h1>
       {cities.length === 0 ? (
-        <div className="absolute top-0 h-screen flex items-center opacity-60">
+        <div className="absolute top-0 h-screen-minus-nav flex items-center opacity-60">
           <p>No cities added yet.</p>
         </div>
       ) : (
