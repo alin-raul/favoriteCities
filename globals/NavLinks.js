@@ -1,6 +1,6 @@
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 
-const navLinks = [
+const navigationLinks = [
   {
     title: "Home",
     url: "/",
@@ -23,4 +23,4 @@ const navLinks = [
   },
 ];
 
-export default navLinks;
+export default navigationLinks;

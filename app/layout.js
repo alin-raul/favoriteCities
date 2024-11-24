@@ -4,15 +4,24 @@ import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/context/SidebarContext";
 import Navbar from "@/components/nav-bar/NavBar";
 import Sidebar from "@/components/nav-bar/sidebar/Sidebar";
+import { getServerSession } from "next-auth";
 
 export const metadata = {
   title: "Favorite City App",
   description: "Discover Your Next Favorite City with Us!",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession();
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <ThemeProvider
           attribute="class"
@@ -22,9 +31,10 @@ export default function RootLayout({ children }) {
         >
           <SidebarProvider>
             <Sidebar />
-
-            <Navbar />
-            <main>{children}</main>
+            <div className="relative">
+              {<Navbar session={session} />}
+              <main>{children}</main>
+            </div>
           </SidebarProvider>
         </ThemeProvider>
       </body>

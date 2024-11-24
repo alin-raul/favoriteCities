@@ -45,4 +45,7 @@ export const options = {
       },
     }),
   ],
+  pages: {
+    signIn: "/login", // Custom sign-in page
+  },
 };

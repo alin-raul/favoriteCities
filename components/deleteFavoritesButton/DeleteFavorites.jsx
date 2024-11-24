@@ -2,18 +2,17 @@
 
 import { React, useTransition } from "react";
 import { Button } from "../ui/button";
-import { handleDelete } from "@/globals/fetchDb";
+import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
 
 const DeleteFavorite = ({ label, city }) => {
   const [isPending, startTransition] = useTransition();
-  console.log(city);
 
   const handleClick = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     try {
-      await handleDelete(city.osm_id);
+      await handleDeleteFromFavorite(city.osm_id);
 
       startTransition(() => {
         window.location.reload();

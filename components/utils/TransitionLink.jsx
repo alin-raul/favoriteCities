@@ -1,23 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const TransitionLink = ({ children, href, isActive, ...props }) => {
   const router = useRouter();
-  const [currentRoute, setCurrentRoute] = useState(router.pathname); // Store the current route
-
-  const prevRouteRef = useRef(router.pathname);
-
-  useEffect(() => {
-    if (router.pathname !== prevRouteRef.current) {
-      prevRouteRef.current = router.pathname;
-    }
-    setCurrentRoute(router.pathname);
-  }, [router.pathname]);
 
   const handleTransition = async (e) => {
     e.preventDefault();
@@ -32,7 +21,7 @@ const TransitionLink = ({ children, href, isActive, ...props }) => {
       await sleep(400);
       mainContent.classList.remove("page-transition-start");
 
-      await router.push(href);
+      router.push(href);
 
       mainContent.classList.add("page-transition-end");
       await sleep(400);
@@ -48,7 +37,7 @@ const TransitionLink = ({ children, href, isActive, ...props }) => {
     <Link
       href={href}
       onClick={handleTransition}
-      className={`hover:opacity-100 ${isActive ? "opacity-100" : "opacity-60"}`} // Use the `isActive` prop to apply active style
+      className={`hover:opacity-100 ${isActive ? "opacity-100" : "opacity-60"}`}
       {...props}
     >
       {children}

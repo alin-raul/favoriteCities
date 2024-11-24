@@ -62,7 +62,7 @@ const CityCard = ({ selectedCity }) => {
   };
 
   return (
-    <div className="absolute left-0 top-22 p-4 w-80 ">
+    <div className="absolute left-0 top-22 p-4 w-80">
       <div className="p-4 bg-dynamic border backdrop-blur-md rounded-2xl shadow-lg z-20">
         <h3 className="text-lg font-semibold">
           {selectedCity.properties.name}
@@ -76,9 +76,6 @@ const CityCard = ({ selectedCity }) => {
         <p className="text-sm opacity-50">
           Coordinates: ({selectedCity.geometry.coordinates[1].toFixed(4)},{" "}
           {selectedCity.geometry.coordinates[0].toFixed(4)})
-        </p>
-        <p className="text-sm opacity-50">
-          Bounding Box: [{selectedCity.properties.extent?.join(", ")}]
         </p>
 
         <div className="mt-4">

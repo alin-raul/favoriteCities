@@ -83,6 +83,8 @@ const LocalCities = () => {
               <FavoriteButton
                 handleToggleFavorite={handleToggleFavorite}
                 city={city}
+                handlePostFavorite={handlePostFavorite}
+                handleDelete={handleDelete}
               />
             </TransitionLink>
           ))}

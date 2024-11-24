@@ -1,7 +1,7 @@
 import TransitionLink from "@/components/utils/TransitionLink";
-import { getFavoriteCities } from "@/globals/fetchDb";
 import DeleteFavorite from "@/components/deleteFavoritesButton/DeleteFavorites";
 import Wrapper from "@/components/pageWrapper/wrapper";
+import { getFavoriteCities } from "@/lib/getFavoriteCities";
 
 const Favorites = async () => {
   const citiesData = await getFavoriteCities();

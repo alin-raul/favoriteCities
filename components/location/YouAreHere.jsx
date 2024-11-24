@@ -26,7 +26,7 @@ export default function YouAreHere() {
 
   return (
     <Popup longitude={popupLocation[0]} latitude={popupLocation[1]}>
-      <h3 className="text-black">You are approximately here!</h3>
+      <h3>You are approximately here!</h3>
     </Popup>
   );
 }

@@ -1,18 +1,13 @@
-"use client"; // This makes this component a Client Component
+"use client";
 
-import { signIn } from "next-auth/react";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import CustomForm from "@/components/form/customForm";
-import { Button } from "@/components/ui/button";
-import { FaGithubAlt } from "react-icons/fa";
 
-export default function handleLogin() {
+const HandleSignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [callbackUrl, setCallbackUrl] = useState("/"); // Default callbackUrl
-  const router = useRouter();
 
   // Use useEffect to get the callbackUrl from the query parameter after the component is mounted
   useEffect(() => {
@@ -41,17 +36,6 @@ export default function handleLogin() {
     }
   };
 
-  const handleGitHubLogin = () => {
-    signIn("github", { callbackUrl }).then((result) => {
-      if (result?.error) {
-        setError("GitHub login failed: " + result.error);
-      } else {
-        // Successful login, redirect to callbackUrl or home
-        router.push(callbackUrl || "/");
-      }
-    });
-  };
-
   return (
     <CustomForm
       onSubmit={handleLogin}
@@ -60,25 +44,13 @@ export default function handleLogin() {
       placeholders={["Username", "Password"]}
       inputTypes={["text", "password"]}
       fieldNames={["username", "password"]}
-      redirectUrl="/signup"
-      title="Login"
+      redirectUrl="/login"
+      title="Sign up"
       redirectText="Already have an account?"
-      buttonText="Login"
-      linkText="Sign up"
-    >
-      {
-        <div className="flex flex-col justify-center items-center">
-          <span className="text-center text-sm mt-6 mb-4 opacity-60">
-            Or Login with
-          </span>
-          <Button
-            onClick={handleGitHubLogin}
-            className="bg-zinc-800 text-white w-full py-2 rounded-2xl hover:bg-zinc-600"
-          >
-            <FaGithubAlt /> Login with GitHub
-          </Button>
-        </div>
-      }
-    </CustomForm>
+      buttonText="Sign Up"
+      linkText="Login"
+    />
   );
-}
+};
+
+export default HandleSignUp;

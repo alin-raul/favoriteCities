@@ -1,42 +1,9 @@
 "use client";
 
-import TransitionLink from "../utils/TransitionLink";
-import navLinks from "@/globals/NavLinks";
-import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../mode-toggle/ModeToggle";
-import BurgerMenu from "./BurgerMenu";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { useRouter } from "next/navigation";
-
-const NavLinks = () => {
-  const pathname = usePathname();
-
-  return (
-    <div className="flex items-center gap-6">
-      <BurgerMenu icon={<RxHamburgerMenu />} />
-      <div className="hidden items-center gap-6 md:flex">
-        <ul className="flex">
-          <div className="flex items-center gap-1 ">
-            <Logo />
-            <TransitionLink href="/" isActive={pathname === "/"}>
-              {" "}
-              <span className="font-bold pr-2">FavCity</span>
-            </TransitionLink>
-          </div>
-          {navLinks.slice(1).map((item) => (
-            <li key={item.title} className={`p-2`}>
-              <TransitionLink href={item.url} isActive={pathname === item.url}>
-                {" "}
-                <span>{item.title}</span>
-              </TransitionLink>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
+import NavLinks from "./NavLinks";
+import SignInAndOutButton from "./SignInAndOutButton";
+import { navigationEvents } from "../navigation-events/navigationEvents";
 
 export const Logo = () => {
   return (
@@ -68,19 +35,20 @@ export const Logo = () => {
   );
 };
 
-const Navbar = () => {
-  const router = useRouter();
-
+const Navbar = ({ session }) => {
+  const pathname = navigationEvents();
   return (
-    <div className="sticky top-0 left-0 right-0 shadow-sm">
-      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md relative z-40 ">
+    <div
+      className={`top-0 left-0 right-0 shadow-sm ${
+        ["/login", "/signup"].includes(pathname) ? "hidden" : "sticky"
+      }`}
+    >
+      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md relative z-50 ">
         <div className="max-w-screen-2xl flex items-center justify-between w-full mx-2 sm:mx-8">
-          <NavLinks />
+          <NavLinks pathname={pathname} />
           <div className="gap-2 flex items-center">
             <ModeToggle />
-            <Button variant="ghost" onClick={() => router.push("/login")}>
-              Login
-            </Button>
+            <SignInAndOutButton session={session} />
           </div>
         </div>
       </nav>

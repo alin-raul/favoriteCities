@@ -8,10 +8,11 @@
   box-sizing: border-box;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+html {
+  font-family: "Inter", sans-serif;
+}
 
 body {
-  font-family: "Inter", serif;
   transition: transform, filter;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
@@ -99,6 +100,56 @@ main.page-transition-end {
 
 .dark .bg-dynamic-secondary {
   background: #1b1b1b;
+}
+
+.maplibregl-popup-content {
+  backdrop-filter: blur(12px) !important;
+  border-radius: 10px !important; /* Rounded corners */
+  padding: 16px !important; /* Add some padding */
+}
+
+.dark .maplibregl-popup-content {
+  background: #1b1b1b !important;
+  color: white;
+}
+
+.dark .maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  align-self: center;
+  border-bottom: none;
+  border-top-color: #1b1b1b;
+}
+
+.dark .maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  align-self: center;
+  border-left: none;
+  border-right-color: #1b1b1b;
+}
+
+.dark .maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  align-self: center;
+  border-left-color: #1b1b1b;
+  border-right: none;
+}
+
+.maplibregl-popup-close-button {
+  background-color: transparent !important;
+  border: 0;
+  cursor: pointer;
+  border-radius: 0 10px 0 0 !important;
+  display: absolute;
+  right: 6px !important;
+  top: 0 !important;
+}
+
+.maplibregl-popup-close-button:hover {
+  opacity: 60% !important;
+  cursor: pointer;
+}
+
+.maplibregl-popup-close-button:focus {
+  border: none !important;
+  outline: none !important;
+  cursor: pointer;
 }
 
 @layer base {

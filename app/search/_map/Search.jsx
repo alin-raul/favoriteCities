@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { IoMdSearch } from "react-icons/io";
+import MapDisplay from "./Map";
 import CityCard from "../_city-card/CityCard";
 
 const Search = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedCityArea, setSelectedCityArea] = useState(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -35,50 +37,57 @@ const Search = () => {
     }
   };
 
-  const handleCitySelect = (city) => {
+  const handleCitySelect = async (city) => {
     setSelectedCity(city);
+
+    const area = city.properties.extent;
+    setSelectedCityArea(area);
     setQuery("");
     setResults([]);
   };
 
   return (
-    <div className="absolute right-0 left-0 w-full h-auto md:block md:p-4 md:w-80 z-0">
-      <div className="backdrop-blur-md m-auto border-b border-white/20 md:border md:rounded-2xl shadow-md">
-        <div className="p-4 flex flex-col justify-end items-center">
-          <div className="relative w-full ">
-            <IoMdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <Input
-              type="text"
-              id="search"
-              placeholder="Search cities..."
-              className="bg-dynamic rounded-xl pl-10"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
+    <>
+      <MapDisplay selectedCityArea={selectedCityArea} />
 
-          <div className={`mt-4 w-full ${query ? "" : "hidden"}`}>
-            {results.length > 0 ? (
-              <ul className="bg-dynamic rounded-lg shadow-md max-h-60 overflow-y-auto">
-                {results.map((result) => (
-                  <li
-                    key={result.properties.osm_id}
-                    className="p-2 cursor-pointer hover:bg-gray-500/10 "
-                    onClick={() => handleCitySelect(result)}
-                  >
-                    {result.properties.name} - {result.properties.country}
-                  </li>
-                ))}
-              </ul>
-            ) : query ? (
-              <p className="text-gray-500 text-sm">No results found</p>
-            ) : null}
+      <div className="absolute w-full h-auto md:block md:p-4 md:w-80 z-20">
+        <div className="backdrop-blur-md m-auto border-b border-white/20 md:border md:rounded-2xl shadow-md">
+          <div className="p-4 flex flex-col justify-end items-center">
+            <div className="relative w-full ">
+              <IoMdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10" />
+              <Input
+                type="text"
+                id="search"
+                placeholder="Search cities..."
+                className="bg-dynamic rounded-xl pl-10"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
+
+            <div className={`mt-4 w-full ${query ? "" : "hidden"}`}>
+              {results.length > 0 ? (
+                <ul className="bg-dynamic rounded-lg shadow-md max-h-60 overflow-y-auto">
+                  {results.map((result) => (
+                    <li
+                      key={result.properties.osm_id}
+                      className="p-2 cursor-pointer hover:bg-gray-500/10 "
+                      onClick={() => handleCitySelect(result)}
+                    >
+                      {result.properties.name} - {result.properties.country}
+                    </li>
+                  ))}
+                </ul>
+              ) : query ? (
+                <p className="text-gray-500 text-sm">No results found</p>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
 
-      {selectedCity && <CityCard selectedCity={selectedCity} />}
-    </div>
+        {selectedCity && <CityCard selectedCity={selectedCity} />}
+      </div>
+    </>
   );
 };
 

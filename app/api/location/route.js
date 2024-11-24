@@ -7,7 +7,9 @@ export async function getLocation() {
     if (typeof json.lat === "number" && typeof json.lon === "number") {
       return [json.lon, json.lat];
     }
-    // eslint-disable-next-line no-empty
-  } catch {}
+  } catch (error) {
+    console.error("Error fetching location:", error);
+  }
+
   return middleOfEU;
 }
