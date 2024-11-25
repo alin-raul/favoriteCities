@@ -39,6 +39,7 @@ const Search = () => {
 
   const handleCitySelect = async (city) => {
     setSelectedCity(city);
+    console.log(city);
 
     const area = city.properties.extent;
     setSelectedCityArea(area);
@@ -68,9 +69,9 @@ const Search = () => {
             <div className={`mt-4 w-full ${query ? "" : "hidden"}`}>
               {results.length > 0 ? (
                 <ul className="bg-dynamic rounded-lg shadow-md max-h-60 overflow-y-auto">
-                  {results.map((result) => (
+                  {results.map((result, index) => (
                     <li
-                      key={result.properties.osm_id}
+                      key={result.properties.osm_id + index}
                       className="p-2 cursor-pointer hover:bg-gray-500/10 "
                       onClick={() => handleCitySelect(result)}
                     >

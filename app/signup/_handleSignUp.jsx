@@ -4,12 +4,9 @@ import React, { useState, useEffect } from "react";
 import CustomForm from "@/components/form/customForm";
 
 const HandleSignUp = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [callbackUrl, setCallbackUrl] = useState("/"); // Default callbackUrl
+  const [callbackUrl, setCallbackUrl] = useState("/login");
 
-  // Use useEffect to get the callbackUrl from the query parameter after the component is mounted
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlCallback = urlParams.get("callbackUrl");
@@ -18,34 +15,41 @@ const HandleSignUp = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleSignup = async (formData) => {
+    console.log(formData);
 
-    // Call the signIn function with the credentials
-    const result = await signIn("credentials", {
-      redirect: false,
-      username, // Send the username to credentials provider
-      password, // Send the password to credentials provider
-    });
+    const { username, email, password } = formData;
 
-    if (result?.error) {
-      setError(result.error);
-    } else {
-      // Redirect to the callbackUrl or default to the homepage
-      router.push(callbackUrl);
+    try {
+      // Replace with actual signup API call
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Signup failed: ${errorData.message}`);
+      }
+
+      console.log("User created");
+
+      window.location.href = callbackUrl;
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
     <CustomForm
-      onSubmit={handleLogin}
-      values={{ username, password }}
+      onSubmit={handleSignup}
       error={error}
-      placeholders={["Username", "Password"]}
-      inputTypes={["text", "password"]}
-      fieldNames={["username", "password"]}
+      placeholders={["Username", "Email", "Password"]}
+      inputTypes={["text", "text", "password"]}
+      fieldNames={["username", "email", "password"]}
       redirectUrl="/login"
-      title="Sign up"
+      title="Create Account"
       redirectText="Already have an account?"
       buttonText="Sign Up"
       linkText="Login"

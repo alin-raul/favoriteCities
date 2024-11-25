@@ -2,8 +2,7 @@ import { options } from "../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import HandleLogin from "./_handleLogin";
 import Wrapper from "@/components/pageWrapper/wrapper";
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import HandleLogout from "./_handleLogout";
 
 export default async function Login() {
   const session = await getServerSession(options);
@@ -25,7 +24,7 @@ export default async function Login() {
           <span className="text-center opacity-60 mt-8 text-sm">
             Do you want to logout?
           </span>
-          <Button>Logout</Button>
+          <HandleLogout />
         </div>
       </div>
     </Wrapper>

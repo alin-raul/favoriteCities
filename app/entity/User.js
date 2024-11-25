@@ -14,10 +14,6 @@ const User = new EntitySchema({
       nullable: false,
       unique: true,
     },
-    name: {
-      type: "varchar",
-      nullable: false,
-    },
     email: {
       type: "varchar",
       nullable: false,
@@ -28,7 +24,7 @@ const User = new EntitySchema({
       nullable: false,
     },
     createdAt: {
-      type: "datetime", // SQLite supports `datetime` over `timestamp`
+      type: "datetime",
       default: () => "CURRENT_TIMESTAMP",
     },
   },

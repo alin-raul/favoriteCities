@@ -1,9 +1,12 @@
+import bcrypt from "bcrypt";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { AppDataSource } from "@/app/database/data-source";
+import { User } from "@/app/entity/User";
 
 export const options = {
   pages: {
-    signIn: "/login", // Custom sign-in page URL
+    signIn: "/login",
   },
   providers: [
     GitHubProvider({
@@ -26,26 +29,33 @@ export const options = {
         },
       },
       authorize: async (credentials) => {
-        const user = {
-          id: "6",
-          name: "Raul",
-          username: "ssupraem",
-          password: "Shnitzel",
-        };
+        try {
+          await AppDataSource.initialize();
 
-        if (
-          credentials?.username === user.username &&
-          credentials?.password === user.password
-        ) {
-          return user;
-        } else {
-          console.error("Invalid credentials");
-          return null;
+          const userRepo = AppDataSource.getRepository(User);
+
+          const user = await userRepo.findOne({
+            where: { username: credentials?.username },
+          });
+
+          if (!user) {
+            throw new Error("Invalid username or password");
+          }
+          const isPasswordValid = await bcrypt.compare(
+            credentials?.password,
+            user.password
+          );
+          if (!isPasswordValid) {
+            throw new Error("Invalid username or password");
+          }
+
+          const { password, ...userWithoutPassword } = user;
+          return userWithoutPassword;
+        } catch (error) {
+          console.error("Authorization error:", error.message);
+          throw new Error(error.message || "An unexpected error occurred");
         }
       },
     }),
   ],
-  pages: {
-    signIn: "/login", // Custom sign-in page
-  },
 };

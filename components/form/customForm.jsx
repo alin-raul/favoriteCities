@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -6,7 +8,6 @@ import Wrapper from "../pageWrapper/wrapper";
 
 const CustomForm = ({
   onSubmit,
-  values,
   placeholders,
   error,
   redirectUrl,
@@ -19,6 +20,21 @@ const CustomForm = ({
   children,
 }) => {
   const router = useRouter();
+  const [formData, setFormData] = useState({
+    [fieldNames[0]]: "",
+    [fieldNames[1]]: "",
+    [fieldNames[2]]: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData); // Pass the form data back to the parent
+  };
 
   return (
     <Wrapper className="h-screen flex flex-col justify-center items-center">
@@ -26,26 +42,19 @@ const CustomForm = ({
 
       <div className="flex justify-center items-center p-6 bg-dynamic rounded-2xl w-72 mt-6 shadow-md">
         <div className="flex flex-col gap-4 w-full">
-          <form onSubmit={onSubmit} className="flex flex-col gap-4">
-            <Input
-              type={inputTypes[0]}
-              name={fieldNames[0]}
-              placeholder={placeholders[0]}
-              value={values.username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className="p-2 rounded-xl border"
-            />
-
-            <Input
-              type={inputTypes[1]}
-              name={fieldNames[1]}
-              placeholder={placeholders[1]}
-              value={values.password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="p-2 rounded-xl border"
-            />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {fieldNames.map((fieldName, index) => (
+              <Input
+                key={fieldName}
+                type={inputTypes[index]}
+                name={fieldName}
+                placeholder={placeholders[index]}
+                value={formData[fieldName]}
+                onChange={handleChange}
+                required
+                className="p-2 rounded-xl border"
+              />
+            ))}
             <Button
               type="submit"
               className="bg-blue-500 text-white hover:bg-blue-700 py-2 rounded-2xl"

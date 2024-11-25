@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { NextResponse } from "next/server";
 import { AppDataSource } from "../../database/data-source";
 import { City } from "@/app/entity/City";
@@ -8,50 +9,40 @@ async function ensureDbInitialized() {
   }
 }
 
+const citySchema = z.object({
+  name: z.string(),
+  country: z.string(),
+  countrycode: z.string().length(2), // Example validation for country code length
+  county: z.string().optional(), // Optional field
+  osm_type: z.string(),
+  osm_id: z.number(),
+  osm_key: z.string(),
+  osm_value: z.string(),
+  extent: z.array(z.number()).optional(), // Optional field
+  geometry: z.any(), // Adjust to your actual expected type for geometry
+});
+
 export async function POST(req) {
   await ensureDbInitialized();
   try {
     const cityRepo = AppDataSource.getRepository(City);
     const data = await req.json();
 
-    // Destructure the necessary fields from the data
-    const {
-      name,
-      country,
-      countrycode,
-      county,
-      osm_type,
-      osm_id,
-      osm_key,
-      osm_value,
-      extent,
-      geometry,
-    } = data;
+    const parsedData = citySchema.safeParse(data);
 
-    // Create an array to collect missing fields
-    const missingFields = [];
-
-    // Check each required field and log the missing ones
-    if (!name) missingFields.push("name");
-    if (!country) missingFields.push("country");
-    if (!countrycode) missingFields.push("countrycode");
-    if (!osm_type) missingFields.push("osm_type");
-    if (!osm_id) missingFields.push("osm_id");
-    if (!osm_key) missingFields.push("osm_key");
-    if (!osm_value) missingFields.push("osm_value");
-    if (!geometry) missingFields.push("geometry");
-
-    // If there are missing fields, log them and return a response
-    if (missingFields.length > 0) {
-      console.error("Missing fields:", missingFields); // Log missing fields
+    if (!parsedData.success) {
+      console.error("Validation errors:", parsedData.error.errors);
       return NextResponse.json(
-        { success: false, message: "All fields are required.", missingFields },
+        {
+          success: false,
+          message: "Validation failed",
+          errors: parsedData.error.errors,
+        },
         { status: 400 }
       );
     }
 
-    // Proceed to create and save the city if all fields are present
-    const city = cityRepo.create({ ...data, selected: true });
+    const city = cityRepo.create({ ...parsedData.data, selected: true });
     await cityRepo.save(city);
 
     return NextResponse.json(
