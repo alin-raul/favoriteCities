@@ -1,4 +1,4 @@
-export const middleOfEU = [15, 50];
+export const middleOfRo = [24.9668, 45.9432];
 
 export const weatherCodeDescriptions = {
   0: "Clear sky",

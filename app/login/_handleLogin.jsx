@@ -61,6 +61,7 @@ export default function HandleLogin() {
       redirectText="Don’t have an account?"
       buttonText="Login"
       linkText="Sign up"
+      formType="login"
     >
       <div className="flex flex-col justify-center items-center">
         <span className="text-center text-sm mt-6 mb-4 opacity-60">

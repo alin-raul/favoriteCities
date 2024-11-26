@@ -1,19 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { middleOfEU } from "@/globals/constants";
+import { middleOfRo } from "@/globals/constants";
 import { Popup, useMap } from "@vis.gl/react-maplibre";
-import { getLocation } from "@/app/api/location/route";
+import { getLocation } from "@/lib/getLocation";
 
 export default function YouAreHere() {
-  const [popupLocation, setPopupLocation] = useState(middleOfEU);
+  const [popupLocation, setPopupLocation] = useState(middleOfRo);
   const { current: map } = useMap();
 
   const MyLocation = async () => {
     const location = await getLocation();
-    if (location !== middleOfEU) {
+
+    if (location && location !== middleOfRo) {
       setPopupLocation(location);
-      map.flyTo({ center: location, zoom: 8 });
+      if (map) {
+        map.flyTo({ center: location, zoom: 8 });
+      }
     }
   };
 

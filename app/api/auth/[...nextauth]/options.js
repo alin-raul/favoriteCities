@@ -12,6 +12,14 @@ export const options = {
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
+      profile: (profile) => {
+        return {
+          id: profile.id,
+          name: profile.name || profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+        };
+      },
     }),
 
     CredentialsProvider({
@@ -41,21 +49,50 @@ export const options = {
           if (!user) {
             throw new Error("Invalid username or password");
           }
+
           const isPasswordValid = await bcrypt.compare(
             credentials?.password,
             user.password
           );
+
           if (!isPasswordValid) {
             throw new Error("Invalid username or password");
           }
 
           const { password, ...userWithoutPassword } = user;
-          return userWithoutPassword;
+          return {
+            ...userWithoutPassword,
+            name: user.username,
+            email: user.email,
+            image: user.profileImage || "",
+          };
         } catch (error) {
           console.error("Authorization error:", error.message);
-          throw new Error(error.message || "An unexpected error occurred");
+          throw new Error("Invalid username or password");
         }
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      if (token) {
+        session.user = {
+          ...session.user,
+          name: token.name || token.username,
+          email: token.email,
+          image: token.image || "",
+        };
+      }
+      return session;
+    },
+
+    async jwt({ token, user }) {
+      if (user) {
+        token.name = user.name || user.username;
+        token.email = user.email;
+        token.image = user.image || "";
+      }
+      return token;
+    },
+  },
 };

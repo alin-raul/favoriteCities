@@ -1,7 +1,7 @@
 "use client";
 
 import { Map, Source, Layer } from "@vis.gl/react-maplibre";
-import { middleOfEU } from "@/globals/constants";
+import { middleOfRo } from "@/globals/constants";
 import YouAreHere from "@/components/location/YouAreHere";
 import { useTheme } from "next-themes";
 import { useMemo, useEffect, useRef, useState } from "react";
@@ -56,8 +56,8 @@ export default function MapDisplay({ selectedCityArea }) {
       <Map
         ref={mapRef} // Attach the map reference here
         initialViewState={{
-          longitude: middleOfEU[0],
-          latitude: middleOfEU[1],
+          longitude: middleOfRo[0],
+          latitude: middleOfRo[1],
           zoom: 2,
         }}
         style={{

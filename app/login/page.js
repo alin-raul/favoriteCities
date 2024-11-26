@@ -6,7 +6,6 @@ import HandleLogout from "./_handleLogout";
 
 export default async function Login() {
   const session = await getServerSession(options);
-  console.log(`{logging Session: ${session}}`);
 
   if (!session) {
     return <HandleLogin session={session} />;

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { User, Mail, Lock, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -18,13 +19,27 @@ const CustomForm = ({
   buttonText,
   linkText,
   children,
+  formType,
 }) => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    [fieldNames[0]]: "",
-    [fieldNames[1]]: "",
-    [fieldNames[2]]: "",
-  });
+  const [formData, setFormData] = useState(
+    Object.fromEntries(fieldNames.map((fieldName) => [fieldName, ""]))
+  );
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
+
+  // Set icons based on form type (signup or login)
+  const iconsSignup = [User, Mail, Lock, Lock]; // signup has 4 fields
+  const iconsLogin = [User, KeyRound]; // login has 2 fields
+
+  const icons = formType === "signup" ? iconsSignup : iconsLogin;
+
+  useEffect(() => {
+    // Reset password mismatch state when switching form types
+    setPasswordMismatch(false);
+    setFormData(
+      Object.fromEntries(fieldNames.map((fieldName) => [fieldName, ""]))
+    );
+  }, [formType, fieldNames]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +48,17 @@ const CustomForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData); // Pass the form data back to the parent
+
+    if (formType === "signup") {
+      if (formData[fieldNames[2]] !== formData[fieldNames[3]]) {
+        setPasswordMismatch(true);
+        return;
+      } else {
+        setPasswordMismatch(false);
+      }
+    }
+
+    onSubmit(formData);
   };
 
   return (
@@ -43,18 +68,32 @@ const CustomForm = ({
       <div className="flex justify-center items-center p-6 bg-dynamic rounded-2xl w-72 mt-6 shadow-md">
         <div className="flex flex-col gap-4 w-full">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {fieldNames.map((fieldName, index) => (
-              <Input
-                key={fieldName}
-                type={inputTypes[index]}
-                name={fieldName}
-                placeholder={placeholders[index]}
-                value={formData[fieldName]}
-                onChange={handleChange}
-                required
-                className="p-2 rounded-xl border"
-              />
-            ))}
+            {fieldNames.map((fieldName, index) => {
+              // Skip the confirm password field for login
+              if (formType === "login" && fieldName === fieldNames[3])
+                return null;
+
+              return (
+                <div className="relative w-full" key={fieldName + index}>
+                  {React.createElement(icons[index] || User, {
+                    className:
+                      "absolute h-5 left-2 top-1/2 transform -translate-y-1/2 opacity-60 z-10",
+                  })}
+                  <Input
+                    type={inputTypes[index]}
+                    name={fieldName}
+                    placeholder={placeholders[index]}
+                    value={formData[fieldName]}
+                    onChange={handleChange}
+                    required
+                    className="pl-10 rounded-xl border"
+                  />
+                </div>
+              );
+            })}
+            {passwordMismatch && formType === "signup" && (
+              <p className="text-red-500 text-sm">Passwords do not match</p>
+            )}
             <Button
               type="submit"
               className="bg-blue-500 text-white hover:bg-blue-700 py-2 rounded-2xl"

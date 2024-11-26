@@ -45,14 +45,15 @@ const HandleSignUp = () => {
     <CustomForm
       onSubmit={handleSignup}
       error={error}
-      placeholders={["Username", "Email", "Password"]}
-      inputTypes={["text", "text", "password"]}
-      fieldNames={["username", "email", "password"]}
+      placeholders={["Username", "Email", "Password", "Confirm Password"]}
+      inputTypes={["text", "text", "password", "password"]}
+      fieldNames={["username", "email", "password", "confirm-password"]}
       redirectUrl="/login"
       title="Create Account"
       redirectText="Already have an account?"
       buttonText="Sign Up"
       linkText="Login"
+      formType="signup"
     />
   );
 };

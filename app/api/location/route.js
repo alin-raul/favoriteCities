@@ -1,15 +1,57 @@
-import { middleOfEU } from "@/globals/constants";
-
-export async function getLocation() {
+export async function GET(req) {
   try {
-    const response = await fetch("http://ip-api.com/json/");
-    const json = await response.json();
-    if (typeof json.lat === "number" && typeof json.lon === "number") {
-      return [json.lon, json.lat];
+    const ipApiResponse = await fetch("http://ip-api.com/json/");
+
+    if (!ipApiResponse.ok) {
+      throw new Error(
+        `Failed to fetch from ip-api.com: ${ipApiResponse.statusText}`
+      );
+    }
+
+    const ipApiData = await ipApiResponse.json();
+
+    if (
+      typeof ipApiData.lat === "number" &&
+      typeof ipApiData.lon === "number"
+    ) {
+      return new Response(
+        JSON.stringify({ lon: ipApiData.lon, lat: ipApiData.lat }),
+        { status: 200 }
+      );
+    } else {
+      throw new Error("Invalid response from ip-api.com");
     }
   } catch (error) {
-    console.error("Error fetching location:", error);
-  }
+    console.error("Error fetching from ip-api.com, trying ipinfo.io:", error);
 
-  return middleOfEU;
+    try {
+      const ipInfoResponse = await fetch(
+        `https://ipinfo.io/json?token=${process.env.IPINFO_TOKEN}`
+      );
+
+      if (!ipInfoResponse.ok) {
+        throw new Error(
+          `Failed to fetch from ipinfo.io: ${ipInfoResponse.statusText}`
+        );
+      }
+
+      const ipInfoData = await ipInfoResponse.json();
+
+      if (ipInfoData.loc) {
+        const [lon, lat] = ipInfoData.loc.split(",");
+        return new Response(
+          JSON.stringify({ lon: parseFloat(lon), lat: parseFloat(lat) }),
+          { status: 200 }
+        );
+      } else {
+        throw new Error("Invalid response from ipinfo.io");
+      }
+    } catch (ipInfoError) {
+      console.error("Error fetching from ipinfo.io:", ipInfoError);
+      return new Response(
+        JSON.stringify({ error: "Failed to fetch location from both APIs" }),
+        { status: 500 }
+      );
+    }
+  }
 }
