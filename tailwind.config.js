@@ -70,7 +70,48 @@ module.exports = {
       height: {
         "screen-minus-nav": "calc(100vh - 56px)",
       },
+      maskImage: {
+        "top-to-middle-25":
+          "linear-gradient(to bottom, black 25%, transparent)",
+        "top-to-middle-50":
+          "linear-gradient(to bottom, black 50%, transparent)",
+        "top-to-middle-75":
+          "linear-gradient(to bottom, black 75%, transparent)",
+        "bottom-to-top-25": "linear-gradient(to top, black 25%, transparent)",
+        "bottom-to-top-50": "linear-gradient(to top, black 50%, transparent)",
+        "bottom-to-top-75": "linear-gradient(to top, black 75%, transparent)",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".mask-top-to-middle-25": {
+          maskImage: "linear-gradient(to bottom, black 25%, transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 25%, transparent)",
+        },
+        ".mask-top-to-middle-50": {
+          maskImage: "linear-gradient(to bottom, black 50%, transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent)",
+        },
+        ".mask-top-to-middle-75": {
+          maskImage: "linear-gradient(to bottom, black 75%, transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent)",
+        },
+        ".mask-bottom-to-top-25": {
+          maskImage: "linear-gradient(to top, black 25%, transparent)",
+          WebkitMaskImage: "linear-gradient(to top, black 25%, transparent)",
+        },
+        ".mask-bottom-to-top-50": {
+          maskImage: "linear-gradient(to top, black 50%, transparent)",
+          WebkitMaskImage: "linear-gradient(to top, black 50%, transparent)",
+        },
+        ".mask-bottom-to-top-75": {
+          maskImage: "linear-gradient(to top, black 75%, transparent)",
+          WebkitMaskImage: "linear-gradient(to top, black 75%, transparent)",
+        },
+      });
+    },
+  ],
 };

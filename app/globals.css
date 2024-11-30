@@ -131,6 +131,18 @@ main.page-transition-end {
   border-right: none;
 }
 
+.dark .maplibregl-ctrl-attrib.maplibregl-compact {
+  background: #1b1b1b !important;
+  color: white;
+}
+.dark .maplibregl-ctrl-attrib.maplibregl-compact a {
+  color: white;
+}
+
+.dark .maplibregl-ctrl-attrib-button {
+  filter: invert();
+}
+
 .maplibregl-popup-close-button {
   background-color: transparent !important;
   border: 0;
@@ -151,6 +163,20 @@ main.page-transition-end {
   outline: none !important;
   cursor: pointer;
 }
+
+/* .maplibregl-canvas-container {
+  position: relative !important; 
+  height: 100% !important;       
+  min-height: 300px !important; 
+} */
+
+.maplibregl-map {
+  /* position: static;  */
+  /* border-radius: 1rem;  */
+}
+
+
+
 
 @layer base {
   :root {

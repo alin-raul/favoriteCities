@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const TransitionLink = ({ children, href, isActive, ...props }) => {
+const TransitionLink = ({ children, href, isActive, card, ...props }) => {
   const router = useRouter();
 
   const handleTransition = async (e) => {
@@ -37,7 +37,9 @@ const TransitionLink = ({ children, href, isActive, ...props }) => {
     <Link
       href={href}
       onClick={handleTransition}
-      className={`hover:opacity-100 ${isActive ? "opacity-100" : "opacity-60"}`}
+      className={`hover:opacity-100 ${
+        card ? "" : isActive ? "opacity-100" : "opacity-60"
+      }`}
       {...props}
     >
       {children}

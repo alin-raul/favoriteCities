@@ -2,9 +2,11 @@ import TransitionLink from "@/components/utils/TransitionLink";
 import DeleteFavorite from "@/components/deleteFavoritesButton/DeleteFavorites";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
+import CustomCard from "@/components/card/CustomCard";
 
 const Favorites = async () => {
   const citiesData = await getFavoriteCities();
+
   const cities = citiesData.data;
 
   return (
@@ -17,32 +19,30 @@ const Favorites = async () => {
             *loaded from database*
           </span>
         </h1>
+
         {cities.length === 0 ? (
           <div className="absolute top-0 h-screen-minus-nav flex items-center opacity-60">
             <p>No cities added yet.</p>
           </div>
         ) : (
-          <div className="mt-32 max-w-screen-2xl gap-2 justify-center items-center sm:grid lg:grid-cols-2 2xl:grid-cols-3">
+          <div className="mt-32 w-full max-w-screen-2xl gap-2 justify-center items-center grid lg:grid-cols-2 2xl:grid-cols-3">
             {cities.map((city, index) => (
-              <TransitionLink
-                href={`/cities/${city.name}`}
-                className="w-full h-full p-4 rounded-xl shadow-lg mb-4 md:mb-0 flex flex-col justify-between bg-dynamic bg-dynamic-h"
-                key={index}
-              >
-                <div className="relative">
-                  <h2 className="text-lg font-semibold">{city.name}</h2>
-                  <p>Country: {city.country}</p>
-                  <p>Type: {city.osm_value}</p>
-                  <p>
-                    Coordinates: ({city.geometry.coordinates[1].toFixed(4)},{" "}
-                    {city.geometry.coordinates[0].toFixed(4)})
-                  </p>
-                  <p>Bounding Box: [{city.extent.join(", ")}]</p>
-                </div>
-                <div className="flex justify-end mt-4">
-                  <DeleteFavorite label="Remove" city={city} />
-                </div>
-              </TransitionLink>
+              <CustomCard key={index}>
+                <TransitionLink href={`/cities/${city.name}`} card={true}>
+                  <div className="relative">
+                    <h2 className="text-lg font-semibold">{city.name}</h2>
+                    <p>Country: {city.country}</p>
+                    <p>Type: {city.osm_value}</p>
+                    <p>
+                      Coordinates: ({city.geometry.coordinates[1].toFixed(4)},{" "}
+                      {city.geometry.coordinates[0].toFixed(4)})
+                    </p>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <DeleteFavorite label="Remove" city={city} />
+                  </div>
+                </TransitionLink>
+              </CustomCard>
             ))}
           </div>
         )}

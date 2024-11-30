@@ -2,17 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import TransitionLink from "@/components/utils/TransitionLink";
+import CustomCard from "@/components/card/CustomCard";
+import { IoMdClose } from "react-icons/io";
 
-const CityCard = ({ selectedCity }) => {
+const CityCard = ({ selectedCity, onClose }) => {
   const [weather, setWeather] = useState(null);
+
   const coordinates = {
     latitude: selectedCity.geometry.coordinates[1],
     longitude: selectedCity.geometry.coordinates[0],
   };
-
-  const router = useRouter();
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -49,21 +48,22 @@ const CityCard = ({ selectedCity }) => {
       };
 
       storedCities.push(cityWithSelected);
-
-      const updatedCities = storedCities.map((city) => ({
-        ...city,
-        selected: city.selected ?? false,
-      }));
-
-      localStorage.setItem("cities", JSON.stringify(updatedCities));
-
+      localStorage.setItem("cities", JSON.stringify(storedCities));
       alert("City added to list");
     }
   };
 
   return (
     <div className="absolute left-0 top-22 p-4 w-80">
-      <div className="p-4 bg-dynamic border backdrop-blur-md rounded-2xl shadow-lg z-20">
+      <CustomCard>
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 opacity-60 hover:opacity-100"
+          aria-label="Close city card"
+        >
+          <IoMdClose size={20} />
+        </button>
+
         <h3 className="text-lg font-semibold">
           {selectedCity.properties.name}
         </h3>
@@ -92,7 +92,7 @@ const CityCard = ({ selectedCity }) => {
         <div className="flex justify-end pt-6">
           <Button onClick={handleAddCity}>Add city to list</Button>
         </div>
-      </div>
+      </CustomCard>
     </div>
   );
 };

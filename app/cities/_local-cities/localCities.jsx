@@ -77,7 +77,6 @@ const LocalCities = () => {
                   Coordinates: ({city.geometry.coordinates[1].toFixed(4)},{" "}
                   {city.geometry.coordinates[0].toFixed(4)})
                 </p>
-                <p>Bounding Box: [{city.properties.extent.join(", ")}]</p>
               </div>
 
               <FavoriteButton

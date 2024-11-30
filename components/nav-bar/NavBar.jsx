@@ -39,11 +39,11 @@ const Navbar = ({ session }) => {
   const pathname = navigationEvents();
   return (
     <div
-      className={`top-0 left-0 right-0 shadow-sm ${
+      className={`top-0 left-0 right-0 shadow-sm z-40 ${
         ["/login", "/signup"].includes(pathname) ? "hidden" : "sticky"
       }`}
     >
-      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md relative z-50 ">
+      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md">
         <div className="max-w-screen-2xl flex items-center justify-between w-full mx-2 sm:mx-8">
           <NavLinks pathname={pathname} />
           <div className="gap-2 flex items-center">
