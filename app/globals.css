@@ -175,7 +175,67 @@ main.page-transition-end {
   /* border-radius: 1rem;  */
 }
 
+.carousel {
+  margin: 0 auto;
+  padding: 20px 0;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex: 0 0 100%;
+  position: relative; 
+}
 
+.carousel::before,
+.carousel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px; /* Adjust the width of the gradient effect */
+  z-index: 10; /* Ensure the gradient is on top of the items */
+}
+
+.carousel::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); /* Gradient from solid to transparent */
+}
+
+.carousel::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); /* Gradient from solid to transparent */
+}
+
+.dark .carousel::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(10, 10, 10, 1), rgba(0, 0, 0, 0)); /* Gradient from solid to transparent */
+}
+
+.dark .carousel::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(10, 10, 10, 1), rgba(0, 0, 0, 0)); /* Gradient from solid to transparent */
+}
+
+.group {
+  display: flex;
+  gap: 20px;
+  padding-right: 20px;
+  will-change: transform; 
+  animation: scrolling 20s linear infinite;
+    
+}
+
+.carousel:hover .group {
+  animation-play-state: paused;
+}
+
+@keyframes scrolling {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 
 
 @layer base {

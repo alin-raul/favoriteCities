@@ -9,6 +9,8 @@ import { useMemo, useEffect, useRef, useState } from "react";
 export default function MapDisplay({
   selectedCityArea,
   rounded = [0, 0, 0, 0],
+  zIndex,
+  noFetch,
 }) {
   const { theme, resolvedTheme } = useTheme();
   const mapRef = useRef(null);
@@ -59,6 +61,7 @@ export default function MapDisplay({
         borderBottomLeftRadius: rounded[1],
         borderBottomRightRadius: rounded[1],
         borderTopRightRadius: rounded[0],
+        zIndex: zIndex,
       }}
       mapStyle={mapStyle}
     >
@@ -89,7 +92,7 @@ export default function MapDisplay({
         </Source>
       )}
 
-      <YouAreHere />
+      <YouAreHere noFetch={noFetch} />
     </Map>
   );
 }

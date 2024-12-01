@@ -5,11 +5,12 @@ import { middleOfRo } from "@/globals/constants";
 import { Popup, useMap } from "@vis.gl/react-maplibre";
 import { getLocation } from "@/lib/getLocation";
 
-export default function YouAreHere() {
+export default function YouAreHere({ noFetch }) {
   const [popupLocation, setPopupLocation] = useState(middleOfRo);
   const { current: map } = useMap();
 
   const MyLocation = async () => {
+    if (noFetch) return;
     const location = await getLocation();
 
     if (location && location !== middleOfRo) {
@@ -28,8 +29,12 @@ export default function YouAreHere() {
   if (!map) return null;
 
   return (
-    <Popup longitude={popupLocation[0]} latitude={popupLocation[1]}>
-      <h3>You are approximately here!</h3>
-    </Popup>
+    <>
+      {!noFetch && (
+        <Popup longitude={popupLocation[0]} latitude={popupLocation[1]}>
+          <h3>You are approximately here!</h3>
+        </Popup>
+      )}
+    </>
   );
 }

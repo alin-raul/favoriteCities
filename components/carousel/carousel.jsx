@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Carousel = ({ cities, currentIndex }) => {
   return (
-    <div className="relative justify-center items-center w-full h-full overflow-hidden md:flex px-2 md:flex-row">
+    <div className="relative justify-center items-center w-full h-full overflow-hidden lg:flex px-2 lg:flex-row">
       <AnimatePresence>
         {cities.map((city, index) => {
           const offset = (index - currentIndex) * 110;
@@ -12,7 +12,7 @@ const Carousel = ({ cities, currentIndex }) => {
           return (
             <motion.div
               key={index}
-              className="absolute flex justify-center items-center md:shadow-lg md:border md:rounded-xl w-40 min-h-32"
+              className="absolute flex justify-center items-center lg:shadow-lg lg:border lg:rounded-xl w-40 min-h-32"
               initial={{
                 opacity: 0,
                 y: "100%",

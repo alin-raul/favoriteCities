@@ -59,20 +59,22 @@ const RandomCities = () => {
   ];
 
   return (
-    <div className="flex flex-grow items-stretch md:flex-row rounded-2xl shadow-lg">
+    <div className="lg:flex lg:flex-grow lg:items-stretch lg:flex-row rounded-2xl shadow-lg">
       <div className="">
-        <div className="border rounded-2xl bg-dynamic w-full mb-4 h-full relative  p-2 md:rounded-r-none md:w-96 md:mb-0">
+        <div className="border rounded-2xl bg-dynamic w-full h-96 mb-4 relative p-2 lg:rounded-r-none lg:w-96 lg:h-full lg:mb-0">
           <MapDisplay
+            noFetch={true}
             selectedCityArea={selectedCityArea}
             rounded={["1rem", "1rem", "1rem", "1rem"]}
+            zIndex={"0"}
           />
         </div>
       </div>
-      <div className="border flex flex-col justify-center rounded-2xl h-32 bg-dynamic overflow-hidden relative md:border-l-0 md:rounded-l-none md:min-h-96 md:h-full md:w-48 px-2">
+      <div className="border flex flex-col justify-center rounded-2xl h-32 bg-dynamic overflow-hidden relative lg:border-l-0 lg:rounded-l-none lg:min-h-96 lg:h-full lg:w-48 px-2">
         {loading ? (
           Array.from({ length: 3 }).map((_, index) => (
             <div className="my-2 opacity-50 flex justify-center" key={index}>
-              <CustomCard className="w-40">
+              <CustomCard className="w-full lg:w-40">
                 <div className="text-lg font-semibold mb-2">
                   <Skeleton className="h-5 w-[100px]" />
                 </div>

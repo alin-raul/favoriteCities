@@ -81,6 +81,12 @@ module.exports = {
         "bottom-to-top-50": "linear-gradient(to top, black 50%, transparent)",
         "bottom-to-top-75": "linear-gradient(to top, black 75%, transparent)",
       },
+      boxShadow: {
+        dotted: "0 0 0 2px rgba(0, 0, 0, 0.4) dotted",
+      },
+      opacity: {
+        60: "0.6",
+      },
     },
   },
   plugins: [
