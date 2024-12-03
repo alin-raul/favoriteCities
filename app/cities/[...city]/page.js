@@ -1,9 +1,12 @@
-import { weatherCodeDescriptions } from "@/globals/constants";
+import Wrapper from "@/components/pageWrapper/wrapper";
+import Weather from "@/components/weather/Weather";
+import ReactHtmlParser from "html-react-parser";
+import { citiesTranslations } from "@/globals/constants";
+import Image from "next/image";
 
 const CityPage = async ({ params }) => {
   const resolvedParams = await params;
   const cityName = decodeURIComponent(resolvedParams.city[0]);
-  console.log(cityName);
 
   const fetchLocations = async (searchQuery) => {
     try {
@@ -35,7 +38,8 @@ const CityPage = async ({ params }) => {
     const latitude = location[0].geometry.coordinates[1];
     const longitude = location[0].geometry.coordinates[0];
 
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,precipitation,windspeed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`;
+
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -49,11 +53,72 @@ const CityPage = async ({ params }) => {
     }
   };
 
-  const weatherData = await fetchWeatherData(location);
+  const fetchWikipediaData = async (cityName) => {
+    try {
+      const translatedCityName = translateCityName(cityName);
 
-  const getWeatherDescription = (weatherCode) => {
-    return weatherCodeDescriptions[weatherCode] || "Unknown weather condition";
+      const searchResponse = await fetch(
+        `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${encodeURIComponent(
+          translatedCityName
+        )}`
+      );
+      const searchData = await searchResponse.json();
+
+      if (searchData[1].length === 0) {
+        return {
+          description: "No Wikipedia data available for this city.",
+          image: null,
+        };
+      }
+
+      for (let i = 0; i < searchData[1].length; i++) {
+        const firstResult = searchData[1][i];
+        const pageUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|pageimages&exintro&titles=${encodeURIComponent(
+          firstResult
+        )}&redirects=true`;
+
+        const pageResponse = await fetch(pageUrl);
+        const pageData = await pageResponse.json();
+        const page = pageData.query.pages;
+        const pageId = Object.keys(page)[0];
+
+        if (pageId && page[pageId].extract) {
+          const extractText = page[pageId].extract;
+          if (extractText.includes("may refer to")) {
+            continue;
+          }
+
+          const imageUrl = page[pageId].thumbnail
+            ? getHighestResolutionImage(page[pageId].thumbnail.source)
+            : null;
+
+          return {
+            description: ReactHtmlParser(extractText),
+            image: imageUrl,
+          };
+        }
+      }
+
+      return {
+        description: "No valid Wikipedia extract data found for this city.",
+        image: null,
+      };
+    } catch (error) {
+      console.error("Failed to fetch Wikipedia data:", error);
+      return { description: "Failed to fetch Wikipedia data.", image: null };
+    }
   };
+
+  const getHighestResolutionImage = (url) => {
+    return url.replace(/(\d+)px/, "2000px"); // Replace any resolution with 1000px
+  };
+
+  const translateCityName = (cityName) => {
+    return citiesTranslations[cityName] || cityName;
+  };
+
+  const weatherData = await fetchWeatherData(location);
+  const { description, image } = await fetchWikipediaData(cityName);
 
   const { country, countrycode, type, osm_value, name } =
     location[0].properties;
@@ -63,34 +128,31 @@ const CityPage = async ({ params }) => {
   }
 
   return (
-    <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-xl mt-8 gap-6 md:flex ">
-      <div className="p-6 bg-dynamic rounded-xl shadow-lg w-full mb-4 md:mb-0 md:w-1/2 lg:w-2/3">
-        <h1 className="text-2xl font-bold mb-2">
-          {`This is ${name}'s main page.`}
-        </h1>
-        <ul className="list-disc pl-6 mt-4">
-          <li>Country Code: {countrycode}</li>
-          <li>Country: {country}</li>
-          <li>Type: {type}</li>
-        </ul>
-      </div>
-      <div className="p-6 bg-dynamic rounded-xl shadow-lg w-full md:w-1/2 lg:w-1/3 ">
-        <h2 className="text-xl font-bold mb-4">Current Weather</h2>
-        <div className="flex flex-col items-center">
-          <div className="text-4xl font-extrabold mb-2">
-            {weatherData.current_weather.temperature}
-            {weatherData.current_weather_units.temperature}
+    <Wrapper>
+      <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-xl mt-8 gap-6 2xl:flex ">
+        <div className="w-auto mb-4 md:mb-0">
+          <div className="custom-outline w-fit py-4 px-6 bg-[#0f1a57] text-white rounded-2xl mb-16">
+            <h3 className="font-bold text-7xl mb-2">{name}</h3>
+            <h3 className="font-normal leading-3 text-sm">{country}</h3>
           </div>
-          <p className="text-lg capitalize">
-            {getWeatherDescription(weatherData.current_weather.weathercode)}
-          </p>
-          <p className="text-sm mt-2">
-            Wind: {weatherData.current_weather.windspeed}{" "}
-            {weatherData.current_weather_units.windspeed}
-          </p>
+          <div className="my-8">
+            <span className="text-md mt-2">{description}</span>
+          </div>
+          {image && (
+            <div className="my-8">
+              <Image
+                src={image}
+                alt={`Image of ${name}`}
+                width={1000}
+                height={1000}
+                className="w-full rounded-xl"
+              />
+            </div>
+          )}
         </div>
+        <Weather weatherData={weatherData} name={name} country={country} />
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

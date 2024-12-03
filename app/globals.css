@@ -102,6 +102,17 @@ main.page-transition-end {
   background: #1b1b1b;
 }
 
+.custom-outline {
+  outline-style: dashed;
+  outline-offset: 4px;
+  outline-color: #000;
+}
+
+.dark .custom-outline {
+  outline-color: #fff;
+}
+
+
 .maplibregl-popup-content {
   backdrop-filter: blur(12px) !important;
   border-radius: 10px !important; /* Rounded corners */

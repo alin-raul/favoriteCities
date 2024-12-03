@@ -16,16 +16,16 @@ const InfiniteCarousel = () => {
     <div className="carousel">
       <div className="group">
         {[...items].map((item, index) => (
-          <CustomCard key={index} className="min-w-52 text-center">
-            {item}
+          <CustomCard key={index}>
+            <div className="min-w-52 text-center">{item}</div>
           </CustomCard>
         ))}
       </div>
 
       <div className="group">
         {[...items].map((item, index) => (
-          <CustomCard key={index} className="min-w-52 text-center">
-            {item}
+          <CustomCard key={index}>
+            <div className="min-w-52 text-center">{item}</div>
           </CustomCard>
         ))}
       </div>

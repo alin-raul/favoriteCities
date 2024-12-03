@@ -30,12 +30,15 @@ const FavoriteCities = () => {
 
   return (
     <>
-      <CustomCard className="flex justify-center w-full h-full ">
+      <CustomCard className="justify-center w-full h-full ">
         {loading ? (
           <>
-            {Array.from({ length: 1 }).map((_, index) => (
+            <div className="text-xl font-semibold my-4">
+              <Skeleton className="h-5 w-[189px]" />
+            </div>
+            {Array.from({ length: 2 }).map((_, index) => (
               <div
-                className="my-2 w-full pointer-events-none opacity-50 overflow-hidden"
+                className="flex flex-col mb-2 w-full pointer-events-none opacity-50 "
                 key={index}
               >
                 <CustomCard>
@@ -46,10 +49,10 @@ const FavoriteCities = () => {
                     <Skeleton className="h-4 w-[150px]" />
                   </div>
                   <div className="text-sm opacity-50 mb-2">
-                    <Skeleton className="h-4 w-[150px]" />
+                    <Skeleton className="h-4 w-[120px]" />
                   </div>
                   <div className="text-sm opacity-50 mb-2">
-                    <Skeleton className="h-4 w-[150px]" />
+                    <Skeleton className="h-4 w-[160px]" />
                   </div>
                 </CustomCard>
               </div>
@@ -81,7 +84,7 @@ const FavoriteCities = () => {
           </div>
         )}
       </CustomCard>
-      {cities.length <= 0 ? (
+      {cities.length <= 0 && cities ? (
         <div className="flex justify-end items-center mt-4 rounded-md shadow-dotted-2xl shadow-opacity-60">
           <span className="opacity-80 mx-2">Search and add cities</span>
           <TransitionLink href="/search">

@@ -15,26 +15,25 @@ const Loading = () => {
         </h1>
         <div className="mt-32 max-w-screen-2xl gap-2 justify-center items-center w-full grid lg:grid-cols-2 2xl:grid-cols-3">
           {Array.from({ length: 12 }).map((_, index) => (
-            <CustomCard
-              key={index}
-              className="w-full min-w-[552px] lg:min-w-[200px]"
-            >
-              <div>
-                <h2 className="text-lg font-semibold mb-2">
-                  <Skeleton className="h-5 w-[120px]" />
-                </h2>
-                <div className="mb-2">
-                  <Skeleton className="h-4 w-[160px]" />
+            <CustomCard key={index}>
+              <div className="w-full min-w-[552px] lg:min-w-[200px]">
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">
+                    <Skeleton className="h-5 w-[120px]" />
+                  </h2>
+                  <div className="mb-2">
+                    <Skeleton className="h-4 w-[160px]" />
+                  </div>
+                  <div className="mb-2">
+                    <Skeleton className="h-4 w-[100px]" />
+                  </div>
+                  <div className="mb-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                  </div>
                 </div>
-                <div className="mb-2">
-                  <Skeleton className="h-4 w-[100px]" />
+                <div className="flex justify-end mt-4">
+                  <Skeleton className="h-10 w-[90px]" />
                 </div>
-                <div className="mb-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                </div>
-              </div>
-              <div className="flex justify-end mt-4">
-                <Skeleton className="h-10 w-[90px]" />
               </div>
             </CustomCard>
           ))}

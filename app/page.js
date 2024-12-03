@@ -20,13 +20,12 @@ export default function Home() {
             self-improvement, and professional growth.
           </p>
         </div>
-
         <RandomCities />
       </div>
       <div className="max-w-screen-2xl m-auto px-4"></div>
 
-      <div className="flex flex-col justify-around gap-8 py-4 max-w-screen-2xl m-auto mt-20 md:flex-row">
-        <div className="md:w-1/2 order-2 md:order-1">
+      <div className="flex flex-col gap-8 py-4 max-w-screen-2xl m-auto mt-20 md:flex-row">
+        <div className="md:w-2/3 order-2 md:order-1">
           <FavoriteCities />
         </div>
 

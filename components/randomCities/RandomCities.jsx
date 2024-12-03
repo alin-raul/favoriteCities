@@ -11,7 +11,7 @@ import Carousel from "../carousel/carousel";
 const RandomCities = () => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
 
   const getRandomCities = () => {
     const shuffled = RANDOM_CITIES.sort(() => 0.5 - Math.random());
