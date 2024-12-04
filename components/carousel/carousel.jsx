@@ -33,16 +33,13 @@ const Carousel = ({ cities, currentIndex }) => {
                 y: { duration: 1 },
               }}
             >
-              <div className="p-4 rounded-lg">
-                <h3 className="text-lg font-semibold">
+              <div className="flex flex-col p-4 rounded-lg">
+                <span className="text-lg font-semibold">
                   {city.properties.name}
-                </h3>
-                <p className="text-sm opacity-50">
-                  Country: {city.properties.country}
-                </p>
-                <p className="text-sm opacity-50">
-                  Type: {city.properties.osm_value}
-                </p>
+                </span>
+                <span className="text-sm opacity-50">
+                  {city.properties.country}
+                </span>
               </div>
             </motion.div>
           );
