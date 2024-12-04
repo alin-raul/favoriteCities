@@ -51,9 +51,6 @@ const FavoriteCities = () => {
                   <div className="text-sm opacity-50 mb-2">
                     <Skeleton className="h-4 w-[120px]" />
                   </div>
-                  <div className="text-sm opacity-50 mb-2">
-                    <Skeleton className="h-4 w-[160px]" />
-                  </div>
                 </CustomCard>
               </div>
             ))}
@@ -63,17 +60,15 @@ const FavoriteCities = () => {
             <h2 className="text-xl font-semibold my-2">Your Favorite Cities</h2>
 
             {cities.map((city, index) => (
-              <div className="my-2 w-full" key={index}>
-                <CustomCard>
-                  <h3 className="text-lg font-semibold">{city.name}</h3>
-                  <p className="text-sm opacity-50">Country: {city.country}</p>
-                  <p className="text-sm opacity-50">Type: {city.osm_value}</p>
-                  <p className="text-sm opacity-50">
-                    Coordinates: ({city.geometry.coordinates[1].toFixed(4)},{" "}
-                    {city.geometry.coordinates[0].toFixed(4)})
-                  </p>
-                </CustomCard>
-              </div>
+              <TransitionLink
+                href={`/cities/${city.name}`}
+                className="w-full h-full p-4 border rounded-xl shadow-lg mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h"
+                key={index}
+              >
+                <h3 className="text-lg font-semibold">{city.name}</h3>
+                <p className="text-sm opacity-50">Country: {city.country}</p>
+                <p className="text-sm opacity-50">Type: {city.osm_value}</p>
+              </TransitionLink>
             ))}
           </div>
         ) : (

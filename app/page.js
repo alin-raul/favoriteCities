@@ -12,7 +12,7 @@ export default function Home() {
           <h1 className="text-6xl font-bold mb-4">
             Hi, this is my personal Favorite Cities project.
           </h1>
-          <p className="text-lg text-justify opacity-70">
+          <p className="text-lg text-justify opacity-70 lg:mr-6">
             This project is the result of my participation in the{" "}
             <span className="font-bold">Digital Nation</span> community and
             course — a nationwide initiative where members collaborate and
@@ -52,8 +52,6 @@ export default function Home() {
         <h3 className="text-3xl font-medium mb-2">Technologies Used</h3>
         <ListCarousel />
       </section>
-
-      <section className="flex flex-col md:flex-row justify-center items-center gap-4 py-4 "></section>
     </Wrapper>
   );
 }
