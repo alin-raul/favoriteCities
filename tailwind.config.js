@@ -69,6 +69,7 @@ module.exports = {
       },
       height: {
         "screen-minus-nav": "calc(100vh - 56px)",
+        "cities-list-height": "calc(100vh - 418px)",
       },
       maskImage: {
         "top-to-middle-25":

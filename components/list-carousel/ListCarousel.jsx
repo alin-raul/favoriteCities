@@ -1,5 +1,3 @@
-import CustomCard from "../card/CustomCard";
-
 const InfiniteCarousel = () => {
   const items = [
     "React",
@@ -16,17 +14,23 @@ const InfiniteCarousel = () => {
     <div className="carousel">
       <div className="group">
         {[...items].map((item, index) => (
-          <CustomCard key={index}>
-            <div className="min-w-52 text-center">{item}</div>
-          </CustomCard>
+          <div
+            key={index}
+            className="p-4 bg-dynamic border rounded-2xl shadow-inner relative hover:scale-110 hover:shadow-md transition-all"
+          >
+            <div className="min-w-52 text-center cursor-pointer ">{item}</div>
+          </div>
         ))}
       </div>
 
       <div className="group">
         {[...items].map((item, index) => (
-          <CustomCard key={index}>
-            <div className="min-w-52 text-center">{item}</div>
-          </CustomCard>
+          <div
+            key={index}
+            className="p-4 bg-dynamic border rounded-2xl shadow-inner relative hover:scale-110 hover:shadow-md transition-all"
+          >
+            <div className="min-w-52 text-center cursor-pointer">{item}</div>
+          </div>
         ))}
       </div>
     </div>

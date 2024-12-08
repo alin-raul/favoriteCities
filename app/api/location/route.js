@@ -1,4 +1,4 @@
-export async function GET(req) {
+export async function GET() {
   try {
     const ipApiResponse = await fetch("http://ip-api.com/json/");
 

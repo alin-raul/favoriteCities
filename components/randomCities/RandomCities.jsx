@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { RANDOM_CITIES } from "@/globals/constants";
 import searchCity from "@/lib/searchCity";
-import CustomCard from "../card/CustomCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import MapDisplay from "@/app/search/_map/Map";
 import Carousel from "../carousel/carousel";
@@ -11,7 +10,7 @@ import Carousel from "../carousel/carousel";
 const RandomCities = () => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const getRandomCities = () => {
     const shuffled = RANDOM_CITIES.sort(() => 0.5 - Math.random());
@@ -54,27 +53,27 @@ const RandomCities = () => {
     return () => clearInterval(interval);
   }, [cities]);
 
-  const selectedCityArea = cities[currentIndex]?.properties?.extent || [
-    0, 0, 0, 0,
-  ];
+  const selectedCityArea = cities[currentIndex]?.properties?.extent;
 
   return (
-    <div className="lg:flex lg:flex-grow lg:items-stretch lg:flex-row rounded-2xl shadow-lg">
-      <div className="">
-        <div className="border rounded-2xl bg-dynamic w-full h-96 mb-4 relative p-2 lg:rounded-r-none lg:w-96 lg:h-full lg:mb-0">
-          <MapDisplay
-            noFetch={true}
-            selectedCityArea={selectedCityArea}
-            rounded={["1rem", "1rem", "1rem", "1rem"]}
-            zIndex={"0"}
-          />
-        </div>
+    <div className="lg:flex lg:flex-grow lg:items-stretch lg:flex-row rounded-2xl lg:shadow-lg">
+      <div className="border rounded-2xl bg-dynamic w-full h-96 mb-4 relative p-2 lg:rounded-r-none shadow-lg lg:w-96 lg:h-full lg:mb-0 lg:shadow-none pointer-events-none">
+        <MapDisplay
+          noFetch={true}
+          selectedCityArea={selectedCityArea}
+          rounded={["1rem", "1rem", "1rem", "1rem"]}
+          zIndex={"0"}
+        />
       </div>
-      <div className="border flex flex-col justify-center rounded-2xl h-32 bg-dynamic overflow-hidden relative lg:border-l-0 lg:rounded-l-none lg:min-h-96 lg:h-full lg:w-48 px-2">
+
+      <div className="border flex flex-col justify-center rounded-2xl h-32 bg-dynamic overflow-hidden relative px-2 shadow-lg lg:border-l-0 lg:rounded-l-none lg:min-h-96 lg:h-full lg:w-48 lg:shadow-none">
         {loading ? (
           Array.from({ length: 3 }).map((_, index) => (
-            <div className="my-2 opacity-50 flex justify-center" key={index}>
-              <CustomCard className="w-full lg:w-40">
+            <div
+              className="my-2 opacity-50 flex justify-center w-full"
+              key={index}
+            >
+              <div className="p-4 bg-dynamic border rounded-2xl shadow-lg relative w-full lg:w-40">
                 <div className="text-lg font-semibold mb-2">
                   <Skeleton className="h-5 w-[100px]" />
                 </div>
@@ -84,7 +83,7 @@ const RandomCities = () => {
                 <div className="text-sm opacity-50 mb-2">
                   <Skeleton className="h-4 w-[70px]" />
                 </div>
-              </CustomCard>
+              </div>
             </div>
           ))
         ) : (

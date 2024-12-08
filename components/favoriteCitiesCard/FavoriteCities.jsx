@@ -30,7 +30,7 @@ const FavoriteCities = () => {
 
   return (
     <>
-      <CustomCard className="justify-center w-full h-full ">
+      <div className="justify-center w-full h-full p-6 bg-dynamic border rounded-2xl shadow-lg relative">
         {loading ? (
           <>
             <div className="text-xl font-semibold my-4">
@@ -41,7 +41,7 @@ const FavoriteCities = () => {
                 className="flex flex-col mb-2 w-full pointer-events-none opacity-50 "
                 key={index}
               >
-                <CustomCard>
+                <div className="w-full h-full p-6 border rounded-xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h">
                   <div className="text-lg font-semibold mb-2">
                     <Skeleton className="h-5 w-[225px]" />
                   </div>
@@ -51,7 +51,7 @@ const FavoriteCities = () => {
                   <div className="text-sm opacity-50 mb-2">
                     <Skeleton className="h-4 w-[120px]" />
                   </div>
-                </CustomCard>
+                </div>
               </div>
             ))}
           </>
@@ -62,7 +62,7 @@ const FavoriteCities = () => {
             {cities.map((city, index) => (
               <TransitionLink
                 href={`/cities/${city.name}`}
-                className="w-full h-full p-4 border rounded-xl shadow-lg mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h"
+                className="w-full h-full p-6 border rounded-xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:scale-105 active:shadow-lg transition-all"
                 key={index}
               >
                 <h3 className="text-lg font-semibold">{city.name}</h3>
@@ -78,7 +78,7 @@ const FavoriteCities = () => {
             </span>
           </div>
         )}
-      </CustomCard>
+      </div>
       {cities.length <= 0 && cities ? (
         <div className="flex justify-end items-center mt-4 rounded-md shadow-dotted-2xl shadow-opacity-60">
           <span className="opacity-80 mx-2">Search and add cities</span>

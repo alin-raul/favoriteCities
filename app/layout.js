@@ -33,7 +33,7 @@ export default async function RootLayout({ children }) {
             <Sidebar />
             <div className="relative">
               {<Navbar session={session} />}
-              <main>{children}</main>
+              <main session={session}>{children}</main>
             </div>
           </SidebarProvider>
         </ThemeProvider>

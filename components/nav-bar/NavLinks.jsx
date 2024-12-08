@@ -13,10 +13,12 @@ const NavLinks = ({ pathname }) => {
       <div className="hidden items-center gap-6 md:flex">
         <ul className="flex">
           <div className="flex items-center gap-1 ">
-            <Logo />
             <TransitionLink href="/" isActive={pathname === "/"}>
-              {" "}
-              <span className="font-bold pr-2">FavCity</span>
+              <div className="flex items-center">
+                {" "}
+                <Logo />
+                <span className="font-bold pr-2 text-lg">FavCity</span>
+              </div>
             </TransitionLink>
           </div>
           {navigationLinks.slice(1).map((item) => (

@@ -1,7 +1,6 @@
 "use client";
 
 import { TiStarFullOutline } from "react-icons/ti";
-import { CiStar } from "react-icons/ci";
 import React, { useState } from "react";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
@@ -47,7 +46,6 @@ async function handlePostFavorite(city) {
 
 const FavoriteButton = ({ handleToggleFavorite, city }) => {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(city);
 
   const handleClick = async () => {
     if (isLoading) return;
@@ -69,29 +67,21 @@ const FavoriteButton = ({ handleToggleFavorite, city }) => {
   };
 
   return (
-    <div className="flex justify-end mt-4">
-      <button
-        className="group relative h-6 w-6"
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          handleClick();
-        }}
-        disabled={isLoading}
-      >
-        {city.selected ? (
-          <TiStarFullOutline className="h-6 w-6 absolute fill-yellow-500 bottom-0 right-0 group-hover:hidden" />
-        ) : (
-          <CiStar className="h-6 w-6 absolute bottom-0 right-0 group-hover:hidden" />
-        )}
-
-        <TiStarFullOutline
-          className={`h-6 w-6 absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-            city.selected ? "hidden" : ""
-          }`}
-        />
-      </button>
-    </div>
+    <button
+      className="h-6 w-6"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        handleClick();
+      }}
+      disabled={isLoading}
+    >
+      {city.selected ? (
+        <TiStarFullOutline className="h-6 w-6 fill-yellow-500 hover:fill-yellow-300 hover:drop-shadow-sm" />
+      ) : (
+        <TiStarFullOutline className="h-6 w-6 opacity-40 hover:opacity-80 hover:fill-yellow-400 hover:drop-shadow-sm" />
+      )}
+    </button>
   );
 };
 

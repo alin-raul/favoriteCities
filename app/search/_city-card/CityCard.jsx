@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import CustomCard from "@/components/card/CustomCard";
 import { IoMdClose } from "react-icons/io";
 import TransitionLink from "@/components/utils/TransitionLink";
 
@@ -33,43 +31,28 @@ const CityCard = ({ selectedCity, onClose }) => {
     fetchWeatherData();
   }, [coordinates]);
 
-  const handleAddCity = () => {
-    const storedCities = JSON.parse(localStorage.getItem("cities")) || [];
-
-    const cityExists = storedCities.some(
-      (city) => city.properties.osm_id === selectedCity.properties.osm_id
-    );
-
-    if (cityExists) {
-      alert("City is in your list already");
-    } else {
-      const cityWithSelected = {
-        ...selectedCity,
-        selected: false,
-      };
-
-      storedCities.push(cityWithSelected);
-      localStorage.setItem("cities", JSON.stringify(storedCities));
-      alert("City added to list");
-    }
-  };
-
   return (
-    <div className="absolute left-0 top-22 p-4 w-80">
+    <div className="w-full md:px-4">
       <TransitionLink
         href={`/cities/${selectedCity.properties.name}`}
-        className="w-full h-full p-4 border rounded-xl shadow-lg mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h"
+        className="w-full h-fit p-4 border md:rounded-2xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h backdrop-blur-md md:backdrop-blur-none hover:shadow-md active:brightness-125 transition-all"
       >
         <div>
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 opacity-60 hover:opacity-100"
-            aria-label="Close city card"
-          >
-            <IoMdClose size={20} />
-          </button>
+          <div className="w-full flex justify-end">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClose();
+              }}
+              className="opacity-60 hover:opacity-100"
+              aria-label="Close city card"
+            >
+              <IoMdClose size={20} />
+            </button>
+          </div>
 
-          <h3 className="text-lg font-semibold">
+          <h3 className="text-2xl font-semibold">
             {selectedCity.properties.name}
           </h3>
           <p className="text-sm opacity-50">
@@ -77,10 +60,6 @@ const CityCard = ({ selectedCity, onClose }) => {
           </p>
           <p className="text-sm opacity-50">
             Type: {selectedCity.properties.osm_value}
-          </p>
-          <p className="text-sm opacity-50">
-            Coordinates: ({selectedCity.geometry.coordinates[1].toFixed(4)},{" "}
-            {selectedCity.geometry.coordinates[0].toFixed(4)})
           </p>
 
           <div className="mt-4">
@@ -92,10 +71,6 @@ const CityCard = ({ selectedCity, onClose }) => {
             ) : (
               <p className="text-sm opacity-50">Loading weather...</p>
             )}
-          </div>
-
-          <div className="flex justify-end pt-6">
-            <Button onClick={handleAddCity}>Add city to list</Button>
           </div>
         </div>
       </TransitionLink>

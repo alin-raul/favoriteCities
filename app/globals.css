@@ -77,7 +77,6 @@ main.page-transition-end {
 
 .bg-dynamic {
   background-color: #f8f9fae3;
-  backdrop-filter: blur(12px);
 }
 
 .dark .bg-dynamic {
@@ -86,7 +85,6 @@ main.page-transition-end {
 
 .bg-dynamic-h:hover {
   background-color: #ffffff;
-  backdrop-filter: blur(12px);
 }
 
 .dark .bg-dynamic-h:hover {
@@ -95,7 +93,6 @@ main.page-transition-end {
 
 .bg-dynamic-secondary {
   background-color: #ececec;
-  backdrop-filter: blur(12px);
 }
 
 .dark .bg-dynamic-secondary {
@@ -114,31 +111,73 @@ main.page-transition-end {
 
 
 .maplibregl-popup-content {
-  backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(4px) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   border-radius: 10px !important; /* Rounded corners */
   padding: 16px !important; /* Add some padding */
 }
 
 .dark .maplibregl-popup-content {
-  background: #1b1b1b !important;
+  background: #1b1b1b7a !important;
   color: white;
+}
+
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  align-self: center;
+  border-bottom: none;
+  border-top-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  align-self: center;
+  border-top: none;
+  border-bottom-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  align-self: center;
+  border-left: none;
+  border-right-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+
+}
+
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  align-self: center;
+  border-left-color: rgba(255, 255, 255, 0.5) !important;
+  border-right: none;
+  backdrop-filter: blur(4px) !important;
 }
 
 .dark .maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
   align-self: center;
   border-bottom: none;
-  border-top-color: #1b1b1b;
+  border-top-color: #1b1b1b7a !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.dark .maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  align-self: center;
+  border-top: none;
+  border-bottom-color: #1b1b1b7a !important;
+  backdrop-filter: blur(4px) !important;
 }
 
 .dark .maplibregl-popup-anchor-left .maplibregl-popup-tip {
   align-self: center;
   border-left: none;
-  border-right-color: #1b1b1b;
+  border-right-color: #1b1b1b7a !important;
+  backdrop-filter: blur(4px) !important;
+
 }
 
 .dark .maplibregl-popup-anchor-right .maplibregl-popup-tip {
   align-self: center;
-  border-left-color: #1b1b1b;
+  border-left-color: #1b1b1b7a !important;
+  backdrop-filter: blur(4px) !important;
   border-right: none;
 }
 
@@ -231,7 +270,7 @@ main.page-transition-end {
   gap: 20px;
   padding-right: 20px;
   will-change: transform; 
-  animation: scrolling 20s linear infinite;
+  animation: scrolling 60s linear infinite;
     
 }
 

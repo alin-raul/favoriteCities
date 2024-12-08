@@ -1,18 +1,36 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import TransitionLink from "@/components/utils/TransitionLink";
 import FavoriteButton from "@/components/favoriteButon/FavoriteButton";
 import { FaXmark } from "react-icons/fa6";
+import Cookies from "js-cookie";
+import { navigationEvents } from "@/components/navigation-events/navigationEvents";
 
-const LocalCities = () => {
+const LocalCities = ({ ...props }) => {
   const [cities, setCities] = useState([]);
 
-  useEffect(() => {
-    const storedCities = localStorage.getItem("cities");
+  const pathname = navigationEvents();
 
-    if (storedCities) {
-      setCities(JSON.parse(storedCities));
+  useEffect(() => {
+    try {
+      const storedCities = Cookies.get("cities")
+        ? JSON.parse(Cookies.get("cities"))
+        : [];
+      if (Array.isArray(storedCities)) {
+        const validCities = storedCities.filter(
+          (city) => city && city.properties
+        );
+
+        validCities.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+        setCities(validCities);
+      } else {
+        setCities([]);
+      }
+    } catch (error) {
+      console.error("Error parsing cities from cookies", error);
+      setCities([]);
     }
   }, []);
 
@@ -25,68 +43,109 @@ const LocalCities = () => {
     });
 
     setCities(updatedCities);
+    Cookies.set("cities", JSON.stringify(updatedCities), { expires: 7 });
+  };
 
-    localStorage.setItem("cities", JSON.stringify(updatedCities));
+  const getFlagEmoji = (countryCode) => {
+    return countryCode
+      .toUpperCase()
+      .split("")
+      .map((char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
+      .join("");
   };
 
   return (
-    <div className="w-full flex flex-col justify-center items-center relative">
-      <h1 className="text-2xl font-semibold mt-16 text-center">
-        Your Saved Cities
-        <br />
-        <span className="text-sm font-normal opacity-70">
-          *loaded from localStorage*
-        </span>
-      </h1>
-      {cities.length === 0 ? (
-        <div className="absolute top-0 h-screen-minus-nav flex items-center opacity-60">
-          <p>No cities added yet.</p>
-        </div>
-      ) : (
-        <div className="mt-32 max-w-screen-2xl gap-2 justify-center items-center sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {cities.map((city, index) => (
-            <TransitionLink
-              href={`/cities/${city.properties.name}`}
-              className="w-full h-full p-4 rounded-xl shadow-lg mb-4 md:mb-0 flex flex-col justify-between bg-dynamic bg-dynamic-h "
-              key={index}
-            >
-              <div className="relative">
-                <div className="absolute right-0">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      const updatedCities = [...cities];
-                      updatedCities.splice(index, 1);
-                      setCities(updatedCities);
-                      localStorage.setItem(
-                        "cities",
-                        JSON.stringify(updatedCities)
-                      );
-                    }}
-                  >
-                    <FaXmark className="w-4 h-4 opacity-30 hover:opacity-100" />
-                  </button>
-                </div>
-                <h2 className="text-lg font-semibold">
-                  {city.properties.name}
-                </h2>
-                <p>Country: {city.properties.country}</p>
-                <p>Type: {city.properties.osm_value}</p>
-                <p>
-                  Coordinates: ({city.geometry.coordinates[1].toFixed(4)},{" "}
-                  {city.geometry.coordinates[0].toFixed(4)})
-                </p>
-              </div>
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-y-auto">
+        {cities.length === 0 ? (
+          <div className="h-full flex items-center justify-center opacity-60">
+            <p>No cities added yet.</p>
+          </div>
+        ) : (
+          <div className="w-full p-4">
+            {cities.map((city, index) => {
+              const formattedDate = new Date(city.addedAt).toLocaleString(
+                "en-GB",
+                {
+                  weekday: "short",
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                }
+              );
 
-              <FavoriteButton
-                handleToggleFavorite={handleToggleFavorite}
-                city={city}
-              />
-            </TransitionLink>
-          ))}
-        </div>
-      )}
+              return (
+                <TransitionLink
+                  href={`/cities/${city.properties.name}`}
+                  key={index}
+                  {...props}
+                >
+                  <div>
+                    <div className="w-full flex justify-end">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          const updatedCities = [...cities];
+                          updatedCities.splice(index, 1);
+                          setCities(updatedCities);
+                          Cookies.set("cities", JSON.stringify(updatedCities), {
+                            expires: 7,
+                          });
+                        }}
+                      >
+                        <FaXmark className="w-4 h-4 opacity-30 hover:opacity-100" />
+                      </button>
+                    </div>
+                    <h2
+                      className={`${
+                        pathname === "/cities"
+                          ? "text-5xl font-black"
+                          : "text-lg font-semibold"
+                      }`}
+                    >
+                      {city.properties.name}
+                    </h2>
+                    <div className="flex items-center gap-2">
+                      <div className="">
+                        <span
+                          className={`opacity ${
+                            pathname === "/cities" ? "text-xl" : "text-sm"
+                          }`}
+                        >
+                          {city.properties.country},{" "}
+                          {city.properties.countrycode}
+                        </span>
+                      </div>
+                      <div className="">
+                        <span
+                          className={` ${
+                            pathname === "/cities" ? "text-3xl" : "text-lg"
+                          }`}
+                        >
+                          {getFlagEmoji(city.properties.countrycode)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center mt-4">
+                    <span className="opacity-60 font-thin text-xs">
+                      {formattedDate}
+                    </span>
+                    <FavoriteButton
+                      handleToggleFavorite={handleToggleFavorite}
+                      city={city}
+                    />
+                  </div>
+                </TransitionLink>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

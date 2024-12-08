@@ -26,7 +26,6 @@ const CityPage = async ({ params }) => {
   const location = await fetchLocations(cityName);
 
   const weatherData = await getWeatherData(location);
-  console.log(location);
 
   const { description, image } = await getWikipediaData(cityName);
 
