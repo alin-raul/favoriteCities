@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import TransitionLink from "@/components/utils/TransitionLink";
 import FavoriteButton from "@/components/favoriteButon/FavoriteButton";
 import { FaXmark } from "react-icons/fa6";
 import Cookies from "js-cookie";
 import { navigationEvents } from "@/components/navigation-events/navigationEvents";
 
-const LocalCities = ({ ...props }) => {
+const LocalCities = ({ setSelectedCityArea, ...props }) => {
   const [cities, setCities] = useState([]);
 
+  const router = useRouter();
   const pathname = navigationEvents();
 
   useEffect(() => {
@@ -78,10 +78,16 @@ const LocalCities = ({ ...props }) => {
               );
 
               return (
-                <TransitionLink
-                  href={`/cities/${city.properties.name}`}
+                <div
                   key={index}
                   {...props}
+                  onClick={() => {
+                    if (pathname === "/cities") {
+                      router.push(`/cities/${city.properties.name}`);
+                    } else {
+                      setSelectedCityArea(city.properties.extent);
+                    }
+                  }}
                 >
                   <div>
                     <div className="w-full flex justify-end">
@@ -140,7 +146,7 @@ const LocalCities = ({ ...props }) => {
                       city={city}
                     />
                   </div>
-                </TransitionLink>
+                </div>
               );
             })}
           </div>

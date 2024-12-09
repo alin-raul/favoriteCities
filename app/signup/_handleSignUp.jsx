@@ -21,7 +21,6 @@ const HandleSignUp = () => {
     const { username, email, password } = formData;
 
     try {
-      // Replace with actual signup API call
       const response = await fetch("/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

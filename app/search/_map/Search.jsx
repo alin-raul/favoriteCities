@@ -92,6 +92,8 @@ const Search = () => {
     Cookies.set("cities", JSON.stringify(storedCities), { expires: 7 });
   };
 
+  console.log(selectedCity);
+
   return (
     <div className="md:flex">
       <div className="absolute md:relative w-full flex flex-col h-fit md:h-screen-minus-nav md:w-80 z-20 md:border-r-2 ">
@@ -154,19 +156,26 @@ const Search = () => {
             onClose={() => setSelectedCity(null)}
           />
         )}
-        <div className="px-4 pt-4  items-center gap-2 opacity-60 hidden md:flex">
+        <div className="px-4 pt-4 mb-2 items-center gap-2 opacity-60 hidden md:flex">
           <LuHistory className="w-5 h-5" /> <span>Cities searched history</span>
         </div>
         <div className="flex-grow overflow-y-auto hidden md:block">
           <LocalCities
             className={
-              "w-full p-4 rounded-xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 hover:shadow-md active:scale-105 active:shadow-lg transition-all"
+              "w-full p-4 rounded-xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 cursor-pointer hover:shadow-md active:scale-105 active:shadow-lg transition-all"
             }
+            setSelectedCityArea={setSelectedCityArea}
           />
         </div>
       </div>
       <div className="flex-grow h-screen-minus-nav">
-        <MapDisplay selectedCityArea={selectedCityArea} noFetch={false} />
+        <MapDisplay
+          selectedCityArea={selectedCityArea}
+          noFetch={false}
+          startLocation={[25.6201049, 45.6505021]}
+          endLocation={[26.9115623, 46.5561489]}
+          waypoints={[]}
+        />
       </div>
     </div>
   );
