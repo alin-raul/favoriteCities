@@ -1,4 +1,5 @@
 import Wrapper from "@/components/pageWrapper/wrapper";
+import searchCity from "@/lib/searchCity";
 import Weather from "@/components/weather/Weather";
 import Image from "next/image";
 import { getWikipediaData } from "@/lib/getWikipediaData";
@@ -9,23 +10,10 @@ const CityPage = async ({ params }) => {
   const resolvedParams = await params;
   const cityName = decodeURIComponent(resolvedParams.city[0]);
 
-  const fetchLocations = async (searchQuery) => {
-    try {
-      const response = await fetch(
-        `https://photon.komoot.io/api/?q=${encodeURIComponent(searchQuery)}`
-      );
-      if (!response.ok) throw new Error("Network response was not ok");
-      const data = await response.json();
-      return data.features || [];
-    } catch (error) {
-      console.error("Failed to fetch locations:", error);
-      return [];
-    }
-  };
+  const location = await searchCity(cityName);
 
-  const location = await fetchLocations(cityName);
-
-  const weatherData = await getWeatherData(location);
+  const weatherData = await getWeatherData(location[0]);
+  console.log(location);
 
   const { description, image } = await getWikipediaData(cityName);
 

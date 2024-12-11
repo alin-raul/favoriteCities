@@ -1,8 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌍 Favorite Cities App
 
-## Getting Started
+A complete full-stack application where users can search for cities, display city information, and plan journeys (still in progress). This app leverages modern technologies for a seamless user experience.
 
-First, run the development server:
+## 🔥 Tech Stack
+
+- **Frontend**: [React](https://react.dev/), [Next.js](https://nextjs.org/)
+- **Backend**: [TypeORM](https://typeorm.io/), [SQLite](https://www.sqlite.org/index.html)
+- **Authentication**: Secure user authentication
+- **APIs**:
+  - **Maps**: [MapLibre](https://maplibre.org/)
+  - **Routing**: [OpenRouteService API](https://openrouteservice.org/)
+  - **Weather**: [Weather API](https://github.com/philanri/weather-icons?tab=readme-ov-file)
+  - **City Info**: [Wikipedia API](https://www.mediawiki.org/wiki/API:Main_page)
+  - ...and more!
+
+---
+
+## 🚀 Getting Started
+
+To get started with the Favorite Cities app, follow these steps to set up your local development environment.
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+---
+
+### 📦 Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/favorite-cities-app.git
+   cd favorite-cities-app
+   ```
+1. Install the dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+### 🛠️ Development Server
+
+To run the development server, use one of the following commands:
 
 ```bash
 npm run dev
@@ -14,25 +57,60 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔐 Authentication
 
-## Learn More
+This app features secure authentication so users can create an account, log in, and save their favorite cities. The authentication flow is built with industry best practices to keep user data secure.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌐 APIs Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **MapLibre**: Interactive, customizable, and modern maps for the web.
+- **OpenRouteService API**: Route planning and directions for journeys.
+- **Weather API**: Displays real-time weather updates for searched cities.
+- **Wikipedia API**: Provides city information such as history, population, and more.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Search for Cities**: Find information on any city in the world.
+- **View City Details**: See essential city data like weather, population, and history.
+- **Plan a Journey**: (🚧 Work in progress) Plan and visualize your travel route.
 
-https://github.com/philanri/weather-icons?tab=readme-ov-file
+---
+
+## 📚 Learn More
+
+To learn more about Next.js, check out the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - Interactive Next.js tutorial.
+
+Check out [the Next.js GitHub repository](https://github.com/vercel/next.js) — your feedback and contributions are welcome!
+
+---
+
+## 📦 Deployment
+
+The easiest way to deploy your Next.js app is with [Vercel](https://vercel.com/).
+
+To deploy, you can click this button:
+
+Read the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License. Feel free to contribute, modify, and share.
+
+---
+
+### 📷 Credits
+
+- **Weather Icons** from [Weather Icons Repository](https://github.com/philanri/weather-icons?tab=readme-ov-file)

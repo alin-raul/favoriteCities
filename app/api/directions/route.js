@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { startLocation, endLocation, waypoints } = await req.json();
+    const { startLocation, endLocation } = await req.json();
 
     const apiKey = process.env.OPENROUTESERVICE_SECRET;
 
-    const coordinates = [startLocation, ...waypoints, endLocation];
+    const coordinates = [startLocation, endLocation];
 
     const apiUrl = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&units=km`;
 

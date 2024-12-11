@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import CustomCard from "../card/CustomCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import { Button } from "../ui/button";
@@ -30,18 +29,18 @@ const FavoriteCities = () => {
 
   return (
     <>
-      <div className="justify-center w-full h-full p-6 bg-dynamic border rounded-2xl shadow-lg relative">
+      <div className="justify-center w-full h-fit p-6 bg-dynamic border rounded-2xl shadow-lg relative">
         {loading ? (
-          <>
+          <div>
             <div className="text-xl font-semibold my-4">
               <Skeleton className="h-5 w-[189px]" />
             </div>
             {Array.from({ length: 2 }).map((_, index) => (
               <div
-                className="flex flex-col mb-2 w-full pointer-events-none opacity-50 "
+                className="flex flex-col mb-2 w-full pointer-events-none opacity-50"
                 key={index}
               >
-                <div className="w-full h-full p-6 border rounded-xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h">
+                <div className="w-full h-fit p-6 border rounded-xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic">
                   <div className="text-lg font-semibold mb-2">
                     <Skeleton className="h-5 w-[225px]" />
                   </div>
@@ -54,7 +53,7 @@ const FavoriteCities = () => {
                 </div>
               </div>
             ))}
-          </>
+          </div>
         ) : cities.length > 0 ? (
           <div className="flex flex-col w-full">
             <h2 className="text-xl font-semibold my-2">Your Favorite Cities</h2>

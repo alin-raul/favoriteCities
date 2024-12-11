@@ -18,6 +18,8 @@ const Search = () => {
   const [selectedCityArea, setSelectedCityArea] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [endLocation, setEndLocation] = useState([26.9115623, 46.5561489]);
+  const [onRoute, setOnRoute] = useState(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -92,8 +94,6 @@ const Search = () => {
     Cookies.set("cities", JSON.stringify(storedCities), { expires: 7 });
   };
 
-  console.log(selectedCity);
-
   return (
     <div className="md:flex">
       <div className="absolute md:relative w-full flex flex-col h-fit md:h-screen-minus-nav md:w-80 z-20 md:border-r-2 ">
@@ -154,6 +154,12 @@ const Search = () => {
           <CityCard
             selectedCity={selectedCity}
             onClose={() => setSelectedCity(null)}
+            goRoute={() => {
+              setEndLocation(selectedCity.geometry.coordinates);
+              setOnRoute(true);
+            }}
+            onRoute={onRoute}
+            setOnRoute={setOnRoute}
           />
         )}
         <div className="px-4 pt-4 mb-2 items-center gap-2 opacity-60 hidden md:flex">
@@ -172,9 +178,8 @@ const Search = () => {
         <MapDisplay
           selectedCityArea={selectedCityArea}
           noFetch={false}
-          startLocation={[25.6201049, 45.6505021]}
-          endLocation={[26.9115623, 46.5561489]}
-          waypoints={[]}
+          endLocation={endLocation}
+          onRoute={onRoute}
         />
       </div>
     </div>

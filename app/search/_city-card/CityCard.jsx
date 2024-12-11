@@ -1,35 +1,24 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { IoMdClose } from "react-icons/io";
+import { FaXmark } from "react-icons/fa6";
+import { MdOutlineDirections } from "react-icons/md";
 import TransitionLink from "@/components/utils/TransitionLink";
+import { Button } from "@/components/ui/button";
+import Weather from "@/components/weather/Weather";
+import { getWeatherData } from "@/lib/getWeather";
 
-const CityCard = ({ selectedCity, onClose }) => {
-  const [weather, setWeather] = useState(null);
-
-  const coordinates = {
-    latitude: selectedCity.geometry.coordinates[1],
-    longitude: selectedCity.geometry.coordinates[0],
-  };
+const CityCard = ({ selectedCity, onClose, goRoute, onRoute, setOnRoute }) => {
+  const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&hourly=temperature_2m`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data && data.hourly) {
-          setWeather(data.hourly.temperature_2m[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      }
+      if (!selectedCity) return null;
+      const weather = await getWeatherData(selectedCity);
+      setWeatherData(weather);
     };
-
     fetchWeatherData();
-  }, [coordinates]);
+  }, [selectedCity]);
 
   return (
     <div className="w-full md:px-4">
@@ -48,28 +37,52 @@ const CityCard = ({ selectedCity, onClose }) => {
               className="opacity-60 hover:opacity-100"
               aria-label="Close city card"
             >
-              <IoMdClose size={20} />
+              <FaXmark size={16} />
             </button>
           </div>
+          <div className="flex justify-between">
+            <div>
+              <span className="text-2xl font-semibold">
+                {selectedCity.properties.name}
+              </span>
+              <p className="text-sm opacity-50">
+                {selectedCity.properties.country},{" "}
+                {selectedCity.properties.countrycode}
+              </p>
+            </div>
 
-          <h3 className="text-2xl font-semibold">
-            {selectedCity.properties.name}
-          </h3>
-          <p className="text-sm opacity-50">
-            Country: {selectedCity.properties.country}
-          </p>
-          <p className="text-sm opacity-50">
-            Type: {selectedCity.properties.osm_value}
-          </p>
-
-          <div className="mt-4">
-            {weather !== null ? (
-              <div>
-                <h4 className="text-lg font-semibold">Weather:</h4>
-                <p className="text-sm opacity-50">Temperature: {weather}°C</p>
-              </div>
+            <div className="mt-auto">
+              {weatherData !== null ? (
+                <Weather weatherData={weatherData} tiny={true} />
+              ) : (
+                <p className="text-sm opacity-50">Loading weather...</p>
+              )}
+            </div>
+          </div>
+          <div className="">
+            {!onRoute ? (
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  goRoute();
+                }}
+                className="mt-4 rounded-3xl z-30"
+              >
+                <MdOutlineDirections size={24} />
+                <span>Directions</span>
+              </Button>
             ) : (
-              <p className="text-sm opacity-50">Loading weather...</p>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setOnRoute(false);
+                }}
+                className="mt-4 rounded-3xl z-30"
+              >
+                <FaXmark />
+              </Button>
             )}
           </div>
         </div>

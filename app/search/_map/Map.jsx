@@ -1,24 +1,27 @@
+"use client";
+
 import { Map, Source, Layer } from "@vis.gl/react-maplibre";
 import { middleOfRo } from "@/globals/constants";
 import YouAreHere from "@/components/location/YouAreHere";
 import { useTheme } from "next-themes";
 import { useMemo, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import polyline from "polyline"; // Import the polyline package
+import polyline from "polyline";
 
 export default function MapDisplay({
   selectedCityArea,
   rounded = [0, 0, 0, 0],
   zIndex,
   noFetch,
-  startLocation,
-  endLocation,
-  waypoints = [],
+  onRoute = false,
+  startLocation = [],
+  endLocation = [],
 }) {
   const { theme, resolvedTheme } = useTheme();
   const mapRef = useRef(null);
+  const [location, setLocation] = useState(null);
   const [polygonData, setPolygonData] = useState(null);
-  const [routeData, setRouteData] = useState(null); // To store route data
+  const [routeData, setRouteData] = useState(null);
 
   const mapStyle = useMemo(() => {
     const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
@@ -53,34 +56,34 @@ export default function MapDisplay({
   }, [selectedCityArea]);
 
   useEffect(() => {
-    if (startLocation && endLocation) {
-      const fetchRoute = async () => {
-        try {
-          const apiUrl = "/api/directions";
+    const fetchRoute = async () => {
+      if (!onRoute) return;
+      if (!endLocation.length) return;
 
-          const response = await axios.post(apiUrl, {
-            startLocation,
-            endLocation,
-            waypoints,
-          });
+      const start = startLocation.length ? startLocation : location;
+      if (!start) return;
 
-          const routeGeometry = response.data.routes[0].geometry;
+      try {
+        const apiUrl = "/api/directions";
 
-          // Decode the polyline into an array of [longitude, latitude] coordinates
-          const decodedCoordinates = polyline.decode(routeGeometry);
+        const response = await axios.post(apiUrl, {
+          startLocation: start,
+          endLocation,
+        });
 
-          setRouteData(decodedCoordinates); // Set the decoded coordinates as routeData
-        } catch (error) {
-          console.error(
-            "Error fetching route:",
-            error.response?.data || error.message
-          );
-        }
-      };
+        const routeGeometry = response.data.routes[0].geometry;
+        const decodedCoordinates = polyline.decode(routeGeometry);
+        setRouteData(decodedCoordinates);
+      } catch (error) {
+        console.error(
+          "Error fetching route:",
+          error.response?.data || error.message
+        );
+      }
+    };
 
-      fetchRoute();
-    }
-  }, [startLocation, endLocation, waypoints]);
+    fetchRoute();
+  }, [onRoute]);
 
   return (
     <Map
@@ -155,7 +158,7 @@ export default function MapDisplay({
         </Source>
       )}
 
-      <YouAreHere noFetch={noFetch} />
+      <YouAreHere noFetch={noFetch} setLocation={setLocation} />
     </Map>
   );
 }

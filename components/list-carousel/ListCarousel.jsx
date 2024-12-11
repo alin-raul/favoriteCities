@@ -1,36 +1,58 @@
+import { FaReact, FaDatabase, FaLock, FaCloud } from "react-icons/fa";
+import { SiNextdotjs, SiSqlite } from "react-icons/si";
+import Link from "next/link";
+
 const InfiniteCarousel = () => {
   const items = [
-    "React",
-    "Next.js",
-    "SQLite",
-    "TypeORM",
-    "Authentication (Auth)",
-    "Node.js APIs",
-    "Geolocation APIs",
-    "Weather APIs",
+    { name: "React", url: "https://reactjs.org", icon: <FaReact /> },
+    { name: "Next.js", url: "https://nextjs.org", icon: <SiNextdotjs /> },
+    { name: "SQLite", url: "https://www.sqlite.org", icon: <SiSqlite /> },
+    { name: "TypeORM", url: "https://typeorm.io", icon: <FaDatabase /> },
+    {
+      name: "Authentication (Auth)",
+      url: "https://auth0.com",
+      icon: <FaLock />,
+    },
+    {
+      name: "Rest API's",
+      url: "https://www.restapitutorial.com",
+      icon: <FaCloud />,
+    },
   ];
 
   return (
     <div className="carousel">
       <div className="group">
         {[...items].map((item, index) => (
-          <div
+          <Link
             key={index}
-            className="p-4 bg-dynamic border rounded-2xl shadow-inner relative hover:shadow-md hover:brightness-110 active:scale-105 transition-all"
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-dynamic border rounded-2xl shadow-inner relative hover:shadow-md hover:bg-white/10 active:scale-105 transition-all"
           >
-            <div className="min-w-52 text-center cursor-pointer ">{item}</div>
-          </div>
+            <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
+              <div className="text-3xl">{item.icon}</div>
+              <div>{item.name}</div>
+            </div>
+          </Link>
         ))}
       </div>
 
       <div className="group">
         {[...items].map((item, index) => (
-          <div
+          <Link
             key={index}
-            className="p-4 bg-dynamic border rounded-2xl shadow-inner relative hover:shadow-md hover:brightness-110 active:scale-105 transition-all"
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-dynamic border rounded-2xl shadow-inner relative hover:shadow-md hover:bg-white/10 active:scale-105 transition-all"
           >
-            <div className="min-w-52 text-center cursor-pointer">{item}</div>
-          </div>
+            <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
+              <div className="text-3xl">{item.icon}</div>
+              <div>{item.name}</div>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
