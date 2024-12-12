@@ -3,12 +3,20 @@
 import React, { useState, useEffect } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { MdOutlineDirections } from "react-icons/md";
+import { MdOutlineDirectionsOff } from "react-icons/md";
 import TransitionLink from "@/components/utils/TransitionLink";
 import { Button } from "@/components/ui/button";
 import Weather from "@/components/weather/Weather";
 import { getWeatherData } from "@/lib/getWeather";
 
-const CityCard = ({ selectedCity, onClose, goRoute, onRoute, setOnRoute }) => {
+const CityCard = ({
+  selectedCity,
+  onClose,
+  goRoute,
+  onRoute,
+  setOnRoute,
+  setEndLocation,
+}) => {
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
@@ -33,6 +41,8 @@ const CityCard = ({ selectedCity, onClose, goRoute, onRoute, setOnRoute }) => {
                 e.preventDefault();
                 e.stopPropagation();
                 onClose();
+                setOnRoute(false);
+                setEndLocation([]);
               }}
               className="opacity-60 hover:opacity-100"
               aria-label="Close city card"
@@ -41,7 +51,7 @@ const CityCard = ({ selectedCity, onClose, goRoute, onRoute, setOnRoute }) => {
             </button>
           </div>
           <div className="flex justify-between">
-            <div>
+            <div className="flex flex-col justify-center">
               <span className="text-2xl font-semibold">
                 {selectedCity.properties.name}
               </span>
@@ -78,10 +88,11 @@ const CityCard = ({ selectedCity, onClose, goRoute, onRoute, setOnRoute }) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setOnRoute(false);
+                  setEndLocation([]);
                 }}
                 className="mt-4 rounded-3xl z-30"
               >
-                <FaXmark />
+                <MdOutlineDirectionsOff /> Stop drive
               </Button>
             )}
           </div>

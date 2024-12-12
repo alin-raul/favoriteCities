@@ -1,5 +1,3 @@
-"use client";
-
 import TransitionLink from "../utils/TransitionLink";
 import navigationLinks from "@/globals/NavLinks";
 import BurgerMenu from "./BurgerMenu";
@@ -13,11 +11,10 @@ const NavLinks = ({ pathname }) => {
       <div className="hidden items-center gap-6 md:flex">
         <ul className="flex">
           <div className="flex items-center gap-1 ">
-            <TransitionLink href="/" isActive={pathname === "/"}>
-              <div className="flex items-center">
-                {" "}
-                <Logo />
-                <span className="font-bold pr-2 text-lg">FavCity</span>
+            <TransitionLink href="/" isActive={pathname === "/"} ignore={true}>
+              <div className="flex items-center gap-1">
+                <Logo height="26px" />
+                <span className="font-bold pr-2 text-lg">Cardinal</span>
               </div>
             </TransitionLink>
           </div>

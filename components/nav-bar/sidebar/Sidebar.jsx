@@ -49,12 +49,12 @@ const Sidebar = () => {
 
         {/* Logo */}
         <div className="flex items-center gap-1 font-bold mt-3">
-          <Logo />
-          FavCity
+          <Logo height="20px" width="20px" />
+          Cardinal
         </div>
 
         {/* Navigation Links */}
-        <div className="p-4 ml-3">
+        <div className="p-4">
           <ul>
             {navLinks.map((item) => (
               <li key={item.title} className="p-2" onClick={hideSidebar}>

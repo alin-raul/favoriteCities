@@ -7,13 +7,15 @@ import { useTheme } from "next-themes";
 import { useMemo, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import polyline from "polyline";
+import { Marker } from "@vis.gl/react-maplibre";
+import { FaLocationDot } from "react-icons/fa6";
 
 export default function MapDisplay({
   selectedCityArea,
   rounded = [0, 0, 0, 0],
   zIndex,
   noFetch,
-  onRoute = false,
+  onRoute,
   startLocation = [],
   endLocation = [],
 }) {
@@ -57,8 +59,8 @@ export default function MapDisplay({
 
   useEffect(() => {
     const fetchRoute = async () => {
-      if (!onRoute) return;
-      if (!endLocation.length) return;
+      if (!onRoute) return setRouteData([]);
+      if (!endLocation.length) return console.log("No endpoint location");
 
       const start = startLocation.length ? startLocation : location;
       if (!start) return;
@@ -84,6 +86,20 @@ export default function MapDisplay({
 
     fetchRoute();
   }, [onRoute]);
+
+  const calculateBoundingBox = (coordinates) => {
+    let minLng = Infinity,
+      minLat = Infinity,
+      maxLng = -Infinity,
+      maxLat = -Infinity;
+    coordinates.forEach(([lat, lng]) => {
+      if (lng < minLng) minLng = lng;
+      if (lng > maxLng) maxLng = lng;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+    });
+    return { minLng, minLat, maxLng, maxLat };
+  };
 
   return (
     <Map
@@ -156,6 +172,31 @@ export default function MapDisplay({
             }}
           />
         </Source>
+      )}
+
+      {routeData && routeData.length > 0 && (
+        <>
+          <Marker
+            longitude={routeData[routeData.length - 1][1]}
+            latitude={routeData[routeData.length - 1][0]}
+          >
+            <div className="flex flex-col justify-center items-center mb-10">
+              <FaLocationDot className="h-8 w-8 text-red-500 translate-y-2" />
+              <div className="h-4 w-4 bg-slate-50 rounded-full border-2 border-gray-400"></div>
+            </div>
+          </Marker>
+          {(() => {
+            const { minLng, minLat, maxLng, maxLat } =
+              calculateBoundingBox(routeData);
+            mapRef.current?.fitBounds(
+              [
+                [minLng, minLat],
+                [maxLng, maxLat],
+              ],
+              { padding: 50 }
+            );
+          })()}
+        </>
       )}
 
       <YouAreHere noFetch={noFetch} setLocation={setLocation} />

@@ -18,7 +18,7 @@ const Search = () => {
   const [selectedCityArea, setSelectedCityArea] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [endLocation, setEndLocation] = useState([26.9115623, 46.5561489]);
+  const [endLocation, setEndLocation] = useState([]);
   const [onRoute, setOnRoute] = useState(false);
 
   useEffect(() => {
@@ -160,6 +160,7 @@ const Search = () => {
             }}
             onRoute={onRoute}
             setOnRoute={setOnRoute}
+            setEndLocation={setEndLocation}
           />
         )}
         <div className="px-4 pt-4 mb-2 items-center gap-2 opacity-60 hidden md:flex">
