@@ -36,30 +36,30 @@ const CityPage = async ({ params }) => {
         <Clock weatherData={weatherData} />
       </div>
       <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-xl gap-6 2xl:flex ">
-        <div className="w-auto mb-4 md:mb-0">
-          <div className="my-8">
-            <span className="text-md mt-2 text-justify ">
-              {description}{" "}
-              <div className="w-full text-end">
-                <Link
-                  href={link}
-                  className="text-blue-700 hover:text-blue-500 hover:underline visited:text-violet-700"
-                >
-                  [Wikipedia]
-                </Link>
-              </div>
-            </span>
+        <div className="w-auto mb-8 bg-dynamic rounded-3xl shadow-lg p-4 2xl:mb-0">
+          <div className="flex flex-col">
+            <span className="text-md mt-2 text-justify">{description}</span>
+            <div className="w-full text-end">
+              <Link
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-end text-blue-700 hover:text-blue-500 hover:underline visited:text-violet-700"
+              >
+                Wikipedia
+              </Link>
+            </div>
           </div>
         </div>
         <div>
           <div>
             {image && (
-              <div className="my-8 w-full min-w-[600px] rounded-3xl shadow-xl">
+              <div className="mb-8 w-full  rounded-3xl shadow-xl">
                 <Image
                   src={image}
                   alt={`Image of ${name}`}
-                  width={1000}
-                  height={1000}
+                  width={600}
+                  height={600}
                   className="w-full rounded-3xl shadow-inner"
                 />
               </div>

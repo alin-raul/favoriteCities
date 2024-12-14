@@ -23,7 +23,11 @@ const DeleteFavorite = ({ label, city }) => {
     }
   };
 
-  return <Button onClick={handleClick}>{label || "Delete"}</Button>;
+  return (
+    <Button onClick={handleClick} className="z-30">
+      {label || "Delete"}
+    </Button>
+  );
 };
 
 export default DeleteFavorite;

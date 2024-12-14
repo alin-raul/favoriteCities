@@ -23,28 +23,52 @@ const isNightTime = (latitude, longitude, currentDate) => {
 };
 
 const getBackgroundGradient = (weatherCode, isNight) => {
-  // Weather conditions and their respective background gradients (diagonal)
+  // Clear Sky
   if (weatherCode === 0) {
-    // Clear sky
     return isNight
-      ? "bg-gradient-to-br from-[#0c2544] to-[#1c3964]"
-      : "bg-gradient-to-br from-[#FFB700] to-[#FF5733]";
+      ? "bg-gradient-to-br from-[#0a1929] to-[#1d2a42]" // Darker Night Sky
+      : "bg-gradient-to-br from-[#FFB700] to-[#FF5733]"; // Lighter Day Sky
   }
+
+  // Partly cloudy, Cloudy
   if (weatherCode === 1 || weatherCode === 2 || weatherCode === 3) {
-    // Partly cloudy to cloudy
     return isNight
-      ? "bg-gradient-to-br from-[#2c3e50] to-[#34495e]"
-      : "bg-gradient-to-br from-[#c8d6e5] to-[#95a5a6]";
+      ? "bg-gradient-to-br from-[#1f2a37] to-[#2c3e50]" // Darker Night Clouds
+      : "bg-gradient-to-br from-[#c8d6e5] to-[#95a5a6]"; // Lighter Day Clouds
   }
+
+  // Rainy conditions
   if (weatherCode === 4 || weatherCode === 5) {
-    // Rainy conditions
-    return "bg-gradient-to-br from-[#1c1c1c] to-[#2c3e50]";
+    return isNight
+      ? "bg-gradient-to-br from-[#1c1c1c] to-[#2c3e50]" // Darker Night Rain
+      : "bg-gradient-to-br from-[#64758b] to-[#839ba3]"; // Lighter Day Rain
   }
+
+  // Snowy conditions
   if (weatherCode === 6 || weatherCode === 7) {
-    // Snow
-    return "bg-gradient-to-br from-[#eaf2f8] to-[#9bb0c4]";
+    return isNight
+      ? "bg-gradient-to-br from-[#eaf2f8] to-[#a1b5c4]" // Darker Night Snow
+      : "bg-gradient-to-br from-[#d6e5f3] to-[#a2b9c6]"; // Lighter Day Snow
   }
-  return "bg-gradient-to-br from-[#2f3d56] to-[#3a4b64]"; // Default cloudy or unknown weather
+
+  // Thunderstorms
+  if (weatherCode === 8 || weatherCode === 9) {
+    return isNight
+      ? "bg-gradient-to-br from-[#2c3e50] to-[#34495e]" // Darker Night Thunderstorm
+      : "bg-gradient-to-br from-[#9b4d3d] to-[#d6614a]"; // Lighter Day Thunderstorm
+  }
+
+  // Foggy conditions
+  if (weatherCode === 10 || weatherCode === 11 || weatherCode === 12) {
+    return isNight
+      ? "bg-gradient-to-br from-[#2f3d56] to-[#4f5b6b]" // Darker Night Fog
+      : "bg-gradient-to-br from-[#9e9e9e] to-[#b0b0b0]"; // Lighter Day Fog
+  }
+
+  // Default cloudy or unknown weather
+  return isNight
+    ? "bg-gradient-to-br from-[#2f3d56] to-[#4f5b6b]" // Darker Default Night
+    : "bg-gradient-to-br from-[#b0c4e3] to-[#a0aab8]"; // Lighter Default Day
 };
 
 const Weather = ({ weatherData, name = "", country = "", tiny = false }) => {
@@ -62,8 +86,8 @@ const Weather = ({ weatherData, name = "", country = "", tiny = false }) => {
     if (isNight && (weatherCode === 2 || weatherCode === 3)) {
       return "/images/svg/b_4_cloudy_night.svg";
     }
-    if (!isNight && weatherCode === 1) {
-      return "/images/svg/a_1_sunny.svg";
+    if ((isNight && weatherCode === 1) || weatherCode === 0) {
+      return "/images/svg/a_4_night.svg";
     }
 
     return weatherIconsCodeDescriptionsURL[weatherCode];

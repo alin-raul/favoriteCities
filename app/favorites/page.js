@@ -2,6 +2,7 @@ import TransitionLink from "@/components/utils/TransitionLink";
 import DeleteFavorite from "@/components/deleteFavoritesButton/DeleteFavorites";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
+import useFlagEmoji from "@/components/utils/useFlagEmoji";
 
 const Favorites = async () => {
   const citiesData = await getFavoriteCities();
@@ -24,23 +25,30 @@ const Favorites = async () => {
             <p>No cities added yet.</p>
           </div>
         ) : (
-          <div className="mt-32 w-full max-w-screen-2xl gap-2 justify-center items-center grid lg:grid-cols-2 2xl:grid-cols-3">
+          <div className="mt-32 w-full max-w-screen-2xl gap-2 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
             {cities.map((city, index) => (
-              <div
+              <TransitionLink
+                href={`/cities/${city.name}`}
+                className="w-full h-full p-6 border rounded-xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:scale-105 active:shadow-lg transition-all"
+                card={true}
                 key={index}
-                className="p-4 bg-dynamic border rounded-2xl shadow-inner relative transition-all hover:shadow-md"
               >
-                <TransitionLink href={`/cities/${city.name}`} card={true}>
+                <div className="flex justify-between">
                   <div className="relative">
                     <h2 className="text-lg font-semibold">{city.name}</h2>
-                    <p>Country: {city.country}</p>
-                    <p>Type: {city.osm_value}</p>
+                    <span>
+                      {city.country}, {city.countrycode}{" "}
+                    </span>
                   </div>
-                  <div className="flex justify-end mt-4">
-                    <DeleteFavorite label="Remove" city={city} />
-                  </div>
-                </TransitionLink>
-              </div>
+                  <span className="text-6xl">
+                    {useFlagEmoji(city.countrycode)}
+                  </span>
+                </div>
+
+                <div className="flex justify-end mt-4">
+                  <DeleteFavorite label="Remove" city={city} />
+                </div>
+              </TransitionLink>
             ))}
           </div>
         )}

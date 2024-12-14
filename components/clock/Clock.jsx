@@ -69,7 +69,7 @@ const Clock = ({ weatherData }) => {
   }
 
   return (
-    <div className="flex flex-col items-center h-full w-fit md:min-w-72 py-4 px-6">
+    <div className="flex flex-col items-center h-full w-fit md:min-w-72 pr-4">
       <div className="sm:flex text-end justify-between w-full font-normal leading-3 text-sm opacity-80">
         <div className="">
           {currentTime.weekday} {currentTime.day} {currentTime.month}{" "}
@@ -77,7 +77,7 @@ const Clock = ({ weatherData }) => {
         <span>{currentTime.year}</span>
       </div>
       <div className="text-end my-2 w-full">
-        <span className="font-normal text-center text-4xl sm:text-6xl md:text-8xl w-full">
+        <span className="font-bold text-center text-4xl sm:text-6xl md:text-8xl w-full">
           {currentTime.time}
         </span>
       </div>

@@ -58,6 +58,7 @@ export default function MapDisplay({
 
   useEffect(() => {
     const fetchRoute = async () => {
+      if (!onRoute) return;
       if (onRoute.routeStatus === false) return setRouteData([]);
       const startLocation = onRoute.from;
       const endLocation = onRoute.to;

@@ -9,6 +9,7 @@ import { MdOutlineDirections } from "react-icons/md";
 import { MdOutlineDirectionsOff } from "react-icons/md";
 import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
+import useFlagEmoji from "@/components/utils/useFlagEmoji";
 
 const LocalCities = ({
   selectedCityArea,
@@ -69,14 +70,6 @@ const LocalCities = ({
     localStorage.setItem("cities", JSON.stringify(updatedCities));
   };
 
-  const getFlagEmoji = (countryCode) => {
-    return countryCode
-      .toUpperCase()
-      .split("")
-      .map((char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
-      .join("");
-  };
-
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow overflow-y-auto">
@@ -115,6 +108,7 @@ const LocalCities = ({
                 >
                   <div
                     className={`${
+                      pathname === "/search" &&
                       city.properties.extent === selectedCityArea
                         ? "rounded-xl bg-dynamic-s outline outline-1 p-4 shadow-md"
                         : "p-4"
@@ -164,16 +158,17 @@ const LocalCities = ({
                               pathname === "/cities" ? "text-3xl" : "text-lg"
                             }`}
                           >
-                            {getFlagEmoji(city.properties.countrycode)}
+                            {useFlagEmoji(city.properties.countrycode)}
                           </span>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      {city.properties.extent === selectedCityArea ? (
+                      {pathname === "/search" &&
+                      city.properties.extent === selectedCityArea ? (
                         <div className="flex items-center justify-between gap-2 w-full overflow-y-hidden mt-4">
-                          {!onRoute.routeStatus ? (
+                          {onRoute.routeStatus === false ? (
                             <Button
                               onClick={(e) => {
                                 e.preventDefault();
