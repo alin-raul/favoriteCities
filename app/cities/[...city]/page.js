@@ -2,6 +2,7 @@ import Wrapper from "@/components/pageWrapper/wrapper";
 import searchCity from "@/lib/searchCity";
 import Weather from "@/components/weather/Weather";
 import Image from "next/image";
+import Link from "next/link";
 import { getWikipediaData } from "@/lib/getWikipediaData";
 import { getWeatherData } from "@/lib/getWeather";
 import Clock from "@/components/clock/Clock";
@@ -13,9 +14,8 @@ const CityPage = async ({ params }) => {
   const location = await searchCity(cityName);
 
   const weatherData = await getWeatherData(location[0]);
-  console.log(location);
 
-  const { description, image } = await getWikipediaData(cityName);
+  const { description, image, link } = await getWikipediaData(cityName);
 
   const { country, countrycode, type, osm_value, name } =
     location[0].properties;
@@ -38,7 +38,17 @@ const CityPage = async ({ params }) => {
       <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-xl gap-6 2xl:flex ">
         <div className="w-auto mb-4 md:mb-0">
           <div className="my-8">
-            <span className="text-md mt-2 text-justify">{description}</span>
+            <span className="text-md mt-2 text-justify ">
+              {description}{" "}
+              <div className="w-full text-end">
+                <Link
+                  href={link}
+                  className="text-blue-700 hover:text-blue-500 hover:underline visited:text-violet-700"
+                >
+                  [Wikipedia]
+                </Link>
+              </div>
+            </span>
           </div>
         </div>
         <div>

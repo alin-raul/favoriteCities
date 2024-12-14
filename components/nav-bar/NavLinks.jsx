@@ -12,8 +12,8 @@ const NavLinks = ({ pathname }) => {
         <ul className="flex">
           <div className="flex items-center gap-1 ">
             <TransitionLink href="/" isActive={pathname === "/"} ignore={true}>
-              <div className="flex items-center gap-1">
-                <Logo height="26px" />
+              <div className="flex items-center gap-1 mr-2">
+                <Logo height="24px" />
                 <span className="font-bold pr-2 text-lg">Cardinal</span>
               </div>
             </TransitionLink>

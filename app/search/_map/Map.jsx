@@ -16,8 +16,6 @@ export default function MapDisplay({
   zIndex,
   noFetch,
   onRoute,
-  startLocation = [],
-  endLocation = [],
 }) {
   const { theme, resolvedTheme } = useTheme();
   const mapRef = useRef(null);
@@ -35,6 +33,7 @@ export default function MapDisplay({
   }, [theme, resolvedTheme]);
 
   useEffect(() => {
+    if (!selectedCityArea) return;
     if (mapRef.current && selectedCityArea) {
       const [minLon, minLat, maxLon, maxLat] = selectedCityArea;
       const polygon = [
@@ -59,7 +58,9 @@ export default function MapDisplay({
 
   useEffect(() => {
     const fetchRoute = async () => {
-      if (!onRoute) return setRouteData([]);
+      if (onRoute.routeStatus === false) return setRouteData([]);
+      const startLocation = onRoute.from;
+      const endLocation = onRoute.to;
       if (!endLocation.length) return console.log("No endpoint location");
 
       const start = startLocation.length ? startLocation : location;
@@ -108,6 +109,7 @@ export default function MapDisplay({
         longitude: middleOfRo[0],
         latitude: middleOfRo[1],
         zoom: 2,
+        antialias: true,
       }}
       style={{
         borderTopLeftRadius: rounded[0],
@@ -137,7 +139,7 @@ export default function MapDisplay({
             type="line"
             paint={{
               "line-color": "#7c7c7c",
-              "line-width": 2,
+              "line-width": 1,
               "line-dasharray": [2, 4],
               "line-opacity": 0.4,
             }}

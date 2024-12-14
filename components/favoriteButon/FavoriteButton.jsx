@@ -44,7 +44,7 @@ async function handlePostFavorite(city) {
   }
 }
 
-const FavoriteButton = ({ handleToggleFavorite, city }) => {
+const FavoriteButton = ({ handleToggleFavorite, city, full = false }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
@@ -68,7 +68,9 @@ const FavoriteButton = ({ handleToggleFavorite, city }) => {
 
   return (
     <button
-      className="h-6 w-6"
+      className={`flex justify-center items-center h-full ${
+        full ? "h-full w-full" : ""
+      }`}
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();

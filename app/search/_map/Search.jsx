@@ -9,7 +9,7 @@ import MapDisplay from "./Map";
 import CityCard from "../_city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/app/cities/_local-cities/localCities";
-import Cookies from "js-cookie";
+import useHandleAddCity from "@/components/utils/useHandleAddCity";
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -18,8 +18,11 @@ const Search = () => {
   const [selectedCityArea, setSelectedCityArea] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [endLocation, setEndLocation] = useState([]);
-  const [onRoute, setOnRoute] = useState(false);
+  const [onRoute, setOnRoute] = useState({
+    routeStatus: false,
+    from: [],
+    to: [],
+  });
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -54,44 +57,8 @@ const Search = () => {
     setSelectedCityArea(null);
   };
 
-  const handleAddCity = (city) => {
-    if (!city || !city.properties) {
-      return;
-    }
-
-    let storedCities = [];
-
-    try {
-      storedCities = JSON.parse(Cookies.get("cities") || "[]");
-    } catch (error) {
-      console.error("Error parsing cities from cookies:", error);
-      storedCities = [];
-    }
-
-    const cityExists = storedCities.some(
-      (storedCity) => storedCity?.properties?.osm_id === city.properties.osm_id
-    );
-
-    if (cityExists) {
-      const cityUpdateTime = {
-        ...city,
-        addedAt: new Date().toISOString(),
-      };
-      storedCities.push(cityUpdateTime);
-      Cookies.set("cities", JSON.stringify(storedCities), { expires: 7 });
-      return;
-    }
-
-    const cityWithSelected = {
-      ...city,
-      properties: { ...city.properties },
-      selected: false,
-      addedAt: new Date().toISOString(),
-    };
-
-    storedCities.push(cityWithSelected);
-
-    Cookies.set("cities", JSON.stringify(storedCities), { expires: 7 });
+  const endRoute = () => {
+    setOnRoute({ routeStatus: false, from: [], to: [] });
   };
 
   return (
@@ -136,7 +103,7 @@ const Search = () => {
                       className="p-2 cursor-pointer hover:bg-gray-500/10"
                       onClick={() => {
                         handleCitySelect(result);
-                        handleAddCity(result);
+                        useHandleAddCity(result);
                       }}
                     >
                       {result.properties.name} - {result.properties.country}
@@ -154,13 +121,9 @@ const Search = () => {
           <CityCard
             selectedCity={selectedCity}
             onClose={() => setSelectedCity(null)}
-            goRoute={() => {
-              setEndLocation(selectedCity.geometry.coordinates);
-              setOnRoute(true);
-            }}
+            endRoute={endRoute}
             onRoute={onRoute}
             setOnRoute={setOnRoute}
-            setEndLocation={setEndLocation}
           />
         )}
         <div className="px-4 pt-4 mb-2 items-center gap-2 opacity-60 hidden md:flex">
@@ -169,9 +132,13 @@ const Search = () => {
         <div className="flex-grow overflow-y-auto hidden md:block">
           <LocalCities
             className={
-              "w-full p-4 rounded-xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 cursor-pointer hover:shadow-md active:scale-105 active:shadow-lg transition-all"
+              "w-full rounded-xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 cursor-pointer hover:shadow-md active:scale-105 active:shadow-lg transition-all"
             }
+            selectedCityArea={selectedCityArea}
             setSelectedCityArea={setSelectedCityArea}
+            endRoute={endRoute}
+            onRoute={onRoute}
+            setOnRoute={setOnRoute}
           />
         </div>
       </div>
@@ -179,7 +146,6 @@ const Search = () => {
         <MapDisplay
           selectedCityArea={selectedCityArea}
           noFetch={false}
-          endLocation={endLocation}
           onRoute={onRoute}
         />
       </div>

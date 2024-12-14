@@ -83,6 +83,13 @@ main.page-transition-end {
   background: #0f0f0fd3;
 }
 
+.bg-dynamic-s {
+  background-color: #ffffff;
+}
+
+.dark .bg-dynamic-s {
+  background: #1b1b1b;
+}
 .bg-dynamic-h:hover {
   background-color: #ffffff;
 }

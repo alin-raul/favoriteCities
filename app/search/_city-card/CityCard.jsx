@@ -9,14 +9,7 @@ import { Button } from "@/components/ui/button";
 import Weather from "@/components/weather/Weather";
 import { getWeatherData } from "@/lib/getWeather";
 
-const CityCard = ({
-  selectedCity,
-  onClose,
-  goRoute,
-  onRoute,
-  setOnRoute,
-  setEndLocation,
-}) => {
+const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
@@ -41,8 +34,7 @@ const CityCard = ({
                 e.preventDefault();
                 e.stopPropagation();
                 onClose();
-                setOnRoute(false);
-                setEndLocation([]);
+                setOnRoute({ routeStatus: false, from: [], to: [] });
               }}
               className="opacity-60 hover:opacity-100"
               aria-label="Close city card"
@@ -70,12 +62,16 @@ const CityCard = ({
             </div>
           </div>
           <div className="">
-            {!onRoute ? (
+            {!onRoute.routeStatus ? (
               <Button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  goRoute();
+                  setOnRoute({
+                    routeStatus: true,
+                    from: [],
+                    to: selectedCity.geometry.coordinates,
+                  });
                 }}
                 className="mt-4 rounded-3xl z-30"
               >
@@ -87,8 +83,7 @@ const CityCard = ({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  setOnRoute(false);
-                  setEndLocation([]);
+                  endRoute();
                 }}
                 className="mt-4 rounded-3xl z-30"
               >

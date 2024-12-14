@@ -62,6 +62,10 @@ const Weather = ({ weatherData, name = "", country = "", tiny = false }) => {
     if (isNight && (weatherCode === 2 || weatherCode === 3)) {
       return "/images/svg/b_4_cloudy_night.svg";
     }
+    if (!isNight && weatherCode === 1) {
+      return "/images/svg/a_1_sunny.svg";
+    }
+
     return weatherIconsCodeDescriptionsURL[weatherCode];
   };
 

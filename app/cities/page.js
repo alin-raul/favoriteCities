@@ -12,7 +12,7 @@ const City = () => {
         </div>
         <LocalCities
           className={
-            "h-96 p-4 rounded-2xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-8 hover:shadow-md active:shadow-lg transition-all"
+            "h-96 p-4 rounded-2xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-8 cursor-pointer hover:shadow-md active:shadow-lg transition-all"
           }
         />
       </div>
