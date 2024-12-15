@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import FavoriteButton from "@/components/favoriteButon/FavoriteButton";
 import { FaXmark } from "react-icons/fa6";
 import { navigationEvents } from "@/components/navigation-events/navigationEvents";
-import { MdOutlineDirections } from "react-icons/md";
-import { MdOutlineDirectionsOff } from "react-icons/md";
+import { MdOutlineDirections, MdOutlineDirectionsOff } from "react-icons/md";
 import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import useFlagEmoji from "@/components/utils/useFlagEmoji";
@@ -20,7 +19,6 @@ const LocalCities = ({
   ...props
 }) => {
   const [cities, setCities] = useState([]);
-
   const router = useRouter();
   const pathname = navigationEvents();
 
@@ -70,152 +68,122 @@ const LocalCities = ({
     localStorage.setItem("cities", JSON.stringify(updatedCities));
   };
 
+  const categorizeCities = () => {
+    const categories = {
+      Today: [],
+      Yesterday: [],
+      "Last 7 days": [],
+      "This month": [],
+      "Last month": [],
+    };
+
+    const now = new Date();
+    const todayStart = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
+    const yesterdayStart = new Date(todayStart);
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+    const last7DaysStart = new Date(todayStart);
+    last7DaysStart.setDate(last7DaysStart.getDate() - 7);
+    const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+
+    cities.forEach((city) => {
+      const cityDate = new Date(city.addedAt);
+
+      if (cityDate >= todayStart) {
+        categories.Today.push(city);
+      } else if (cityDate >= yesterdayStart && cityDate < todayStart) {
+        categories.Yesterday.push(city);
+      } else if (cityDate >= last7DaysStart) {
+        categories["Last 7 days"].push(city);
+      } else if (cityDate >= thisMonthStart) {
+        categories["This month"].push(city);
+      } else if (cityDate >= lastMonthStart && cityDate <= lastMonthEnd) {
+        categories["Last month"].push(city);
+      }
+    });
+
+    return categories;
+  };
+
+  const categories = categorizeCities();
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow overflow-y-auto">
-        {cities.length === 0 ? (
-          <div className="h-full flex items-center justify-center opacity-60">
-            <p>No cities added yet.</p>
-          </div>
-        ) : (
-          <div className="w-full p-4">
-            {cities.map((city, index) => {
-              const formattedDate = new Date(city.addedAt).toLocaleString(
-                "en-GB",
-                {
-                  weekday: "short",
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                }
-              );
-
-              return (
-                <div
-                  key={index}
-                  {...props}
-                  onClick={() => {
-                    if (pathname === "/cities") {
-                      router.push(`/cities/${city.properties.name}`);
-                    } else {
-                      setSelectedCityArea(city.properties.extent);
-                      endRoute();
+        {Object.entries(categories).map(
+          ([category, cities]) =>
+            cities.length > 0 && (
+              <div key={category} className="w-full p-4">
+                <h2 className="text-xl font-bold mb-2">{category}</h2>
+                {cities.map((city, index) => {
+                  const formattedDate = new Date(city.addedAt).toLocaleString(
+                    "en-GB",
+                    {
+                      weekday: "short",
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
                     }
-                  }}
-                >
-                  <div
-                    className={`${
-                      pathname === "/search" &&
-                      city.properties.extent === selectedCityArea
-                        ? "rounded-xl bg-dynamic-s outline outline-1 p-4 shadow-md"
-                        : "p-4"
-                    } `}
-                  >
-                    <div>
-                      <div className="w-full flex justify-end">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const updatedCities = [...cities];
-                            updatedCities.splice(index, 1);
-                            setCities(updatedCities);
-                            localStorage.setItem(
-                              "cities",
-                              JSON.stringify(updatedCities)
-                            );
-                          }}
-                        >
-                          <FaXmark className="w-4 h-4 opacity-30 hover:opacity-100" />
-                        </button>
-                      </div>
-                      <h2
-                        className={`${
-                          pathname === "/cities"
-                            ? "text-5xl font-black"
-                            : "text-lg font-semibold"
+                  );
+
+                  return (
+                    <div
+                      key={index}
+                      {...props}
+                      onClick={() => {
+                        if (pathname === "/cities") {
+                          router.push(`/cities/${city.properties.name}`);
+                        } else {
+                          setSelectedCityArea(city.properties.extent);
+                          endRoute();
+                        }
+                      }}
+                    >
+                      <div
+                        className={`p-4 ${
+                          pathname === "/search" &&
+                          city.properties.extent === selectedCityArea
+                            ? "rounded-xl bg-dynamic-s outline outline-1 shadow-md"
+                            : ""
                         }`}
                       >
-                        {city.properties.name}
-                      </h2>
-                      <div className="flex items-center gap-2">
-                        <div className="">
-                          <span
-                            className={`opacity ${
-                              pathname === "/cities" ? "text-xl" : "text-sm"
-                            }`}
-                          >
-                            {city.properties.country},{" "}
-                            {city.properties.countrycode}
-                          </span>
-                        </div>
-                        <div className="">
-                          <span
-                            className={` ${
-                              pathname === "/cities" ? "text-3xl" : "text-lg"
-                            }`}
-                          >
-                            {useFlagEmoji(city.properties.countrycode)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      {pathname === "/search" &&
-                      city.properties.extent === selectedCityArea ? (
-                        <div className="flex items-center justify-between gap-2 w-full overflow-y-hidden mt-4">
-                          {onRoute.routeStatus === false ? (
-                            <Button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setOnRoute({
-                                  routeStatus: true,
-                                  from: [],
-                                  to: city.geometry.coordinates,
-                                });
-                              }}
-                              className="rounded-3xl z-30"
-                            >
-                              <MdOutlineDirections size={24} />
-                              <span>Directions</span>
-                            </Button>
-                          ) : (
-                            <Button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                endRoute();
-                              }}
-                              className="rounded-3xl z-30"
-                            >
-                              <MdOutlineDirectionsOff /> Stop drive
-                            </Button>
-                          )}
-                          <Button
+                        <div className="flex justify-end">
+                          <button
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              endRoute();
-                              router.push(`/cities/${city.properties.name}`);
+                              const updatedCities = [...cities];
+                              updatedCities.splice(index, 1);
+                              setCities(updatedCities);
+                              localStorage.setItem(
+                                "cities",
+                                JSON.stringify(updatedCities)
+                              );
                             }}
-                            className="rounded-3xl z-30"
                           >
-                            <FaArrowRightToCity size={24} />
-                            <span>City</span>
-                          </Button>
-
-                          <FavoriteButton
-                            handleToggleFavorite={handleToggleFavorite}
-                            city={city}
-                            full={true}
-                          />
+                            <FaXmark className="w-4 h-4 opacity-30 hover:opacity-100" />
+                          </button>
                         </div>
-                      ) : (
+                        <h2 className={`text-lg font-semibold`}>
+                          {city.properties.name}
+                        </h2>
+                        <div className="flex items-center gap-2">
+                          <span>
+                            {city.properties.country},{" "}
+                            {city.properties.countrycode}
+                          </span>
+                          <span>
+                            {useFlagEmoji(city.properties.countrycode)}
+                          </span>
+                        </div>
                         <div className="flex justify-between items-center mt-4">
                           <span className="opacity-60 font-thin text-xs">
                             {formattedDate}
@@ -225,13 +193,12 @@ const LocalCities = ({
                             city={city}
                           />
                         </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            )
         )}
       </div>
     </div>
