@@ -149,9 +149,10 @@ const LocalCities = ({
                     >
                       <div
                         className={`p-4 ${
-                          pathname === "/search" &&
-                          city.properties.extent === selectedCityArea
-                            ? "rounded-xl bg-dynamic-s outline outline-1 shadow-md"
+                          pathname === "/search" ||
+                          (pathname === "/" &&
+                            city.properties.extent === selectedCityArea)
+                            ? "rounded-xl bg-dynamic-s shadow-md"
                             : ""
                         }`}
                       >
@@ -184,14 +185,72 @@ const LocalCities = ({
                             {useFlagEmoji(city.properties.countrycode)}
                           </span>
                         </div>
-                        <div className="flex justify-between items-center mt-4">
-                          <span className="opacity-60 font-thin text-xs">
-                            {formattedDate}
-                          </span>
-                          <FavoriteButton
-                            handleToggleFavorite={handleToggleFavorite}
-                            city={city}
-                          />
+                        <div>
+                          {city.properties.extent === selectedCityArea ? (
+                            pathname === "/search" ||
+                            (pathname === "/" &&
+                              city.properties.extent === selectedCityArea) ? (
+                              <div className="flex items-center justify-between gap-2 w-full overflow-y-hidden mt-4">
+                                {!onRoute.routeStatus ? (
+                                  <Button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setOnRoute({
+                                        routeStatus: true,
+                                        from: [],
+                                        to: city.geometry.coordinates,
+                                      });
+                                    }}
+                                    className="rounded-3xl z-30"
+                                  >
+                                    <MdOutlineDirections size={24} />
+                                    <span>Directions</span>
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      endRoute();
+                                    }}
+                                    className="rounded-3xl z-30"
+                                  >
+                                    <MdOutlineDirectionsOff /> Stop drive
+                                  </Button>
+                                )}
+                                <Button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    endRoute();
+                                    router.push(
+                                      `/cities/${city.properties.name}`
+                                    );
+                                  }}
+                                  className="rounded-3xl z-30"
+                                >
+                                  <FaArrowRightToCity size={24} />
+                                  <span>City</span>
+                                </Button>
+                                <FavoriteButton
+                                  handleToggleFavorite={handleToggleFavorite}
+                                  city={city}
+                                  full={true}
+                                />
+                              </div>
+                            ) : null
+                          ) : (
+                            <div className="flex justify-between items-center mt-4">
+                              <span className="opacity-60 font-thin text-xs">
+                                {formattedDate}
+                              </span>
+                              <FavoriteButton
+                                handleToggleFavorite={handleToggleFavorite}
+                                city={city}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

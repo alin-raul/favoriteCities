@@ -37,7 +37,7 @@ const Navbar = ({ session }) => {
       }`}
     >
       <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md">
-        <div className="max-w-screen-2xl flex items-center justify-between w-full mx-2 sm:mx-8">
+        <div className="max-w-screen-xl flex items-center justify-between w-full mx-2 sm:mx-8">
           <NavLinks pathname={pathname} />
           <div className="gap-2 flex items-center">
             <ModeToggle />

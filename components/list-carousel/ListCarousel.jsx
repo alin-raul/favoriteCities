@@ -29,7 +29,7 @@ const InfiniteCarousel = () => {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 bg-dynamic border rounded-2xl shadow-inner relative hover:shadow-md hover:bg-white/10 active:scale-105 transition-all"
+            className="p-2 bg-dynamic bg-dynamic-h border rounded-2xl shadow-inner hover:shadow-md active:scale-105 transition-all"
           >
             <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
               <div className="text-3xl">{item.icon}</div>
@@ -46,7 +46,7 @@ const InfiniteCarousel = () => {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 bg-dynamic border rounded-2xl shadow-inner relative hover:shadow-md hover:bg-white/10 active:scale-105 transition-all"
+            className="p-2 bg-dynamic bg-dynamic-h border rounded-2xl shadow-inner hover:shadow-md active:scale-105 transition-all"
           >
             <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
               <div className="text-3xl">{item.icon}</div>

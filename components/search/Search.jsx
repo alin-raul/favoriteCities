@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { IoMdSearch } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import { LuHistory } from "react-icons/lu";
-import MapDisplay from "./Map";
-import CityCard from "../_city-card/CityCard";
+import MapDisplay from "../../app/search/_map/Map";
+import CityCard from "../../app/search/_city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/app/cities/_local-cities/localCities";
 import useHandleAddCity from "@/components/utils/useHandleAddCity";
 
-const Search = () => {
+const Search = ({ height, noFetch = false }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [selectedCity, setSelectedCity] = useState(null);
@@ -62,10 +62,14 @@ const Search = () => {
   };
 
   return (
-    <div className="md:flex">
-      <div className="absolute md:relative w-full flex flex-col h-fit md:h-screen-minus-nav md:w-80 z-20 md:border-r-2 ">
+    <div className="md:flex relative bg-dynamic rounded-2xl">
+      <div
+        className={`absolute md:relative w-full flex flex-col  md:w-80 z-20 md:border-r-2 ${
+          height ? `${height}` : "h-fit md:h-screen-minus-nav"
+        }`}
+      >
         <div className="md:m-4 border-b md:border md:rounded-2xl shadow-inner hover:shadow-md active:brightness-125 transition-all">
-          <div className="p-4 flex flex-col justify-end items-center bg-dynamic  w-full md:rounded-2xl">
+          <div className="p-4 md:p-2 flex flex-col justify-end items-center bg-dynamic  w-full md:rounded-2xl">
             <div className="relative w-full">
               <IoMdSearch
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
@@ -74,7 +78,7 @@ const Search = () => {
               <Input
                 type="text"
                 id="search"
-                placeholder="Search cities..."
+                placeholder="Search destinations..."
                 className="bg-dynamic rounded-xl pl-10 pr-10 shadow-inner"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -127,7 +131,7 @@ const Search = () => {
           />
         )}
         <div className="px-4 pt-4 mb-2 items-center gap-2 opacity-60 hidden md:flex">
-          <LuHistory className="w-5 h-5" /> <span>Cities searched history</span>
+          <LuHistory className="w-5 h-5" /> <span>Searched cities history</span>
         </div>
         <div className="flex-grow overflow-y-auto hidden md:block">
           <LocalCities
@@ -142,11 +146,16 @@ const Search = () => {
           />
         </div>
       </div>
-      <div className="flex-grow h-screen-minus-nav">
+      <div
+        className={`flex-grow ${
+          height ? `${height} p-2 backdrop-blur-sm` : "h-screen-minus-nav"
+        }`}
+      >
         <MapDisplay
           selectedCityArea={selectedCityArea}
-          noFetch={false}
+          noFetch={noFetch}
           onRoute={onRoute}
+          rounded={height ? [".5rem", ".5rem", ".5rem", ".5rem"] : ""}
         />
       </div>
     </div>

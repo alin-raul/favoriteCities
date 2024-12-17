@@ -62,48 +62,37 @@ main.page-transition-end {
   );
 }
 
-/* .gradient::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5rem;
-  width: 100vw;
-  background: linear-gradient(to bottom, #000000 30%, transparent);
-  z-index: -1;
-  border: solid 1px;
-} */
-
 .bg-dynamic {
-  background-color: #f8f9fae3;
+  background-color: #f8f9fa5d;
+  backdrop-filter: blur(10px);
 }
 
 .dark .bg-dynamic {
-  background: #0f0f0fd3;
+  background: #0f0f0f5b;
+  backdrop-filter: blur(4px);
 }
 
 .bg-dynamic-s {
-  background-color: #ffffff;
+  background-color: #ffffff9c;
 }
 
 .dark .bg-dynamic-s {
-  background: #1b1b1b;
+  background: #1b1b1bad;
 }
 .bg-dynamic-h:hover {
-  background-color: #ffffff;
+  background-color: #ffffffdc;
 }
 
 .dark .bg-dynamic-h:hover {
-  background: #1b1b1b;
+  background: #1b1b1bd0;
 }
 
 .bg-dynamic-secondary {
-  background-color: #ececec;
+  background-color: #ecececbb;
 }
 
 .dark .bg-dynamic-secondary {
-  background: #1b1b1b;
+  background: #1b1b1bb7;
 }
 
 .custom-outline {
@@ -115,7 +104,6 @@ main.page-transition-end {
 .dark .custom-outline {
   outline-color: #fff;
 }
-
 
 .maplibregl-popup-content {
   backdrop-filter: blur(4px) !important;
@@ -136,7 +124,6 @@ main.page-transition-end {
   backdrop-filter: blur(4px) !important;
 }
 
-
 .maplibregl-popup-anchor-top .maplibregl-popup-tip {
   align-self: center;
   border-top: none;
@@ -149,7 +136,6 @@ main.page-transition-end {
   border-left: none;
   border-right-color: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(4px) !important;
-
 }
 
 .maplibregl-popup-anchor-right .maplibregl-popup-tip {
@@ -178,7 +164,6 @@ main.page-transition-end {
   border-left: none;
   border-right-color: #1b1b1b7a !important;
   backdrop-filter: blur(4px) !important;
-
 }
 
 .dark .maplibregl-popup-anchor-right .maplibregl-popup-tip {
@@ -227,10 +212,10 @@ main.page-transition-end {
   min-height: 300px !important; 
 } */
 
-.maplibregl-map {
-  /* position: static;  */
-  /* border-radius: 1rem;  */
-}
+/* .maplibregl-map {
+   position: static; 
+  border-radius: 1rem;  
+} */
 
 .carousel {
   margin: 0 auto;
@@ -239,50 +224,34 @@ main.page-transition-end {
   overflow: hidden;
   display: flex;
   flex: 0 0 100%;
-  position: relative; 
-}
-
-.carousel::before,
-.carousel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px; /* Adjust the width of the gradient effect */
-  z-index: 10; /* Ensure the gradient is on top of the items */
-}
-
-.carousel::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); /* Gradient from solid to transparent */
-}
-
-.carousel::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); /* Gradient from solid to transparent */
-}
-
-.dark .carousel::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(10, 10, 10, 1), rgba(0, 0, 0, 0)); /* Gradient from solid to transparent */
-}
-
-.dark .carousel::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(10, 10, 10, 1), rgba(0, 0, 0, 0)); /* Gradient from solid to transparent */
+  position: relative;
+  -webkit-mask: linear-gradient(90deg, #0000, #000 10% 90%, #0000);
 }
 
 .group {
   display: flex;
   gap: 20px;
   padding-right: 20px;
-  will-change: transform; 
+  will-change: transform;
   animation: scrolling 60s linear infinite;
-    
 }
 
 .carousel:hover .group {
   animation-play-state: paused;
+}
+
+#gradient-canvas {
+  --gradient-color-1: #c29dff;
+  --gradient-color-2: #ffc99d;
+  --gradient-color-3: #a2c6fc;
+  --gradient-color-4: #baabff;
+}
+
+.dark #gradient-canvas {
+  --gradient-color-1: #3730cc;
+  --gradient-color-2: #000000;
+  --gradient-color-3: #cb6ad8;
+  --gradient-color-4: #3730cc;
 }
 
 @keyframes scrolling {
@@ -293,7 +262,6 @@ main.page-transition-end {
     transform: translateX(-100%);
   }
 }
-
 
 @layer base {
   :root {
