@@ -21,6 +21,10 @@ export default async function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap"
+          rel="stylesheet"
+        ></link>
       </head>
       <body>
         <ThemeProvider

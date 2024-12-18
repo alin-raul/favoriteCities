@@ -13,7 +13,7 @@ const Carousel = ({ cities, currentIndex }) => {
           return (
             <motion.div
               key={index}
-              className={`absolute flex min-w-40 w-full h-full items-center lg:border lg:rounded-xl lg:w-40 lg:h-32 antialiased animate-out  ${
+              className={`absolute bg-dynamic flex min-w-40 w-full h-full items-center lg:border lg:rounded-xl lg:w-40 lg:h-32 animate-out  ${
                 isSelected ? "lg:shadow-md" : "lg:shadow-inner"
               }`}
               initial={{
