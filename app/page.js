@@ -5,7 +5,6 @@ import ListCarousel from "@/components/list-carousel/ListCarousel";
 import Search from "@/components/search/Search";
 import GradientBackground from "@/components/cardinal/GradientBackground";
 import LazyLoad from "@/components/utils/LazyLoad";
-import LavaLampCanvas from "@/components/cardinal/LavaLampCanvas";
 
 export default function Home() {
   return (
@@ -17,7 +16,9 @@ export default function Home() {
       <div className="max-w-screen-2xl m-auto h-screen-minus-nav relative">
         <div className="flex flex-col translate-y-96 h-full px-4">
           <h1 className="text-6xl font-bold mb-4">
-            Discover, Plan, and Experience like a Pro
+            Discover,
+            <br /> Plan,
+            <br /> and Experience like a Pro
           </h1>
           <p className="text-lg text-justify opacity-70">
             Imagine having every city's best-kept secrets, scenic routes, and
@@ -30,18 +31,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="max-w-screen-xl m-auto h-screen lg:mt-20 lg:flex">
-        <div className="flex flex-col py-4 md:py-8 px-4">
-          <h1 className="text-6xl font-bold mb-4">Spin the Globe!</h1>
-          <p className="text-lg text-justify opacity-70">
-            Ready for a surprise? We've spun the globe and landed on these
-            exciting cities. Explore them on the map and see where your
-            curiosity takes you. Click to zoom in and dive deeper.
-          </p>
-        </div>
-        <RandomCities />
-      </div>
-      <div className="my-10 max-w-screen-2xl m-auto">
+      <div className=" my-10 max-w-screen-2xl  m-auto">
         <div className="py-2 md:py-8 px-4">
           <h2 className="text-4xl font-bold mb-4">
             Search Destinations & Plan Your Route
@@ -53,34 +43,49 @@ export default function Home() {
             tools make trip planning simple and stress-free.
           </p>
         </div>
-        <div className="order-3 md:order-2 max-w-screen-2xl h-screen m-auto rounded-2xl border shadow-lg">
+        <div className="order-3 md:order-2 max-w-screen-2xl m-auto rounded-2xl border shadow-lg">
           <LazyLoad>
             <Search height="h-[600px]" noFetch={true} />
           </LazyLoad>
         </div>
-      </div>
-      <div className="flex flex-col gap-8 py-4 max-w-screen-xl h-screen m-auto md:mt-20 md:flex-row">
-        <div className="md:w-2/3 order-2 md:order-1 hidden md:block">
-          <FavoriteCities height="h-96" />
-        </div>
-
-        <section className="flex flex-col justify-between w-full md:max-w-1/2 order-1 md:order-2 md:px-4">
-          <div className="">
-            <h2 className="text-6xl font-bold mb-4 relative">
-              From here you can view your saved destinations!
-            </h2>
-            <p className="text-lg text-justify opacity-70 mb-4">
-              The "Favorite Cities" feature allows you to save cities you love
-              or wish to visit. You can create your personal list, making it
-              easier to keep track of the cities that interest you the most.
-            </p>
-          </div>
-          <div className="my-4 order-2 md:order-1 md:hidden md:w-2/3 ">
+        <div className="flex flex-col gap-8 py-4 max-w-screen-xl m-auto md:mt-20 md:flex-row">
+          <div className="md:w-2/3 order-2 md:order-1 hidden md:block">
             <FavoriteCities height="h-96" />
           </div>
-        </section>
+
+          <section className="flex flex-col justify-between w-full md:max-w-1/2 order-1 md:order-2 md:px-4">
+            <div className="">
+              <h2 className="text-6xl font-bold mb-4 relative">
+                View your saved destinations!
+              </h2>
+              <p className="text-lg text-justify opacity-70 mb-4">
+                The "Favorite Cities" feature allows you to save cities you love
+                or wish to visit. You can create your personal list, making it
+                easier to keep track of the cities that interest you the most.
+              </p>
+            </div>
+            <div className="my-4 order-2 md:order-1 md:hidden md:w-2/3 ">
+              <FavoriteCities height="h-96" />
+            </div>
+          </section>
+        </div>
       </div>
-      <section className="max-w-screen-2xl m-auto py-4 md:mt-20">
+
+      <div className="flex flex-col items-center justify-center m-auto">
+        <div className="max-w-screen-xl m-auto lg:mt-20 lg:flex">
+          <div className="flex flex-col py-4 md:py-8 px-4">
+            <h1 className="text-6xl font-bold mb-4">Spin the Globe!</h1>
+            <p className="text-lg text-justify opacity-70">
+              Ready for a surprise? We've spun the globe and landed on these
+              exciting cities. Explore them on the map and see where your
+              curiosity takes you. Click to zoom in and dive deeper.
+            </p>
+          </div>
+          <RandomCities />
+        </div>
+      </div>
+
+      <section className="max-w-screen-2xl m-auto py-4 md:mt-40">
         <h2 className="text-4xl font-semibold mb-4">About This Project</h2>
         <p className="text-lg text-justify opacity-70">
           This project is the result of my participation in the
