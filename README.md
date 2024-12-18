@@ -2,6 +2,8 @@
 
 A complete full-stack application where users can search for cities, display city information, and plan journeys (still in progress). This app leverages modern technologies for a seamless user experience.
 
+![Screenshot from 2024-12-18 13-42-38](https://github.com/user-attachments/assets/07b6cf51-b1d3-4da8-8d1c-fd64c4e0d0b5)
+
 ## 🔥 Tech Stack
 
 - **Frontend**: [React](https://react.dev/), [Next.js](https://nextjs.org/)
