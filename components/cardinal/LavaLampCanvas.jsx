@@ -1,36 +1,40 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
-const GradientBackground = () => {
+const LavaLampCanvas = ({}) => {
   const canvasRef = useRef(null);
-  const rotationRef = useRef(0); // Ref to store rotation angle
-  const scrollYRef = useRef(0); // Ref to store the scroll position
   const theme = useTheme();
 
+  const [colors, setColors] = useState({
+    color1: theme.theme === "dark" ? "#3730cc" : "#c29dff",
+    color2: theme.theme === "dark" ? "#000000" : "#ffc99d",
+    color3: theme.theme === "dark" ? "#cb6ad8" : "#a2c6fc",
+    color4: theme.theme === "dark" ? "#3730cc" : "#baabff",
+  });
+
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    const dpr = window.devicePixelRatio || 1; // Account for high-DPI screens
-
-    canvas.style.width = "2000px";
-    canvas.style.height = "2000px";
-
-    // Gradient setup based on theme
-    const colors = {
+    setColors({
       color1: theme.theme === "dark" ? "#3730cc" : "#c29dff",
       color2: theme.theme === "dark" ? "#000000" : "#ffc99d",
       color3: theme.theme === "dark" ? "#cb6ad8" : "#a2c6fc",
       color4: theme.theme === "dark" ? "#3730cc" : "#baabff",
-    };
+    });
+  }, [theme]);
 
-    // Canvas size and map size configuration
-    const imgSize = 1024;
-    const mapSize = 2048;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const c = canvas.getContext("2d");
 
-    const image = ctx.createImageData(imgSize, imgSize);
+    const imgSize = 512;
+    const mapSize = 1024;
+
+    canvas.width = imgSize;
+    canvas.height = imgSize;
+    const scaleFactor = 2;
+
+    const image = c.createImageData(imgSize, imgSize);
     for (let i = 0; i < image.data.length; i += 4) {
       image.data[i] = 0;
       image.data[i + 1] = 0;
@@ -38,7 +42,6 @@ const GradientBackground = () => {
       image.data[i + 3] = 255;
     }
 
-    // Helper functions
     const distance = (x, y) => Math.sqrt(x * x + y * y);
 
     const heightMap1 = [];
@@ -79,6 +82,7 @@ const GradientBackground = () => {
       };
     };
 
+    // Convert hex color to RGB object
     const hexToRgb = (hex) => {
       return {
         r: parseInt(hex.slice(1, 3), 16),
@@ -87,6 +91,7 @@ const GradientBackground = () => {
       };
     };
 
+    // Create gradient with 4 defined colors
     const makeGradient = (c1, c2, c3, c4) => {
       const g = [];
       for (let i = 0; i < 64; i++) {
@@ -155,68 +160,23 @@ const GradientBackground = () => {
     const tick = (time) => {
       moveHeightMaps(time);
       updateImageData();
-      ctx.putImageData(image, 0, 0);
+      c.putImageData(image, 0, 0);
       requestAnimationFrame(tick);
     };
 
     requestAnimationFrame(tick);
 
-    // ** 1. Continuous rotation and scale logic **
-    const animateRotation = () => {
-      rotationRef.current += 0.02; // Self-rotation speed (increase this for faster rotation)
-      const scrollRotation = scrollYRef.current * 0.1; // Scroll-based rotation
-      const scrollY = scrollYRef.current;
-
-      // ** Scroll-based scaling logic **
-      const scaleFactor = 1 + scrollY * 0.0005; // Scale grows as the user scrolls (customizable)
-
-      // ** Transform the canvas **
-      canvas.style.transform = `
-        rotate(${rotationRef.current + scrollRotation}deg)
-        translateY(${scrollY * 0.5}px) 
-        scale(${scaleFactor})
-      `;
-
-      ctx.save();
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-      ctx.rotate(rotationRef.current); // Rotate context before drawing the gradient
-      ctx.putImageData(image, 0, 0);
-      ctx.restore();
-
-      requestAnimationFrame(animateRotation); // Run continuously
-    };
-    animateRotation(); // Start animation
-
-    // ** 2. Scroll event logic **
-    const handleScroll = () => {
-      scrollYRef.current = window.scrollY; // Store the scroll position
-    };
-
-    // Attach scroll event listener
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup the event listener when component unmounts
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      // Cleanup if necessary
     };
-  }, [theme]);
+  }, [colors]);
 
   return (
-    <div className="flex justify-center blur-3xl fixed z-[-1] opacity-90">
-      <canvas
-        id="gradient-canvas"
-        ref={canvasRef}
-        data-transition-in
-        style={{
-          height: "100%",
-          width: "100%",
-          clipPath:
-            "polygon(50% 10%, 60% 40%, 90% 50%, 60% 60%, 50% 90%, 40% 60%, 10% 50%, 40% 40%)",
-          transform: "rotate(0deg)", // Initial rotation
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={{ width: "100%", height: "100%", padding: 0, margin: 0 }}
+    />
   );
 };
 
-export default GradientBackground;
+export default LavaLampCanvas;

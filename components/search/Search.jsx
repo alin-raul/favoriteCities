@@ -10,6 +10,7 @@ import CityCard from "../../app/search/_city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/app/cities/_local-cities/localCities";
 import useHandleAddCity from "@/components/utils/useHandleAddCity";
+import { navigationEvents } from "../navigation-events/navigationEvents";
 
 const Search = ({ height, noFetch = false }) => {
   const [query, setQuery] = useState("");
@@ -23,6 +24,8 @@ const Search = ({ height, noFetch = false }) => {
     from: [],
     to: [],
   });
+
+  const pathname = navigationEvents();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -64,12 +67,18 @@ const Search = ({ height, noFetch = false }) => {
   return (
     <div className="md:flex relative bg-dynamic rounded-2xl">
       <div
-        className={`absolute md:relative w-full flex flex-col  md:w-80 z-20 md:border-r-2 ${
+        className={`absolute md:relative w-full flex flex-col md:w-80 z-20 md:border-r-2 ${
           height ? `${height}` : "h-fit md:h-screen-minus-nav"
         }`}
       >
-        <div className="md:m-4 border-b md:border md:rounded-2xl shadow-inner hover:shadow-md active:brightness-125 transition-all">
-          <div className="p-4 md:p-2 flex flex-col justify-end items-center bg-dynamic  w-full md:rounded-2xl">
+        <div
+          className={`md:m-4 border-b md:border shadow-sm hover:shadow-md active:brightness-105 active:backdrop-blur-md transition-all ${
+            pathname === "/"
+              ? "rounded-t-2xl md:rounded-2xl overflow-hidden md:overflow-visible"
+              : ""
+          }`}
+        >
+          <div className="p-4 md:p-2 flex flex-col justify-end items-center bg-dynamic w-full md:rounded-2xl">
             <div className="relative w-full">
               <IoMdSearch
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
@@ -147,7 +156,7 @@ const Search = ({ height, noFetch = false }) => {
         </div>
       </div>
       <div
-        className={`flex-grow ${
+        className={`flex-grow rounded-2xl ${
           height ? `${height} p-2 backdrop-blur-sm` : "h-screen-minus-nav"
         }`}
       >

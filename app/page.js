@@ -5,6 +5,7 @@ import ListCarousel from "@/components/list-carousel/ListCarousel";
 import Search from "@/components/search/Search";
 import GradientBackground from "@/components/cardinal/GradientBackground";
 import LazyLoad from "@/components/utils/LazyLoad";
+import LavaLampCanvas from "@/components/cardinal/LavaLampCanvas";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
         <GradientBackground />
       </div>
 
-      <div className="max-w-screen-2xl m-auto h-[1000px] relative">
+      <div className="max-w-screen-2xl m-auto h-screen-minus-nav relative">
         <div className="flex flex-col translate-y-96 h-full px-4">
           <h1 className="text-6xl font-bold mb-4">
             Discover, Plan, and Experience like a Pro
@@ -29,7 +30,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="max-w-screen-xl m-auto lg:mt-20 lg:flex">
+      <div className="max-w-screen-xl m-auto h-screen lg:mt-20 lg:flex">
         <div className="flex flex-col py-4 md:py-8 px-4">
           <h1 className="text-6xl font-bold mb-4">Spin the Globe!</h1>
           <p className="text-lg text-justify opacity-70">
@@ -52,13 +53,13 @@ export default function Home() {
             tools make trip planning simple and stress-free.
           </p>
         </div>
-        <div className="order-3 md:order-2 max-w-screen-2xl m-auto rounded-2xl border shadow-lg">
+        <div className="order-3 md:order-2 max-w-screen-2xl h-screen m-auto rounded-2xl border shadow-lg">
           <LazyLoad>
             <Search height="h-[600px]" noFetch={true} />
           </LazyLoad>
         </div>
       </div>
-      <div className="flex flex-col gap-8 py-4 max-w-screen-xl m-auto md:mt-20 md:flex-row">
+      <div className="flex flex-col gap-8 py-4 max-w-screen-xl h-screen m-auto md:mt-20 md:flex-row">
         <div className="md:w-2/3 order-2 md:order-1 hidden md:block">
           <FavoriteCities height="h-96" />
         </div>
