@@ -12,14 +12,21 @@ export default function Home() {
       <div className="flex justify-center">
         <GradientBackground />
       </div>
-
       <div className="max-w-screen-2xl m-auto h-screen-minus-nav relative">
         <div className="flex flex-col justify-center h-full px-4 ">
-          <h1 className="text-7xl font-bold mb-8 font-serif">
-            Discover,
-            <br /> Plan,
-            <br /> and Explore, like a Pro.
-          </h1>
+          <div className="flex items-center text-8xl h-24 font-bold mb-8 font-serif">
+            <div className="slider h-36 overflow-hidden">
+              <div className="slider-text1">Search</div>
+              <div className="slider-text2">Plan</div>
+              <div className="slider-text3">Travel</div>
+              <div className="slider-text4">Explore</div>
+            </div>
+          </div>
+
+          <h2 className="text-7xl h-24 font-bold mb-8 font-serif">
+            like a Pro.
+          </h2>
+
           <p className="text-lg font-semibold text-justify opacity-80">
             Imagine having every city's best-kept secrets, scenic routes, and
             essential details at your fingertips. Our platform empowers
@@ -31,7 +38,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="my-10 max-w-screen-2xl  m-auto">
+      <div className="my-10 max-w-screen-2xl m-auto px-4">
         <div className="py-2 md:py-8 mb-4 mb:mb-0">
           <h2 className="text-5xl font-bold mb-4 font-serif">
             Search Destinations & Plan Your Route
@@ -71,7 +78,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-end mb-8 mb:mb-0">
+      <div className="flex flex-col items-center justify-end mb-8 mb:mb-0 px-4">
         <div className="max-w-screen-2xl m-auto lg:mt-20 lg:flex">
           <div className="flex flex-col py-4 md:py-8 mb-4 mb:mb-0 md:px-8">
             <h1 className="text-6xl font-bold mb-4 font-serif">
@@ -87,7 +94,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="max-w-screen-2xl m-auto py-4 md:mt-40">
+      <section className="max-w-screen-2xl m-auto py-4 md:mt-40 px-4">
         <div className="mb-8 mb:mb-0">
           <h2 className="text-3xl font-semibold mb-4 opacity-80">
             About This Project

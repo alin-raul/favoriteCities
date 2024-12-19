@@ -38,10 +38,17 @@ main.page-transition-end {
 
 .logo {
   filter: invert();
+  transition: transform 0.5s ease-in-out; 
+  color: #3730cc;
 }
 
 .dark .logo {
   filter: none;
+}
+
+.cardinal:hover .logo {
+  transform: rotate(180deg); 
+  transition: transform 0.5s ease-in-out; 
 }
 
 .gradient {
@@ -261,6 +268,32 @@ main.page-transition-end {
   100% {
     transform: translateX(-100%);
   }
+}
+
+.slider-text1 {
+  animation: slide 20s ease-in-out infinite;
+}
+
+
+.slider div {
+  display: flex;
+  align-items: center;
+  height: 128px;
+  margin-bottom: 128px;
+  padding: 0 15px 0 0;
+  /* text-align: center; */
+}
+
+@keyframes slide {
+  0% {margin-top: 0px;}           /* Line 1 */
+  20% {margin-top: 0px;}          /* Line 1 visible until 20% */
+  25% {margin-top: -256px;}       /* Line 2 appears */
+  45% {margin-top: -256px;}       /* Line 2 visible until 45% */
+  50% {margin-top: -512px;}       /* Line 3 appears */
+  70% {margin-top: -512px;}       /* Line 3 visible until 70% */
+  75% {margin-top: -768px;}       /* Line 4 appears */
+  90% {margin-top: -768px;}       /* Line 4 visible until 90% */
+  100% {margin-top: 0px;}         /* Smooth return to top */
 }
 
 @layer base {

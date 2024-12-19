@@ -1,4 +1,4 @@
-"use client"; // This makes this component a Client Component
+"use client";
 
 import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -23,17 +23,15 @@ export default function HandleLogin() {
   const handleLogin = async (formData) => {
     const { username, password } = formData;
 
-    // Call the signIn function with the credentials
     const result = await signIn("credentials", {
       redirect: false,
-      username, // Send the username to credentials provider
-      password, // Send the password to credentials provider
+      username,
+      password,
     });
 
     if (result?.error) {
       setError(result.error);
     } else {
-      // Redirect to the callbackUrl or default to the homepage
       router.push(callbackUrl);
     }
   };
@@ -43,7 +41,6 @@ export default function HandleLogin() {
       if (result?.error) {
         setError("GitHub login failed: " + result.error);
       } else {
-        // Successful login, redirect to callbackUrl or home
         router.push(callbackUrl || "/");
       }
     });

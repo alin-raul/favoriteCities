@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import MapDisplay from "@/app/search/_map/Map";
 import Carousel from "../carousel/carousel";
 
-const RandomCities = () => {
+const RandomCities = ({ height }) => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,7 +57,7 @@ const RandomCities = () => {
 
   return (
     <div className="lg:flex lg:flex-grow lg:items-stretch lg:flex-row rounded-2xl lg:shadow-lg">
-      <div className="border rounded-2xl bg-dynamic w-full h-96 mb-4 relative p-2 lg:rounded-r-none shadow-lg lg:w-96 lg:h-full lg:mb-0 lg:shadow-none pointer-events-none">
+      <div className="border rounded-2xl bg-dynamic w-full h-[440px] mb-4 relative p-2 lg:rounded-r-none shadow-lg lg:w-96 lg:h-full lg:mb-0 lg:shadow-none pointer-events-none">
         <MapDisplay
           noFetch={true}
           selectedCityArea={selectedCityArea}

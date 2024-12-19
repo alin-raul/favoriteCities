@@ -10,10 +10,20 @@ const GradientBackground = () => {
   const theme = useTheme();
 
   useEffect(() => {
+    // Set a timeout to change the opacity after 5 seconds
+    const timeout = setTimeout(() => {
+      if (canvasRef.current) {
+        canvasRef.current.style.transition = "opacity 1s ease-in-out";
+        canvasRef.current.style.opacity = 1;
+      }
+    }, 100);
+
+    return () => clearTimeout(timeout); // Cleanup timeout when component unmounts
+  }, []);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-
-    const dpr = window.devicePixelRatio || 1; // Account for high-DPI screens
 
     canvas.style.width = "2000px";
     canvas.style.height = "2000px";
@@ -89,6 +99,8 @@ const GradientBackground = () => {
 
     const makeGradient = (c1, c2, c3, c4) => {
       const g = [];
+
+      // Create the gradient palette
       for (let i = 0; i < 64; i++) {
         const f = i / 64;
         g[i] = interpolate(c1, c2, f);
@@ -105,7 +117,9 @@ const GradientBackground = () => {
         const f = (i - 192) / 64;
         g[i] = interpolate(c4, c4, f); // Loop back to c4
       }
-      return g;
+
+      // Apply dithering to the palette
+      return ditherPalette(g);
     };
 
     const color1Rgb = hexToRgb(colors.color1);
@@ -143,8 +157,11 @@ const GradientBackground = () => {
           const i = (u + dy1) * mapSize + (v + dx1);
           const k = (u + dy2) * mapSize + (v + dx2);
           const j = u * imgSize * 4 + v * 4;
+
           let h = heightMap1[i] + heightMap2[k];
           let c = palette[h];
+
+          // Set the pixel data for the gradient
           image.data[j] = c.r;
           image.data[j + 1] = c.g;
           image.data[j + 2] = c.b;
@@ -201,6 +218,47 @@ const GradientBackground = () => {
     };
   }, [theme]);
 
+  const addNoise = (color, intensity = 2) => {
+    return {
+      r: Math.min(
+        255,
+        Math.max(
+          0,
+          color.r + Math.floor(Math.random() * intensity - intensity / 2)
+        )
+      ),
+      g: Math.min(
+        255,
+        Math.max(
+          0,
+          color.g + Math.floor(Math.random() * intensity - intensity / 2)
+        )
+      ),
+      b: Math.min(
+        255,
+        Math.max(
+          0,
+          color.b + Math.floor(Math.random() * intensity - intensity / 2)
+        )
+      ),
+    };
+  };
+
+  const ditherPalette = (palette) => {
+    const ditheredPalette = [];
+
+    // Apply error diffusion (random color noise diffusion)
+    for (let i = 0; i < palette.length; i++) {
+      let color = palette[i];
+
+      // Add noise to the current color
+      color = addNoise(color);
+
+      ditheredPalette.push(color);
+    }
+    return ditheredPalette;
+  };
+
   return (
     <div className="flex justify-center blur-3xl fixed z-[-1] opacity-90">
       <canvas
@@ -212,7 +270,9 @@ const GradientBackground = () => {
           width: "100%",
           clipPath:
             "polygon(50% 10%, 60% 40%, 90% 50%, 60% 60%, 50% 90%, 40% 60%, 10% 50%, 40% 40%)",
-          transform: "rotate(0deg)", // Initial rotation
+          transform: "rotate(0deg)",
+          opacity: 0, // Initial opacity
+          transition: "opacity 1s ease-in-out",
         }}
       />
     </div>

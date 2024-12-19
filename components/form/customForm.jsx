@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Wrapper from "../pageWrapper/wrapper";
+import GradientBackground from "../cardinal/GradientBackground";
 
 const CustomForm = ({
   onSubmit,
@@ -63,6 +64,9 @@ const CustomForm = ({
 
   return (
     <Wrapper className="h-screen flex flex-col justify-center items-center">
+      <div className="flex justify-center">
+        <GradientBackground />
+      </div>
       <h1 className="text-center font-bold">{title}</h1>
 
       <div className="flex justify-center items-center p-6 bg-dynamic rounded-2xl w-72 mt-6 shadow-md">
