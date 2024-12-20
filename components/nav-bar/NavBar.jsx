@@ -5,11 +5,11 @@ import NavLinks from "./NavLinks";
 import SignInAndOutButton from "./SignInAndOutButton";
 import { navigationEvents } from "../navigation-events/navigationEvents";
 
-export const Logo = ({ width, height }) => {
+export const Logo = ({ width, height, fill = "#fff" }) => {
   return (
     <div className="logo">
       <svg
-        fill="#fff"
+        fill={fill}
         width={width}
         height={height}
         viewBox="0 0 24 24"

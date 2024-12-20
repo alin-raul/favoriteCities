@@ -5,12 +5,13 @@ import { useTheme } from "next-themes";
 
 const GradientBackground = () => {
   const canvasRef = useRef(null);
-  const rotationRef = useRef(0); // Ref to store rotation angle
-  const scrollYRef = useRef(0); // Ref to store the scroll position
-  const theme = useTheme();
+  const rotationRef = useRef(0);
+  const scrollYRef = useRef(0);
+  const { theme, resolvedTheme } = useTheme();
+
+  console.log(resolvedTheme);
 
   useEffect(() => {
-    // Set a timeout to change the opacity after 5 seconds
     const timeout = setTimeout(() => {
       if (canvasRef.current) {
         canvasRef.current.style.transition = "opacity 1s ease-in-out";
@@ -18,7 +19,7 @@ const GradientBackground = () => {
       }
     }, 100);
 
-    return () => clearTimeout(timeout); // Cleanup timeout when component unmounts
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -28,15 +29,25 @@ const GradientBackground = () => {
     canvas.style.width = "2000px";
     canvas.style.height = "2000px";
 
-    // Gradient setup based on theme
     const colors = {
-      color1: theme.theme === "dark" ? "#3730cc" : "#c29dff",
-      color2: theme.theme === "dark" ? "#000000" : "#ffc99d",
-      color3: theme.theme === "dark" ? "#cb6ad8" : "#a2c6fc",
-      color4: theme.theme === "dark" ? "#3730cc" : "#baabff",
+      color1:
+        (theme === "system" ? resolvedTheme : theme) === "dark"
+          ? "#3730cc"
+          : "#c29dff",
+      color2:
+        (theme === "system" ? resolvedTheme : theme) === "dark"
+          ? "#000000"
+          : "#ffc99d",
+      color3:
+        (theme === "system" ? resolvedTheme : theme) === "dark"
+          ? "#cb6ad8"
+          : "#a2c6fc",
+      color4:
+        (theme === "system" ? resolvedTheme : theme) === "dark"
+          ? "#3730cc"
+          : "#baabff",
     };
 
-    // Canvas size and map size configuration
     const imgSize = 1024;
     const mapSize = 2048;
 
@@ -48,7 +59,6 @@ const GradientBackground = () => {
       image.data[i + 3] = 255;
     }
 
-    // Helper functions
     const distance = (x, y) => Math.sqrt(x * x + y * y);
 
     const heightMap1 = [];
@@ -100,7 +110,6 @@ const GradientBackground = () => {
     const makeGradient = (c1, c2, c3, c4) => {
       const g = [];
 
-      // Create the gradient palette
       for (let i = 0; i < 64; i++) {
         const f = i / 64;
         g[i] = interpolate(c1, c2, f);
@@ -115,10 +124,9 @@ const GradientBackground = () => {
       }
       for (let i = 192; i < 256; i++) {
         const f = (i - 192) / 64;
-        g[i] = interpolate(c4, c4, f); // Loop back to c4
+        g[i] = interpolate(c4, c4, f);
       }
 
-      // Apply dithering to the palette
       return ditherPalette(g);
     };
 
@@ -161,7 +169,6 @@ const GradientBackground = () => {
           let h = heightMap1[i] + heightMap2[k];
           let c = palette[h];
 
-          // Set the pixel data for the gradient
           image.data[j] = c.r;
           image.data[j + 1] = c.g;
           image.data[j + 2] = c.b;
@@ -178,16 +185,13 @@ const GradientBackground = () => {
 
     requestAnimationFrame(tick);
 
-    // ** 1. Continuous rotation and scale logic **
     const animateRotation = () => {
-      rotationRef.current += 0.02; // Self-rotation speed (increase this for faster rotation)
-      const scrollRotation = scrollYRef.current * 0.1; // Scroll-based rotation
+      rotationRef.current += 0.02;
+      const scrollRotation = scrollYRef.current * 0.1;
       const scrollY = scrollYRef.current;
 
-      // ** Scroll-based scaling logic **
-      const scaleFactor = 1 + scrollY * 0.0005; // Scale grows as the user scrolls (customizable)
+      const scaleFactor = 1 + scrollY * 0.0005;
 
-      // ** Transform the canvas **
       canvas.style.transform = `
         rotate(${rotationRef.current + scrollRotation}deg)
         translateY(${scrollY * 0.5}px) 
@@ -195,24 +199,20 @@ const GradientBackground = () => {
       `;
 
       ctx.save();
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-      ctx.rotate(rotationRef.current); // Rotate context before drawing the gradient
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.rotate(rotationRef.current);
       ctx.putImageData(image, 0, 0);
       ctx.restore();
 
-      requestAnimationFrame(animateRotation); // Run continuously
+      requestAnimationFrame(animateRotation);
     };
-    animateRotation(); // Start animation
-
-    // ** 2. Scroll event logic **
+    animateRotation();
     const handleScroll = () => {
-      scrollYRef.current = window.scrollY; // Store the scroll position
+      scrollYRef.current = window.scrollY;
     };
 
-    // Attach scroll event listener
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup the event listener when component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -247,11 +247,9 @@ const GradientBackground = () => {
   const ditherPalette = (palette) => {
     const ditheredPalette = [];
 
-    // Apply error diffusion (random color noise diffusion)
     for (let i = 0; i < palette.length; i++) {
       let color = palette[i];
 
-      // Add noise to the current color
       color = addNoise(color);
 
       ditheredPalette.push(color);
@@ -271,7 +269,7 @@ const GradientBackground = () => {
           clipPath:
             "polygon(50% 10%, 60% 40%, 90% 50%, 60% 60%, 50% 90%, 40% 60%, 10% 50%, 40% 40%)",
           transform: "rotate(0deg)",
-          opacity: 0, // Initial opacity
+          opacity: 0,
           transition: "opacity 1s ease-in-out",
         }}
       />

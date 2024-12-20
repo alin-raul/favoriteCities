@@ -12,7 +12,7 @@ export default async function Login() {
   }
 
   return (
-    <Wrapper className="h-screen flex flex-col justify-center items-center">
+    <Wrapper className="h-screen-minus-nav flex flex-col justify-center items-center">
       <div className="h-fit p-4 bg-dynamic rounded-2xl w-fit shadow-md">
         <div className="flex flex-col gap-4">
           <span>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { RANDOM_CITIES } from "@/globals/constants";
 import searchCity from "@/lib/searchCity";
 import { Skeleton } from "@/components/ui/skeleton";
-import MapDisplay from "@/app/search/_map/Map";
+import MapDisplay from "@/components/map/Map";
 import Carousel from "../carousel/carousel";
 
 const RandomCities = ({ height }) => {
@@ -56,8 +56,8 @@ const RandomCities = ({ height }) => {
   const selectedCityArea = cities[currentIndex]?.properties?.extent;
 
   return (
-    <div className="lg:flex lg:flex-grow lg:items-stretch lg:flex-row rounded-2xl lg:shadow-lg">
-      <div className="border rounded-2xl bg-dynamic w-full h-[440px] mb-4 relative p-2 lg:rounded-r-none shadow-lg lg:w-96 lg:h-full lg:mb-0 lg:shadow-none pointer-events-none">
+    <div className="lg:flex lg:flex-grow lg:items-stretch w-full lg:flex-row rounded-2xl lg:shadow-lg">
+      <div className="border rounded-2xl bg-dynamic h-96 mb-4 relative p-2 lg:rounded-r-none shadow-lg lg:h-[480px] lg:flex-grow lg:mb-0 lg:shadow-none pointer-events-none">
         <MapDisplay
           noFetch={true}
           selectedCityArea={selectedCityArea}
@@ -66,7 +66,7 @@ const RandomCities = ({ height }) => {
         />
       </div>
 
-      <div className="border flex flex-col justify-center rounded-2xl h-32 bg-dynamic overflow-hidden relative px-2 shadow-lg lg:border-l-0 lg:rounded-l-none lg:min-h-96 lg:h-full lg:w-48 lg:shadow-none">
+      <div className="border flex flex-col justify-center items-center rounded-2xl h-36 bg-dynamic overflow-hidden relative shadow-lg lg:border-l-0 lg:rounded-l-none lg:min-h-[480px] lg:h-full lg:w-fit lg:shadow-none px-4">
         {loading ? (
           Array.from({ length: 3 }).map((_, index) => (
             <div

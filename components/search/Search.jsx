@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { IoMdSearch } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import { LuHistory } from "react-icons/lu";
-import MapDisplay from "../../app/search/_map/Map";
+import MapDisplay from "../map/Map";
 import CityCard from "../../app/search/_city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/app/cities/_local-cities/localCities";
@@ -65,7 +65,7 @@ const Search = ({ height, noFetch = false }) => {
   };
 
   return (
-    <div className="md:flex relative bg-dynamic rounded-2xl">
+    <div className="md:flex relative bg-dynamic rounded-2xl h-full ">
       <div
         className={`absolute md:relative w-full flex flex-col md:w-80 z-20 md:border-r-2 ${
           height ? `${height}` : "h-fit md:h-screen-minus-nav"

@@ -9,17 +9,17 @@ const LavaLampCanvas = ({}) => {
 
   const [colors, setColors] = useState({
     color1: theme.theme === "dark" ? "#3730cc" : "#c29dff",
-    color2: theme.theme === "dark" ? "#000000" : "#ffc99d",
+    color2: theme.theme === "dark" ? "#000000" : "#fff",
     color3: theme.theme === "dark" ? "#cb6ad8" : "#a2c6fc",
-    color4: theme.theme === "dark" ? "#3730cc" : "#baabff",
+    color4: theme.theme === "dark" ? "#000000" : "#fff",
   });
 
   useEffect(() => {
     setColors({
       color1: theme.theme === "dark" ? "#3730cc" : "#c29dff",
-      color2: theme.theme === "dark" ? "#000000" : "#ffc99d",
+      color2: theme.theme === "dark" ? "#000000" : "#fff",
       color3: theme.theme === "dark" ? "#cb6ad8" : "#a2c6fc",
-      color4: theme.theme === "dark" ? "#3730cc" : "#baabff",
+      color4: theme.theme === "dark" ? "#000000" : "#fff",
     });
   }, [theme]);
 

@@ -2,9 +2,9 @@ import Wrapper from "@/components/pageWrapper/wrapper";
 import RandomCities from "@/components/randomCities/RandomCities";
 import FavoriteCities from "@/components/favoriteCitiesCard/FavoriteCities";
 import ListCarousel from "@/components/list-carousel/ListCarousel";
-import Search from "@/components/search/Search";
 import GradientBackground from "@/components/cardinal/GradientBackground";
-import LazyLoad from "@/components/utils/LazyLoad";
+import SearchBar from "@/components/search/SearchBar";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,74 +13,65 @@ export default function Home() {
         <GradientBackground />
       </div>
       <div className="max-w-screen-2xl m-auto h-screen-minus-nav relative">
-        <div className="flex flex-col justify-center h-full px-4 ">
-          <div className="flex items-center text-8xl h-24 font-bold mb-8 font-serif">
-            <div className="slider h-36 overflow-hidden">
-              <div className="slider-text1">Search</div>
-              <div className="slider-text2">Plan</div>
-              <div className="slider-text3">Travel</div>
-              <div className="slider-text4">Explore</div>
-            </div>
-          </div>
+        <div className="flex justify-center h-full px-4 ">
+          <div className="flex flex-col m-auto gap-12 max-w-3xl">
+            <div className="w-fit">
+              <div className="flex items-center text-9xl h-24 font-bold mb-8 font-serif">
+                <div className="slider h-36 overflow-hidden">
+                  <div className="slider-text1">Search</div>
+                  <div className="slider-text2">Plan</div>
+                  <div className="slider-text3">Travel</div>
+                  <div className="slider-text4">Explore</div>
+                </div>
+              </div>
 
-          <h2 className="text-7xl h-24 font-bold mb-8 font-serif">
-            like a Pro.
-          </h2>
-
-          <p className="text-lg font-semibold text-justify opacity-80">
-            Imagine having every city's best-kept secrets, scenic routes, and
-            essential details at your fingertips. Our platform empowers
-            explorers, travelers, and urban adventurers to make the most of
-            every city visit. Whether you’re planning a weekend getaway, a
-            business trip, or just dreaming about your next adventure — we’ve
-            got you covered.
-          </p>
-        </div>
-      </div>
-
-      <div className="my-10 max-w-screen-2xl m-auto px-4">
-        <div className="py-2 md:py-8 mb-4 mb:mb-0">
-          <h2 className="text-5xl font-bold mb-4 font-serif">
-            Search Destinations & Plan Your Route
-          </h2>
-          <p className="text-lg font-semibold text-justify opacity-80">
-            Easily search for your favorite destinations and cities, then plan
-            the perfect route for your journey. Whether you're exploring new
-            places or revisiting old favorites, our intuitive search and routing
-            tools make trip planning simple and stress-free.
-          </p>
-        </div>
-        <div className="order-3 md:order-2 max-w-screen-2xl m-auto rounded-2xl border shadow-lg">
-          <LazyLoad>
-            <Search height="h-[600px]" noFetch={false} />
-          </LazyLoad>
-        </div>
-        <div className="flex flex-col gap-8 py-4 max-w-screen-2xl md:mt-20 md:flex-row">
-          <div className="md:w-2/3 order-2 md:order-1 hidden md:block">
-            <FavoriteCities height="h-96" />
-          </div>
-
-          <section className="flex flex-col justify-between w-full order-1 md:order-2 md:px-4 mt-10">
-            <div className="mb-4 mb:mb-0">
-              <h2 className="text-6xl font-bold mb-4 relative font-serif">
-                View your saved destinations!
-              </h2>
-              <p className="text-lg font-semibold text-justify opacity-80">
-                The "Favorite Cities" feature allows you to save cities you love
-                or wish to visit. You can create your personal list, making it
-                easier to keep track of the cities that interest you the most.
+              <p className="text-lg font-semibold text-justify opacity-80 max-w-5xl">
+                Imagine having every city's best-kept secrets, scenic routes,
+                and essential details at your fingertips. Our platform empowers
+                explorers, travelers, and urban adventurers to make the most of
+                every city visit. Whether you’re planning a weekend getaway, a
+                business trip, or just dreaming about your next adventure —
+                we’ve got you covered.
               </p>
             </div>
-            <div className="my-4 order-2 md:order-1 md:hidden md:w-2/3 ">
-              <FavoriteCities height="h-96" />
+            <div className="flex flex-col gap-8">
+              <SearchBar width="w-full" height="h-28" />
+              <div className="flex justify-end">
+                <Link href="/search">
+                  <button className="bg-dynamic rounded-full p-6 border shadow-md font-medium text-xl hover:brightness-110">
+                    Click to Search
+                  </button>
+                </Link>
+              </div>
             </div>
-          </section>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-end mb-8 mb:mb-0 px-4">
-        <div className="max-w-screen-2xl m-auto lg:mt-20 lg:flex">
-          <div className="flex flex-col py-4 md:py-8 mb-4 mb:mb-0 md:px-8">
+      <div className="flex flex-col items-center gap-8 py-4 max-w-screen-2xl m-auto mb-40 md:mt-20 md:flex-row">
+        <div className="md:w-1/2 order-2 md:order-1 hidden md:block">
+          <FavoriteCities height="h-96" />
+        </div>
+        <section className="flex flex-col justify-between w-full h-fit order-1 md:w-1/2 md:order-2 md:pr-4 ">
+          <div className="mb-4 mb:mb-0">
+            <h2 className="text-6xl font-bold mb-4 relative font-serif">
+              View your saved destinations!
+            </h2>
+            <p className="text-lg font-semibold text-justify opacity-80">
+              The "Favorite Cities" feature allows you to save cities you love
+              or wish to visit. You can create your personal list, making it
+              easier to keep track of the cities that interest you the most.
+            </p>
+          </div>
+          <div className="my-4 order-2 md:order-1 md:hidden md:w-2/3 ">
+            <FavoriteCities height="h-96" />
+          </div>
+        </section>
+      </div>
+
+      <div className="flex flex-col items-center justify-end mt-40 mb-96 mb:mb-0 px-4">
+        <div className="max-w-screen-2xl m-auto lg:flex justify-between items-center">
+          <div className="flex flex-col py-4 lg:w-1/2 md:py-8 md:mr-8">
             <h1 className="text-6xl font-bold mb-4 font-serif">
               Spin the Globe!
             </h1>
@@ -90,7 +81,9 @@ export default function Home() {
               curiosity takes you. Click to zoom in and dive deeper.
             </p>
           </div>
-          <RandomCities />
+          <div className="lg:w-1/2 w-full">
+            <RandomCities />
+          </div>
         </div>
       </div>
 

@@ -47,8 +47,12 @@ main.page-transition-end {
 }
 
 .cardinal:hover .logo {
-  transform: rotate(180deg); 
+  transform: rotate(90deg); 
   transition: transform 0.5s ease-in-out; 
+}
+
+.cardinal:active .logo {
+  transform: rotate(360deg); 
 }
 
 .gradient {
@@ -213,17 +217,6 @@ main.page-transition-end {
   cursor: pointer;
 }
 
-/* .maplibregl-canvas-container {
-  position: relative !important; 
-  height: 100% !important;       
-  min-height: 300px !important; 
-} */
-
-/* .maplibregl-map {
-   position: static; 
-  border-radius: 1rem;  
-} */
-
 .carousel {
   margin: 0 auto;
   padding: 20px 0;
@@ -281,7 +274,6 @@ main.page-transition-end {
   height: 128px;
   margin-bottom: 128px;
   padding: 0 15px 0 0;
-  /* text-align: center; */
 }
 
 @keyframes slide {
