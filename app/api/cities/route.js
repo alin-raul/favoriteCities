@@ -2,6 +2,8 @@ import { z } from "zod";
 import { NextResponse } from "next/server";
 import { AppDataSource } from "../../database/data-source";
 import { City } from "@/app/entity/City";
+import { getServerSession } from "next-auth";
+import { options } from "../auth/[...nextauth]/options";
 
 async function ensureDbInitialized() {
   if (!AppDataSource.isInitialized) {
@@ -12,14 +14,14 @@ async function ensureDbInitialized() {
 const citySchema = z.object({
   name: z.string(),
   country: z.string(),
-  countrycode: z.string().length(2), // Example validation for country code length
-  county: z.string().optional(), // Optional field
+  countrycode: z.string().length(2),
+  county: z.string().optional(),
   osm_type: z.string(),
   osm_id: z.number(),
   osm_key: z.string(),
   osm_value: z.string(),
-  extent: z.array(z.number()).optional(), // Optional field
-  geometry: z.any(), // Adjust to your actual expected type for geometry
+  extent: z.array(z.number()).optional(),
+  geometry: z.any(),
 });
 
 export async function POST(req) {
@@ -65,6 +67,9 @@ export async function POST(req) {
 export async function GET() {
   await ensureDbInitialized();
   try {
+    const session = await getServerSession(options);
+    console.log(`session ${session}`);
+
     const cityRepo = AppDataSource.getRepository(City);
     const cities = await cityRepo.find();
 

@@ -9,8 +9,8 @@ import MapDisplay from "../map/Map";
 import CityCard from "../../app/search/_city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/app/cities/_local-cities/localCities";
-import useHandleAddCity from "@/components/utils/useHandleAddCity";
-import { navigationEvents } from "../navigation-events/navigationEvents";
+import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
+import handleAddCity from "../utils/handleAddCity";
 
 const Search = ({ height, noFetch = false }) => {
   const [query, setQuery] = useState("");
@@ -25,7 +25,7 @@ const Search = ({ height, noFetch = false }) => {
     to: [],
   });
 
-  const pathname = navigationEvents();
+  const pathname = useNavigationEvents();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -71,13 +71,7 @@ const Search = ({ height, noFetch = false }) => {
           height ? `${height}` : "h-fit md:h-screen-minus-nav"
         }`}
       >
-        <div
-          className={`md:m-4 border-b md:border shadow-sm hover:shadow-md active:brightness-105 active:backdrop-blur-md transition-all ${
-            pathname === "/"
-              ? "rounded-t-2xl md:rounded-2xl overflow-hidden md:overflow-visible"
-              : ""
-          }`}
-        >
+        <div className="md:m-4 border-b md:rounded-2xl md:border shadow-sm hover:shadow-md active:brightness-105 active:backdrop-blur-md transition-all">
           <div className="p-4 md:p-2 flex flex-col justify-end items-center bg-dynamic w-full md:rounded-2xl">
             <div className="relative w-full">
               <IoMdSearch
@@ -116,7 +110,7 @@ const Search = ({ height, noFetch = false }) => {
                       className="p-2 cursor-pointer hover:bg-gray-500/10"
                       onClick={() => {
                         handleCitySelect(result);
-                        useHandleAddCity(result);
+                        handleAddCity(result);
                       }}
                     >
                       {result.properties.name} - {result.properties.country}

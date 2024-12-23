@@ -5,10 +5,26 @@ import { SidebarProvider } from "@/context/SidebarContext";
 import Navbar from "@/components/nav-bar/NavBar";
 import Sidebar from "@/components/nav-bar/sidebar/Sidebar";
 import { getServerSession } from "next-auth";
+import { Inter, DM_Serif_Display } from "next/font/google";
+
+// Configure the Inter font using next/font
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // Specify weights used
+  display: "swap", // Matches your original link
+});
+
+// Configure the DM Serif Display font using next/font
+const dmSerifDisplay = DM_Serif_Display({
+  subsets: ["latin"],
+  style: ["normal", "italic"], // Include italics
+  weight: ["400"],
+  display: "swap", // Matches your original link
+});
 
 export const metadata = {
-  title: "Favorite City App",
-  description: "Discover Your Next Favorite City with Us!",
+  title: "Cardinal",
+  description: "Discover, Plan...",
 };
 
 export default async function RootLayout({ children }) {
@@ -16,17 +32,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap"
-          rel="stylesheet"
-        ></link>
-      </head>
-      <body>
+      <body className={`${inter.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -36,7 +42,7 @@ export default async function RootLayout({ children }) {
           <SidebarProvider>
             <Sidebar />
             <div className="relative">
-              {<Navbar session={session} />}
+              <Navbar session={session} />
               <main session={session}>{children}</main>
             </div>
           </SidebarProvider>

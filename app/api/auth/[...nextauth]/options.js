@@ -62,6 +62,7 @@ export const options = {
           const { password, ...userWithoutPassword } = user;
           return {
             ...userWithoutPassword,
+            id: user.id,
             name: user.username,
             email: user.email,
             image: user.profileImage || "",
@@ -78,6 +79,7 @@ export const options = {
       if (token) {
         session.user = {
           ...session.user,
+          id: token.sub,
           name: token.name || token.username,
           email: token.email,
           image: token.image || "",
@@ -88,6 +90,7 @@ export const options = {
 
     async jwt({ token, user }) {
       if (user) {
+        token.sub = user.id;
         token.name = user.name || user.username;
         token.email = user.email;
         token.image = user.image || "";

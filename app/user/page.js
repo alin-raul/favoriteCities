@@ -6,6 +6,7 @@ import Image from "next/image";
 
 export default async function User() {
   const session = await getServerSession(options);
+  console.log(session);
 
   return (
     <Wrapper className="h-screen-minus-nav flex flex-col justify-center items-center">

@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-export function navigationEvents() {
+export function useNavigationEvents() {
   const pathname = usePathname();
 
   return pathname;

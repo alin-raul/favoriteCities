@@ -87,7 +87,7 @@ export default function MapDisplay({
     };
 
     fetchRoute();
-  }, [onRoute]);
+  }, [onRoute, location]);
 
   const calculateBoundingBox = (coordinates) => {
     let minLng = Infinity,

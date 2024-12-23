@@ -9,8 +9,6 @@ const GradientBackground = () => {
   const scrollYRef = useRef(0);
   const { theme, resolvedTheme } = useTheme();
 
-  console.log(resolvedTheme);
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (canvasRef.current) {
@@ -23,6 +21,19 @@ const GradientBackground = () => {
   }, []);
 
   useEffect(() => {
+    const ditherPalette = (palette) => {
+      const ditheredPalette = [];
+
+      for (let i = 0; i < palette.length; i++) {
+        let color = palette[i];
+
+        color = addNoise(color);
+
+        ditheredPalette.push(color);
+      }
+      return ditheredPalette;
+    };
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
@@ -216,7 +227,7 @@ const GradientBackground = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [theme]);
+  }, [theme, resolvedTheme]);
 
   const addNoise = (color, intensity = 2) => {
     return {
@@ -242,19 +253,6 @@ const GradientBackground = () => {
         )
       ),
     };
-  };
-
-  const ditherPalette = (palette) => {
-    const ditheredPalette = [];
-
-    for (let i = 0; i < palette.length; i++) {
-      let color = palette[i];
-
-      color = addNoise(color);
-
-      ditheredPalette.push(color);
-    }
-    return ditheredPalette;
   };
 
   return (

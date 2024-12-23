@@ -28,11 +28,6 @@ const RandomCities = ({ height }) => {
           if (cityData && cityData.length > 0) {
             fetchedCities.push(cityData[0]);
           }
-          {
-            !loading && cities.length === 0 && (
-              <div>No cities available at the moment.</div>
-            );
-          }
         } catch (error) {
           console.error(`Error fetching data for ${city}:`, error);
         }
@@ -46,12 +41,14 @@ const RandomCities = ({ height }) => {
   }, []);
 
   useEffect(() => {
+    if (cities.length === 0) return; // Prevent interval if cities are empty
+
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % cities.length);
     }, 6000);
 
     return () => clearInterval(interval);
-  }, [cities]);
+  }, [cities]); // Now depends on cities
 
   const selectedCityArea = cities[currentIndex]?.properties?.extent;
 

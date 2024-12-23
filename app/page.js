@@ -26,12 +26,12 @@ export default function Home() {
               </div>
 
               <p className="text-lg font-semibold text-justify opacity-80 max-w-5xl">
-                Imagine having every city's best-kept secrets, scenic routes,
-                and essential details at your fingertips. Our platform empowers
-                explorers, travelers, and urban adventurers to make the most of
-                every city visit. Whether you’re planning a weekend getaway, a
-                business trip, or just dreaming about your next adventure —
-                we’ve got you covered.
+                Imagine having every city&apos;s best-kept secrets, scenic
+                routes, and essential details at your fingertips. Our platform
+                empowers explorers, travelers, and urban adventurers to make the
+                most of every city visit. Whether you&apos;re planning a weekend
+                getaway, a business trip, or just dreaming about your next
+                adventure — we&apos;ve got you covered.
               </p>
             </div>
             <div className="flex flex-col gap-8">
@@ -58,9 +58,10 @@ export default function Home() {
               View your saved destinations!
             </h2>
             <p className="text-lg font-semibold text-justify opacity-80">
-              The "Favorite Cities" feature allows you to save cities you love
-              or wish to visit. You can create your personal list, making it
-              easier to keep track of the cities that interest you the most.
+              The &quot;Favorite Cities&quot; feature allows you to save cities
+              you love or wish to visit. You can create your personal list,
+              making it easier to keep track of the cities that interest you the
+              most.
             </p>
           </div>
           <div className="my-4 order-2 md:order-1 md:hidden md:w-2/3 ">
@@ -76,8 +77,8 @@ export default function Home() {
               Spin the Globe!
             </h1>
             <p className="text-lg font-semibold text-justify opacity-80 ">
-              Ready for a surprise? We've spun the globe and landed on these
-              exciting cities. Explore them on the map and see where your
+              Ready for a surprise? We&apos;ve spun the globe and landed on
+              these exciting cities. Explore them on the map and see where your
               curiosity takes you. Click to zoom in and dive deeper.
             </p>
           </div>

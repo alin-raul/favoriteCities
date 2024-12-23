@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { middleOfRo } from "@/globals/constants";
 import { Popup, useMap } from "@vis.gl/react-maplibre";
@@ -10,23 +8,23 @@ export default function YouAreHere({ noFetch, setLocation }) {
   const [popupLocation, setPopupLocation] = useState(middleOfRo);
   const { current: map } = useMap();
 
-  const MyLocation = async () => {
-    if (noFetch) return;
-    const location = await getLocation();
-    setLocation(location);
-
-    if (location && location !== middleOfRo) {
-      setPopupLocation(location);
-      if (map) {
-        map.flyTo({ center: location, zoom: 8 });
-      }
-    }
-  };
-
   useEffect(() => {
+    const MyLocation = async () => {
+      if (noFetch) return;
+      const location = await getLocation();
+      setLocation(location);
+
+      if (location && location !== middleOfRo) {
+        setPopupLocation(location);
+        if (map) {
+          map.flyTo({ center: location, zoom: 8 });
+        }
+      }
+    };
+
     if (!map) return;
     MyLocation();
-  }, [map]);
+  }, [map, noFetch, setLocation]);
 
   if (!map) return null;
 

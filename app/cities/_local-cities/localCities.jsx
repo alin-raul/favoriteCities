@@ -4,11 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import FavoriteButton from "@/components/favoriteButon/FavoriteButton";
 import { FaXmark } from "react-icons/fa6";
-import { navigationEvents } from "@/components/navigation-events/navigationEvents";
+import { useNavigationEvents } from "@/components/navigation-events/useNavigationEvents";
 import { MdOutlineDirections, MdOutlineDirectionsOff } from "react-icons/md";
 import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
-import useFlagEmoji from "@/components/utils/useFlagEmoji";
 
 const LocalCities = ({
   selectedCityArea,
@@ -20,7 +19,7 @@ const LocalCities = ({
 }) => {
   const [cities, setCities] = useState([]);
   const router = useRouter();
-  const pathname = navigationEvents();
+  const pathname = useNavigationEvents();
 
   const loadCitiesFromStorage = () => {
     try {
@@ -181,9 +180,7 @@ const LocalCities = ({
                             {city.properties.country},{" "}
                             {city.properties.countrycode}
                           </span>
-                          <span>
-                            {useFlagEmoji(city.properties.countrycode)}
-                          </span>
+                          <span></span>
                         </div>
                         <div>
                           {city.properties.extent === selectedCityArea ? (

@@ -1,5 +1,18 @@
 module.exports = {
   images: {
-    domains: ["upload.wikimedia.org", "avatars.githubusercontent.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+        port: "",
+        pathname: "/**", // Allows all paths under this hostname
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: "",
+        pathname: "/**", // Allows all paths under this hostname
+      },
+    ],
   },
 };

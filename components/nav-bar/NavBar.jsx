@@ -3,7 +3,7 @@
 import { ModeToggle } from "../mode-toggle/ModeToggle";
 import NavLinks from "./NavLinks";
 import SignInAndOutButton from "./SignInAndOutButton";
-import { navigationEvents } from "../navigation-events/navigationEvents";
+import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
 
 export const Logo = ({ width, height, fill = "#fff" }) => {
   return (
@@ -29,7 +29,7 @@ export const Logo = ({ width, height, fill = "#fff" }) => {
 };
 
 const Navbar = ({ session }) => {
-  const pathname = navigationEvents();
+  const pathname = useNavigationEvents();
   return (
     <div
       className={`top-0 left-0 right-0 shadow-sm z-40 ${

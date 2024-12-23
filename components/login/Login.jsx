@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 
-const login = () => {
+const Login = () => {
   const { data: session } = useSession();
   return (
     <>
@@ -19,4 +19,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

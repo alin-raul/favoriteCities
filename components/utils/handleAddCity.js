@@ -1,4 +1,4 @@
-const useHandleAddCity = (city) => {
+const handleAddCity = (city) => {
   if (!city || !city.properties) {
     return;
   }
@@ -33,4 +33,4 @@ const useHandleAddCity = (city) => {
   window.dispatchEvent(new Event("storage"));
 };
 
-export default useHandleAddCity;
+export default handleAddCity;

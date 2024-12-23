@@ -78,7 +78,7 @@ const FavoriteCities = ({ height }) => {
         ) : (
           <div className="flex justify-center items-center min-h-28">
             <span className="opacity-40">
-              You haven't saved any city yet...
+              You haven&apos;t saved any city yet...
             </span>
           </div>
         )}
