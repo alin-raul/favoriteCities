@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      opacity: {
+        1: ".01",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -54,6 +54,13 @@ const City = new EntitySchema({
       default: true,
     },
   },
+  relations: {
+    users: {
+      type: "many-to-many",
+      target: "User",
+      joinTable: true, // Use the linking table to manage many-to-many relations
+    },
+  },
 });
 
 module.exports = { City };

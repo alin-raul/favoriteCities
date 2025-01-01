@@ -9,7 +9,8 @@ import Link from "next/link";
 export default function Home() {
   return (
     <Wrapper>
-      <div className="flex justify-center">
+      <div className="bg-[url('/images/other/noise.webp')] bg-repeat h-screen w-screen fixed top-0 left-0 opacity-25 brightness-125 invert"></div>
+      <div className="flex justify-center ">
         <GradientBackground />
       </div>
       <div className="max-w-screen-2xl m-auto h-screen-minus-nav relative">

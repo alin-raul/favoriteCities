@@ -105,6 +105,7 @@ export const RANDOM_CITIES = [
   "Chefchaouen",
   "Taipei",
   "Edinburgh",
+  "Lübeck",
 ];
 
 export const citiesTranslations = {

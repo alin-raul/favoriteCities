@@ -68,7 +68,7 @@ export async function GET() {
   await ensureDbInitialized();
   try {
     const session = await getServerSession(options);
-    console.log(`session ${session}`);
+    console.log(session);
 
     const cityRepo = AppDataSource.getRepository(City);
     const cities = await cityRepo.find();

@@ -28,6 +28,13 @@ const User = new EntitySchema({
       default: () => "CURRENT_TIMESTAMP",
     },
   },
+  relations: {
+    cities: {
+      type: "many-to-many",
+      target: "City",
+      inverseSide: "users",
+    },
+  },
 });
 
 module.exports = { User };
