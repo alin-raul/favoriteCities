@@ -28,14 +28,12 @@ const CustomForm = ({
   );
   const [passwordMismatch, setPasswordMismatch] = useState(false);
 
-  // Set icons based on form type (signup or login)
-  const iconsSignup = [User, Mail, Lock, Lock]; // signup has 4 fields
-  const iconsLogin = [User, KeyRound]; // login has 2 fields
+  const iconsSignup = [User, Mail, Lock, Lock];
+  const iconsLogin = [User, KeyRound];
 
   const icons = formType === "signup" ? iconsSignup : iconsLogin;
 
   useEffect(() => {
-    // Reset password mismatch state when switching form types
     setPasswordMismatch(false);
     setFormData(
       Object.fromEntries(fieldNames.map((fieldName) => [fieldName, ""]))
@@ -64,6 +62,7 @@ const CustomForm = ({
 
   return (
     <Wrapper className="h-screen flex flex-col justify-center items-center">
+      <div className="noise bg-[url('/images/other/noise.webp')] bg-repeat h-screen w-screen fixed top-0 left-0"></div>
       <div className="flex justify-center">
         <GradientBackground />
       </div>

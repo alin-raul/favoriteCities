@@ -21,17 +21,22 @@ const User = new EntitySchema({
     },
     password: {
       type: "varchar",
-      nullable: false,
+      nullable: true,
     },
     createdAt: {
       type: "datetime",
       default: () => "CURRENT_TIMESTAMP",
     },
+    githubId: {
+      type: "varchar",
+      unique: true,
+      nullable: true, // Null if the user is local, not from GitHub
+    },
   },
   relations: {
     cities: {
-      type: "many-to-many",
       target: "City",
+      type: "many-to-many",
       inverseSide: "users",
     },
   },

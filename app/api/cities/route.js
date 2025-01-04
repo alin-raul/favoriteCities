@@ -2,6 +2,7 @@ import { z } from "zod";
 import { NextResponse } from "next/server";
 import { AppDataSource } from "../../database/data-source";
 import { City } from "@/app/entity/City";
+import { User } from "@/app/entity/User";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 
@@ -10,6 +11,12 @@ async function ensureDbInitialized() {
     await AppDataSource.initialize();
   }
 }
+
+const userSchema = z.object({
+  username: z.string().min(3).max(30),
+  email: z.string().email(),
+  id: z.string().optional(),
+});
 
 const citySchema = z.object({
   name: z.string(),
@@ -28,7 +35,32 @@ export async function POST(req) {
   await ensureDbInitialized();
   try {
     const cityRepo = AppDataSource.getRepository(City);
+    const userRepo = AppDataSource.getRepository(User);
     const data = await req.json();
+
+    const session = await getServerSession(options);
+    console.log(session);
+
+    const userEntities = [];
+
+    if (session && session.user) {
+      const { email, name, id, username } = session.user;
+
+      let user = await userRepo.findOne({ where: { id } });
+
+      if (!user) {
+        user = userRepo.create({
+          name,
+          email,
+          id,
+          username,
+          password: null,
+        });
+        await userRepo.save(user);
+      }
+
+      userEntities.push(user);
+    }
 
     const parsedData = citySchema.safeParse(data);
 
@@ -44,11 +76,34 @@ export async function POST(req) {
       );
     }
 
-    const city = cityRepo.create({ ...parsedData.data, selected: true });
+    const { users = [], ...cityData } = parsedData.data;
+
+    for (const user of users) {
+      let userEntity = await userRepo.findOne({ where: { email: user.email } });
+
+      if (!userEntity) {
+        userEntity = userRepo.create({
+          ...user,
+          password: user.githubId ? null : user.password,
+        });
+        await userRepo.save(userEntity);
+      }
+      userEntities.push(userEntity);
+    }
+
+    const city = cityRepo.create({
+      ...cityData,
+      users: userEntities,
+      selected: true,
+    });
     await cityRepo.save(city);
 
     return NextResponse.json(
-      { success: true, message: "City created", data: city },
+      {
+        success: true,
+        message: "City created and users associated",
+        data: city,
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -66,12 +121,33 @@ export async function POST(req) {
 
 export async function GET() {
   await ensureDbInitialized();
-  try {
-    const session = await getServerSession(options);
-    console.log(session);
 
+  const session = await getServerSession(options);
+
+  try {
+    const userRepo = AppDataSource.getRepository(User);
     const cityRepo = AppDataSource.getRepository(City);
-    const cities = await cityRepo.find();
+
+    if (!session || !session.user) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User not authenticated",
+        },
+        { status: 401 }
+      );
+    }
+
+    const userId = session.user.id;
+
+    const cities = await cityRepo.find({
+      relations: ["users"],
+      where: {
+        users: {
+          id: userId, // Filter cities where the user is associated
+        },
+      },
+    });
 
     return NextResponse.json({ success: true, data: cities }, { status: 200 });
   } catch (error) {

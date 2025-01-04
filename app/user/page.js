@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import HandleLogout from "../login/_handleLogout";
 import Image from "next/image";
+import { FaUserCircle } from "react-icons/fa";
 
 export default async function User() {
   const session = await getServerSession(options);
@@ -19,13 +20,17 @@ export default async function User() {
           <div className="h-fit w-96 p-8 bg-dynamic rounded-2xl shadow-md">
             <div className="flex flex-col gap-4">
               <div>
-                <Image
-                  src={session.user.image}
-                  alt="Avatar"
-                  width={200}
-                  height={200}
-                  className="rounded-full shadow-lg m-auto"
-                />
+                {session.user.image ? (
+                  <Image
+                    src={session.user.image}
+                    alt="Avatar"
+                    width={200}
+                    height={200}
+                    className="rounded-full shadow-lg m-auto"
+                  />
+                ) : (
+                  <FaUserCircle className="w-52 h-52 m-auto" />
+                )}
                 <h2 className="font-bold text-2xl text-center mt-2">
                   {session.user.name}
                 </h2>

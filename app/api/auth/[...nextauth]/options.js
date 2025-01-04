@@ -15,7 +15,7 @@ export const options = {
       profile: (profile) => {
         return {
           id: profile.id,
-          name: profile.name || profile.login,
+          username: profile.login,
           email: profile.email,
           image: profile.avatar_url,
         };
@@ -38,8 +38,6 @@ export const options = {
       },
       authorize: async (credentials) => {
         try {
-          await AppDataSource.initialize();
-
           const userRepo = AppDataSource.getRepository(User);
 
           const user = await userRepo.findOne({
@@ -63,9 +61,9 @@ export const options = {
           return {
             ...userWithoutPassword,
             id: user.id,
-            name: user.username,
+            username: user.username,
             email: user.email,
-            image: user.profileImage || "",
+            image: user.profileImage || null,
           };
         } catch (error) {
           console.error("Authorization error:", error.message);
@@ -80,9 +78,10 @@ export const options = {
         session.user = {
           ...session.user,
           id: token.sub,
+          username: token.username,
           name: token.name || token.username,
           email: token.email,
-          image: token.image || "",
+          image: token.image || null,
         };
       }
       return session;
@@ -91,9 +90,10 @@ export const options = {
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
+        token.username = user.username;
         token.name = user.name || user.username;
         token.email = user.email;
-        token.image = user.image || "";
+        token.image = user.image || null;
       }
       return token;
     },

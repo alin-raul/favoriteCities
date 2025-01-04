@@ -7,7 +7,6 @@ const AppDataSource = new DataSource({
   database: "./database.sqlite",
   synchronize: true,
   entities: [City, User],
-  logging: true,
 });
 
 module.exports = { AppDataSource };

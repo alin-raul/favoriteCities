@@ -38,7 +38,7 @@ main.page-transition-end {
 
 .logo {
   filter: invert();
-  transition: transform 0.5s ease-in-out; 
+  transition: transform 0.5s ease-in-out;
   color: #3730cc;
 }
 
@@ -47,12 +47,12 @@ main.page-transition-end {
 }
 
 .cardinal:hover .logo {
-  transform: rotate(90deg); 
-  transition: transform 0.5s ease-in-out; 
+  transform: rotate(90deg);
+  transition: transform 0.5s ease-in-out;
 }
 
 .cardinal:active .logo {
-  transform: rotate(360deg); 
+  transform: rotate(360deg);
 }
 
 .gradient {
@@ -196,6 +196,14 @@ main.page-transition-end {
   filter: invert();
 }
 
+.noise {
+  filter: opacity(0.5) brightness(2);
+}
+
+.dark .noise {
+  filter: opacity(0.25) brightness(1) invert();
+}
+
 .maplibregl-popup-close-button {
   background-color: transparent !important;
   border: 0;
@@ -267,7 +275,6 @@ main.page-transition-end {
   animation: slide 20s ease-in-out infinite;
 }
 
-
 .slider div {
   display: flex;
   align-items: center;
@@ -277,15 +284,33 @@ main.page-transition-end {
 }
 
 @keyframes slide {
-  0% {margin-top: 0px;}           /* Line 1 */
-  20% {margin-top: 0px;}          /* Line 1 visible until 20% */
-  25% {margin-top: -256px;}       /* Line 2 appears */
-  45% {margin-top: -256px;}       /* Line 2 visible until 45% */
-  50% {margin-top: -512px;}       /* Line 3 appears */
-  70% {margin-top: -512px;}       /* Line 3 visible until 70% */
-  75% {margin-top: -768px;}       /* Line 4 appears */
-  90% {margin-top: -768px;}       /* Line 4 visible until 90% */
-  100% {margin-top: 0px;}         /* Smooth return to top */
+  0% {
+    margin-top: 0px;
+  } /* Line 1 */
+  20% {
+    margin-top: 0px;
+  } /* Line 1 visible until 20% */
+  25% {
+    margin-top: -256px;
+  } /* Line 2 appears */
+  45% {
+    margin-top: -256px;
+  } /* Line 2 visible until 45% */
+  50% {
+    margin-top: -512px;
+  } /* Line 3 appears */
+  70% {
+    margin-top: -512px;
+  } /* Line 3 visible until 70% */
+  75% {
+    margin-top: -768px;
+  } /* Line 4 appears */
+  90% {
+    margin-top: -768px;
+  } /* Line 4 visible until 90% */
+  100% {
+    margin-top: 0px;
+  } /* Smooth return to top */
 }
 
 @layer base {

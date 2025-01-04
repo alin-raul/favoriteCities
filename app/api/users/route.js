@@ -4,9 +4,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 
+let isDbInitialized = false;
+
 async function ensureDbInitialized() {
-  if (!AppDataSource.isInitialized) {
+  if (!isDbInitialized) {
     await AppDataSource.initialize();
+    isDbInitialized = true;
   }
 }
 
@@ -17,8 +20,8 @@ const userSchema = z.object({
 });
 
 export async function GET() {
-  await ensureDbInitialized();
   try {
+    await ensureDbInitialized();
     const userRepo = AppDataSource.getRepository(User);
     const users = await userRepo.find();
 
@@ -42,8 +45,9 @@ export async function GET() {
 }
 
 export async function POST(req) {
-  await ensureDbInitialized();
   try {
+    await ensureDbInitialized();
+
     const userRepo = AppDataSource.getRepository(User);
     const data = await req.json();
 

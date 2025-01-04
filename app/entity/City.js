@@ -56,9 +56,9 @@ const City = new EntitySchema({
   },
   relations: {
     users: {
-      type: "many-to-many",
       target: "User",
-      joinTable: true, // Use the linking table to manage many-to-many relations
+      type: "many-to-many",
+      joinTable: true,
     },
   },
 });
