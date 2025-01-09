@@ -103,6 +103,64 @@ export default function MapDisplay({
     return { minLng, minLat, maxLng, maxLat };
   };
 
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    const mapInstance = mapRef.current.getMap();
+
+    const add3DBuildings = () => {
+      if (mapInstance.getLayer("3d-buildings")) return; // Avoid adding the layer twice
+
+      mapInstance.addLayer(
+        {
+          id: "3d-buildings",
+          source: "composite",
+          "source-layer": "building",
+          type: "fill-extrusion",
+          minzoom: 15,
+          paint: {
+            "fill-extrusion-color": "#aaa", // Neutral color for buildings
+            "fill-extrusion-height": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              15,
+              0,
+              15.05,
+              ["get", "height"],
+            ],
+            "fill-extrusion-base": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              15,
+              0,
+              15.05,
+              ["get", "min_height"],
+            ],
+            "fill-extrusion-opacity": 0.6,
+          },
+        },
+        "waterway-label" // Adds the layer below labels for better visibility
+      );
+    };
+
+    mapInstance.on("styledata", () => {
+      // Add the 3D layer only if on the dark style
+      if (mapStyle.includes("dark")) {
+        add3DBuildings();
+      }
+    });
+
+    return () => {
+      // Cleanup: Remove the layer when the style changes to a non-dark style
+      if (mapInstance.getLayer("3d-buildings")) {
+        mapInstance.removeLayer("3d-buildings");
+        mapInstance.removeSource("composite");
+      }
+    };
+  }, [mapStyle]);
+
   return (
     <Map
       ref={mapRef}

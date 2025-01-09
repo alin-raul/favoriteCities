@@ -10,6 +10,7 @@
 
 html {
   font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -46,6 +47,10 @@ main.page-transition-end {
   filter: none;
 }
 
+.dark .missing-image {
+  filter: invert();
+}
+
 .cardinal:hover .logo {
   transform: rotate(90deg);
   transition: transform 0.5s ease-in-out;
@@ -71,6 +76,10 @@ main.page-transition-end {
     rgba(10, 10, 10, 1) 28%,
     rgba(0, 0, 0, 0) 66%
   );
+}
+
+.bg-radial-gradient {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
 }
 
 .bg-dynamic {
@@ -275,7 +284,7 @@ main.page-transition-end {
   animation: slide 20s ease-in-out infinite;
 }
 
-.slider div {
+.slider-container div {
   display: flex;
   align-items: center;
   height: 128px;

@@ -12,12 +12,6 @@ async function ensureDbInitialized() {
   }
 }
 
-const userSchema = z.object({
-  username: z.string().min(3).max(30),
-  email: z.string().email(),
-  id: z.string().optional(),
-});
-
 const citySchema = z.object({
   name: z.string(),
   country: z.string(),
@@ -28,7 +22,10 @@ const citySchema = z.object({
   osm_key: z.string(),
   osm_value: z.string(),
   extent: z.array(z.number()).optional(),
-  geometry: z.any(),
+  geometry: z.object({
+    coordinates: z.array(z.number()),
+  }),
+  image: z.string().optional(),
 });
 
 export async function POST(req) {
@@ -37,6 +34,8 @@ export async function POST(req) {
     const cityRepo = AppDataSource.getRepository(City);
     const userRepo = AppDataSource.getRepository(User);
     const data = await req.json();
+
+    console.log(data);
 
     const session = await getServerSession(options);
     console.log(session);
@@ -125,7 +124,6 @@ export async function GET() {
   const session = await getServerSession(options);
 
   try {
-    const userRepo = AppDataSource.getRepository(User);
     const cityRepo = AppDataSource.getRepository(City);
 
     if (!session || !session.user) {
@@ -144,7 +142,7 @@ export async function GET() {
       relations: ["users"],
       where: {
         users: {
-          id: userId, // Filter cities where the user is associated
+          id: userId,
         },
       },
     });

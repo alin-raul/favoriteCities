@@ -28,6 +28,7 @@ async function handlePostFavorite(city) {
         osm_value: city.properties.osm_value,
         extent: city.properties.extent,
         geometry: city.geometry,
+        image: city.image,
       }),
     });
 

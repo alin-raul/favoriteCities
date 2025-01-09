@@ -53,6 +53,10 @@ const City = new EntitySchema({
       type: "boolean",
       default: true,
     },
+    image: {
+      type: "varchar",
+      nullable: true,
+    },
   },
   relations: {
     users: {

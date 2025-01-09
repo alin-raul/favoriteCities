@@ -50,6 +50,7 @@
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "suncalc": "^1.9.0",
+    "swiper": "^11.2.0",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
