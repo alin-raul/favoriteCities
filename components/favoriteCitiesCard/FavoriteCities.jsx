@@ -108,9 +108,9 @@ const FavoriteCities = () => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow p-4 border rounded-3xl hover:shadow-md active:shadow-lg transition-all">
+        <div className="flex justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow p-4 border rounded-3xl">
           <p className="text-center font-semibold text-lg">
-            Search and click *⭐⁎ to add cities to your Favorite list
+            Search and click* ⭐ to add cities to your Favorite list
           </p>
         </div>
       )}

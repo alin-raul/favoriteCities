@@ -22,7 +22,7 @@ const InfiniteCarousel = () => {
 
   return (
     <div className="carousel">
-      <div className="group">
+      <div className="group-carousel-links ">
         {[...items].map((item, index) => (
           <Link
             key={index}
@@ -39,7 +39,7 @@ const InfiniteCarousel = () => {
         ))}
       </div>
 
-      <div className="group">
+      <div className="group-carousel-links ">
         {[...items].map((item, index) => (
           <Link
             key={index}

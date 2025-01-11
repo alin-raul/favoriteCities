@@ -245,7 +245,7 @@ main.page-transition-end {
   -webkit-mask: linear-gradient(90deg, #0000, #000 10% 90%, #0000);
 }
 
-.group {
+.group-carousel-links {
   display: flex;
   gap: 20px;
   padding-right: 20px;
@@ -253,7 +253,7 @@ main.page-transition-end {
   animation: scrolling 60s linear infinite;
 }
 
-.carousel:hover .group {
+.carousel:hover .group-carousel-links {
   animation-play-state: paused;
 }
 

@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "/components/carousel/carousel.css";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -24,13 +25,18 @@ const Carousel = ({ cities }) => {
     <div>
       <Swiper
         effect="coverflow"
-        fadeEffect={{
-          crossFade: true, // Enable cross-fading between slides
-        }}
         centeredSlides={true}
         loop={true}
         speed={600}
         slidesPerView={"auto"}
+        watchSlidesProgress={true}
+        onProgress={(swiper) => {
+          swiper.slides.forEach((slide) => {
+            const slideProgress = slide.progress;
+
+            slide.style.setProperty("--progress", Math.abs(slideProgress)); //
+          });
+        }}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
@@ -44,12 +50,11 @@ const Carousel = ({ cities }) => {
           prevEl: ".swiper-button-prev",
         }}
         autoplay={{
-          delay: 3000,
+          delay: 6000,
           disableOnInteraction: false,
         }}
-        onSwiper={(swiper) => console.log(swiper)}
         modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
-        className="swiper_container w-full 2xl:max-w-[1738px] card-shadow "
+        className="swiper_container w-full card-shadow "
       >
         {cities.map((city, index) => (
           <SwiperSlide key={index} className="max-w-[700px] ">
@@ -73,7 +78,11 @@ const Carousel = ({ cities }) => {
                     className="block text-6xl font-semibold"
                     href={`/cities/${city.name}`}
                   >
-                    {city.name}
+                    <div className="flex group items-center opacity-80 hover:opacity-100 transition-all">
+                      <h1 className="">{city.name}</h1>
+
+                      <FaArrowRightLong className="ml-4 group-hover:ml-12 w-10 transition-all" />
+                    </div>
                   </TransitionLink>
                   <span className="block text-2xl opacity-75">
                     {city.country}
