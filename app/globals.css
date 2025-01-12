@@ -125,6 +125,36 @@ main.page-transition-end {
   outline-color: #fff;
 }
 
+.bg-dynamic-minimal {
+  background-color: #ffffff40;
+}
+
+.dark .bg-dynamic-minimal {
+  background: #1b1b1b40;
+}
+
+.gradient-image {
+  background: radial-gradient(
+    circle at top right,
+
+    rgba(195, 184, 254, 0.3) 0%,
+    rgba(178, 196, 252, 0.2) 33%,
+    rgba(248, 207, 179, 0.4) 66%,
+    rgba(235, 163, 223, 0.6) 100%
+  );
+}
+
+.dark .gradient-image {
+  background: radial-gradient(
+    circle at top right,
+
+    rgba(48, 48, 48, 0.6) 0%,
+    rgba(100, 16, 148, 0.2) 33%,
+    rgba(11, 7, 59, 0.4) 66%,
+    rgba(0, 0, 0, 0.9) 90%
+  );
+}
+
 .maplibregl-popup-content {
   backdrop-filter: blur(4px) !important;
   background: rgba(255, 255, 255, 0.5) !important;

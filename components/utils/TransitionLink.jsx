@@ -1,7 +1,9 @@
 "use client";
 
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -14,9 +16,20 @@ const TransitionLink = ({
   ...props
 }) => {
   const router = useRouter();
+  const currentPath = useNavigationEvents();
+  const prevPathRef = useRef(null);
+
+  useEffect(() => {
+    if (prevPathRef.current !== currentPath) {
+      console.log(currentPath);
+      prevPathRef.current = currentPath;
+    }
+  }, [currentPath]);
 
   const handleTransition = async (e) => {
     e.preventDefault();
+
+    if (currentPath === href) return;
 
     const mainContent = document.querySelector("main");
     if (!mainContent || mainContent.classList.contains("transitioning")) return;

@@ -139,7 +139,7 @@ const Search = ({ height, noFetch = false }) => {
         <div className="flex-grow overflow-y-auto hidden md:block">
           <LocalCities
             className={
-              "w-full rounded-xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 cursor-pointer hover:shadow-md active:scale-105 active:shadow-lg transition-all"
+              "w-full rounded-2xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 cursor-pointer hover:shadow-md active:scale-105 active:shadow-lg transition-all"
             }
             selectedCityArea={selectedCityArea}
             setSelectedCityArea={setSelectedCityArea}

@@ -1,7 +1,6 @@
 "use client";
 
 import { React, useTransition } from "react";
-import { Button } from "../ui/button";
 import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
 
 const DeleteFavorite = ({ label, city }) => {
@@ -24,9 +23,12 @@ const DeleteFavorite = ({ label, city }) => {
   };
 
   return (
-    <Button onClick={handleClick} className="z-30">
+    <button
+      onClick={handleClick}
+      className="z-30 rounded-2xl bg-dynamic p-3 border hover:brightness-105 hover:drop-shadow-lg"
+    >
       {label || "Delete"}
-    </Button>
+    </button>
   );
 };
 

@@ -28,7 +28,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <p className="text-xl font-light text-justify opacity-80 max-w-5xl">
+              <p className="text-xl font-light opacity-80 max-w-5xl">
                 Imagine having every city&apos;s best-kept secrets, scenic
                 routes, and essential details at your fingertips. Our platform
                 empowers explorers, travelers, and urban adventurers to make the
@@ -50,22 +50,19 @@ export default function Home() {
 
       <Wrapper>
         <section className="flex flex-col justify-center pb-4 mb-10 xl:max-w-[1900px] h-[1200px] m-auto">
-          <div className="flex justify-center items-center">
-            <div className="flex flex-col items-center justify-center xl:max-w-screen-lg text-center mb-8">
-              <h2 className="text-6xl font-bold mb-4 relative font-serif">
-                View your saved destinations!
-              </h2>
-              <p className="text-xl font-light opacity-80 max-w-2xl">
-                The &quot;Favorite Cities&quot; feature allows you to save
-                cities you love or wish to visit. You can create your personal
-                list, making it easier to keep track of the cities that interest
-                you the most.
-              </p>
-            </div>
+          <div className="flex flex-col items-center justify-center xl:max-w-screen-lg text-center mb-8 lg:hidden">
+            <h2 className="text-6xl font-bold mb-4 relative font-serif">
+              View your saved destinations!
+            </h2>
+            <p className="text-xl font-light opacity-80 max-w-2xl">
+              The &quot;Favorite Cities&quot; feature allows you to save cities
+              you love or wish to visit. You can create your personal list,
+              making it easier to keep track of the cities that interest you the
+              most.
+            </p>
           </div>
-          <div className="border rounded-3xl bg-dynamic">
-            <FavoriteCities />
-          </div>
+
+          <FavoriteCities />
         </section>
       </Wrapper>
 

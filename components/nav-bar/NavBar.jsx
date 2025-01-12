@@ -4,6 +4,7 @@ import { ModeToggle } from "../mode-toggle/ModeToggle";
 import NavLinks from "./NavLinks";
 import SignInAndOutButton from "./SignInAndOutButton";
 import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
+import TransitionLink from "../utils/TransitionLink";
 
 export const Logo = ({ width, height, fill = "#fff" }) => {
   return (

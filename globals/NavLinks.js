@@ -11,15 +11,21 @@ const navigationLinks = [
     url: "/search",
     icon: Search,
   },
-  {
-    title: "Cities",
-    url: "/cities",
-    icon: Inbox,
-  },
+
   {
     title: "Favorites",
     url: "/favorites",
     icon: Calendar,
+  },
+  // {
+  //   title: "Plan",
+  //   url: "/",
+  //   icon: Calendar,
+  // },
+  {
+    title: "Cities",
+    url: "/cities",
+    icon: Inbox,
   },
 ];
 

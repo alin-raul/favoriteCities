@@ -3,6 +3,7 @@ import DeleteFavorite from "@/components/deleteFavoritesButton/DeleteFavorites";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import getFlagEmoji from "@/lib/getFlagEmoji";
+import Image from "next/image";
 
 const Favorites = async () => {
   const citiesData = await getFavoriteCities();
@@ -30,28 +31,38 @@ const Favorites = async () => {
             <p>No cities added yet.</p>
           </div>
         ) : (
-          <div className="mt-32 w-full max-w-screen-2xl gap-2 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
+          <div className="flex flex-col mt-32 w-full max-w-screen-2xl gap-4 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
             {citiesWithFlag.map((city, index) => (
-              <TransitionLink
-                href={`/cities/${city.name}`}
-                className="w-full h-full p-6 border rounded-xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:scale-105 active:shadow-lg transition-all"
-                card={true}
-                key={index}
-              >
-                <div className="flex justify-between">
-                  <div className="relative">
-                    <h2 className="text-lg font-semibold">{city.name}</h2>
-                    <span>
-                      {city.country}, {city.countrycode}{" "}
-                    </span>
+              <div className="relative w-full">
+                <div className="gradient-image absolute inset-0 w-full h-full z-10 rounded-[3rem]" />
+                <TransitionLink
+                  href={`/cities/${city.name}`}
+                  className="w-full h-full p-6 border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all relative z-20"
+                  card={true}
+                  key={index}
+                >
+                  {city.image ? (
+                    <Image
+                      src={city.image}
+                      width={300}
+                      height={200}
+                      className="rounded-[2rem] w-full mb-4"
+                    />
+                  ) : null}
+                  <div className="flex justify-between">
+                    <div className="relative">
+                      <h2 className="text-5xl font-semibold">{city.name}</h2>
+                      <span className="opacity-80">
+                        {city.country}, {city.countrycode}
+                      </span>
+                    </div>
+                    <div className="flex justify-end mt-4">
+                      <DeleteFavorite label="Remove" city={city} />
+                    </div>
+                    {/* <span className="text-6xl">{city.flagEmoji}</span> */}
                   </div>
-                  <span className="text-6xl">{city.flagEmoji}</span>
-                </div>
-
-                <div className="flex justify-end mt-4">
-                  <DeleteFavorite label="Remove" city={city} />
-                </div>
-              </TransitionLink>
+                </TransitionLink>
+              </div>
             ))}
           </div>
         )}

@@ -8,6 +8,7 @@ import { useNavigationEvents } from "@/components/navigation-events/useNavigatio
 import { MdOutlineDirections, MdOutlineDirectionsOff } from "react-icons/md";
 import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
+import { getFavoriteCities } from "@/lib/getFavoriteCities";
 
 const LocalCities = ({
   selectedCityArea,
@@ -21,7 +22,7 @@ const LocalCities = ({
   const router = useRouter();
   const pathname = useNavigationEvents();
 
-  const loadCitiesFromStorage = () => {
+  const loadCitiesFromStorage = async () => {
     try {
       const storedCities = localStorage.getItem("cities")
         ? JSON.parse(localStorage.getItem("cities"))
@@ -31,8 +32,23 @@ const LocalCities = ({
           (city) => city && city.properties
         );
 
-        validCities.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
-        setCities(validCities);
+        const favoriteCities = await getFavoriteCities();
+
+        const favoriteCityNames = new Set(
+          favoriteCities.data.map((fav) => fav.name)
+        );
+
+        const updatedCities = validCities.map((city) => {
+          if (favoriteCityNames.has(city.properties.name)) {
+            return { ...city, selected: true };
+          } else {
+            const { selected, ...rest } = city;
+            return rest;
+          }
+        });
+
+        updatedCities.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+        setCities(updatedCities);
       } else {
         setCities([]);
       }
@@ -151,7 +167,7 @@ const LocalCities = ({
                           pathname === "/search" ||
                           (pathname === "/" &&
                             city.properties.extent === selectedCityArea)
-                            ? "rounded-xl bg-dynamic-s shadow-md"
+                            ? "rounded-2xl bg-dynamic-s shadow-md"
                             : ""
                         }`}
                       >

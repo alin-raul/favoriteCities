@@ -35,7 +35,7 @@ const CityPage = async ({ params }) => {
         </div>
         <Clock weatherData={weatherData} />
       </div>
-      <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-xl gap-6 2xl:flex ">
+      <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-2xl gap-6 2xl:flex ">
         <div className="w-auto mb-8 bg-dynamic rounded-3xl shadow-lg p-4 2xl:mb-0">
           <div className="flex flex-col">
             <span className="text-md mt-2 text-justify">{description}</span>
