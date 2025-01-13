@@ -77,11 +77,11 @@
 }
 
 .slider-controler .swiper-button-prev {
-  left: 45%;
+  left: -45%;
 }
 
 .slider-controler .swiper-button-next {
-  right: 45%;
+  right: -45%;
 }
 
 .slider-controler .slider-arrow::after {
@@ -134,4 +134,10 @@
   border-radius: 40rem;
   box-shadow: 0 0 60px 30px #0a0a0a, 0 0 100px 60px rgb(0, 17, 255),
     0 0 140px 90px rgb(111, 0, 255);
+} */
+
+/* @media (max-width: 768px) {
+  .swiper_container {
+    height: 20rem;
+  }
 } */

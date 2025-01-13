@@ -10,10 +10,12 @@ const Favorites = async () => {
 
   const cities = citiesData.data;
 
-  const citiesWithFlag = cities.map((city) => ({
-    ...city,
-    flagEmoji: getFlagEmoji(city.countrycode),
-  }));
+  // Might use later
+
+  // const citiesWithFlag = cities.map((city) => ({
+  //   ...city,
+  //   flagEmoji: getFlagEmoji(city.countrycode),
+  // }));
 
   return (
     <Wrapper>
@@ -32,34 +34,39 @@ const Favorites = async () => {
           </div>
         ) : (
           <div className="flex flex-col mt-32 w-full max-w-screen-2xl gap-4 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
-            {citiesWithFlag.map((city, index) => (
-              <div className="relative w-full">
+            {cities.map((city, index) => (
+              <div className="relative w-full h-full">
                 <div className="gradient-image absolute inset-0 w-full h-full z-10 rounded-[3rem]" />
+
                 <TransitionLink
                   href={`/cities/${city.name}`}
-                  className="w-full h-full p-6 border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all relative z-20"
+                  className="w-full h-full p-6 border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all relative z-30"
                   card={true}
                   key={index}
                 >
                   {city.image ? (
                     <Image
                       src={city.image}
+                      alt="city image"
                       width={300}
                       height={200}
-                      className="rounded-[2rem] w-full mb-4"
+                      style={{
+                        objectFit: "cover",
+                      }}
+                      className="rounded-[2rem] max-h-72 w-full mb-4 z-40"
                     />
                   ) : null}
-                  <div className="flex justify-between">
+
+                  <div className="flex items-center justify-between mt-auto z-50">
                     <div className="relative">
                       <h2 className="text-5xl font-semibold">{city.name}</h2>
                       <span className="opacity-80">
                         {city.country}, {city.countrycode}
                       </span>
                     </div>
-                    <div className="flex justify-end mt-4">
+                    <div>
                       <DeleteFavorite label="Remove" city={city} />
                     </div>
-                    {/* <span className="text-6xl">{city.flagEmoji}</span> */}
                   </div>
                 </TransitionLink>
               </div>

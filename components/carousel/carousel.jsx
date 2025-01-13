@@ -55,7 +55,7 @@ const Carousel = ({ cities }) => {
             disableOnInteraction: false,
           }}
           modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
-          className="swiper_container max-w-screen-2xl card-shadow "
+          className="swiper_container max-w-screen-2xl card-shadow"
         >
           {cities.map((city, index) => (
             <SwiperSlide key={index} className="max-w-[700px] my-[3rem]">
@@ -93,7 +93,7 @@ const Carousel = ({ cities }) => {
               </div>
             </SwiperSlide>
           ))}
-          <div className="slider-controler">
+          <div className="slider-controler max-w-14 mx-auto">
             <div className="slider-arrow swiper-button-prev ">
               <MdOutlineArrowBackIosNew name="arrow-back-outline" />
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import TransitionLink from "../utils/TransitionLink";
@@ -9,6 +10,17 @@ import Image from "next/image";
 const FavoriteCities = () => {
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { theme, resolvedTheme } = useTheme();
+
+  const systemThemeImageAddCards =
+    resolvedTheme === "dark"
+      ? "/images/illustrations/undraw_choose-card_es1o.svg"
+      : "/images/illustrations/undraw_choose-card_es1o-light.svg";
+  const systemThemeImageCover =
+    resolvedTheme === "dark"
+      ? "/images/illustrations/navigation-94.svg"
+      : "/images/illustrations/navigation-94-light.svg";
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -77,7 +89,7 @@ const FavoriteCities = () => {
                             alt={`${city.name} image`}
                             layout="fill"
                             objectFit="cover"
-                            className="rounded-[2rem] group-hover:brightness-110 group-hover:scale-105 transition-all"
+                            className="rounded-[2rem] group-hover:brightness-110 scale-105 group-hover:scale-100 transition-all"
                           />
                         </div>
                       </div>
@@ -112,10 +124,29 @@ const FavoriteCities = () => {
                 </div>
               )}
               {cities.length > 0 && citiesWithImages.length < 4 && (
-                <div className="flex justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow p-4 border rounded-[3rem]  transition-all">
-                  <p className="text-center font-semibold text-lg">
-                    Great! You can add more!
-                  </p>
+                <div className="flex flex-col justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow border rounded-[3rem] transition-all overflow-hidden">
+                  <div className="translate-y-[30%] h-full w-full relative">
+                    <div className="">
+                      <p className="text-center text-2xl -translate-y-16 opacity-70">
+                        Great. You can add other now!
+                      </p>
+                      <Image
+                        src={
+                          theme === "system"
+                            ? systemThemeImageAddCards
+                            : theme === "dark"
+                            ? "/images/illustrations/undraw_choose-card_es1o.svg"
+                            : "/images/illustrations/undraw_choose-card_es1o-light.svg"
+                        }
+                        alt="cards"
+                        layout="fill"
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: "top",
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -136,7 +167,13 @@ const FavoriteCities = () => {
           </div>
           <div className="relative">
             <Image
-              src={"/images/illustrations/navigation-94.svg"}
+              src={
+                theme === "system"
+                  ? systemThemeImageCover
+                  : theme === "dark"
+                  ? "/images/illustrations/navigation-94.svg"
+                  : "/images/illustrations/navigation-94-light.svg"
+              }
               alt="Navigation"
               width={600}
               height={700}

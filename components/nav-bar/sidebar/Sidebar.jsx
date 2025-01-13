@@ -15,10 +15,9 @@ const Sidebar = () => {
     if (isVisible) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = ""; // Reset overflow when sidebar is hidden
+      document.body.style.overflow = "";
     }
 
-    // Cleanup to prevent unintended side effects
     return () => {
       document.body.style.overflow = "";
     };
@@ -26,10 +25,9 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Overlay Background */}
       {isVisible && (
         <div
-          className={`z-40 fixed inset-0 bg-black/60 w-screen h-screen md:hidden transition-opacity duration-300 ease-in-out ${
+          className={`z-40 fixed inset-0 bg-black/60  w-screen h-screen md:hidden transition-opacity duration-300 ease-in-out ${
             isVisible
               ? "opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
@@ -40,7 +38,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <nav
-        className={`bg-dynamic backdrop-blur-md fixed top-0 left-0 h-full w-48 p-6 z-50 transition-transform duration-300 ease-in-out transform md:hidden ${
+        className={` backdrop-blur-xl fixed top-0 left-0 h-full w-full p-6 z-50 transition-transform duration-300 ease-in-out transform md:hidden ${
           isVisible ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -48,16 +46,20 @@ const Sidebar = () => {
         <BurgerMenu className="absolute top-4 right-4" icon={<IoClose />} />
 
         {/* Logo */}
-        <div className="flex items-center gap-1 font-bold mt-3">
-          <Logo height="20px" width="20px" />
-          Cardinal
+        <div className="flex items-center text-4xl text-white gap-1 font-bold mt-3">
+          <Logo height="2.2rem" width="2.2rem" />
+          <span className="ml-4">Cardinal</span>
         </div>
 
         {/* Navigation Links */}
-        <div className="p-4">
-          <ul>
+        <div className="pl-14 text-white">
+          <ul className="mt-4">
             {navLinks.map((item) => (
-              <li key={item.title} className="p-2" onClick={hideSidebar}>
+              <li
+                key={item.title}
+                className="py-2 text-2xl"
+                onClick={hideSidebar}
+              >
                 <TransitionLink href={item.url}>
                   <span>{item.title}</span>
                 </TransitionLink>

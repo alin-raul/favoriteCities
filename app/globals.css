@@ -100,11 +100,11 @@ main.page-transition-end {
   background: #1b1b1bad;
 }
 .bg-dynamic-h:hover {
-  background-color: #ffffffdc;
+  background-color: #ffffffa1;
 }
 
 .dark .bg-dynamic-h:hover {
-  background: #1b1b1bd0;
+  background: #1b1b1ba1;
 }
 
 .bg-dynamic-secondary {
@@ -149,9 +149,9 @@ main.page-transition-end {
     circle at top right,
 
     rgba(48, 48, 48, 0.6) 0%,
-    rgba(100, 16, 148, 0.2) 33%,
-    rgba(11, 7, 59, 0.4) 66%,
-    rgba(0, 0, 0, 0.9) 90%
+    rgba(100, 16, 148, 0.3) 33%,
+    rgba(11, 7, 59, 0.6) 66%,
+    rgba(13, 1, 36, 0.4) 90%
   );
 }
 
@@ -431,4 +431,15 @@ main.page-transition-end {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
