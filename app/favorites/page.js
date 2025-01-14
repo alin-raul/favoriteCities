@@ -36,7 +36,7 @@ const Favorites = async () => {
           <div className="flex flex-col mt-32 w-full max-w-screen-2xl gap-4 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
             {cities.map((city, index) => (
               <div className="relative w-full h-full">
-                <div className="gradient-image absolute inset-0 w-full h-full z-10 rounded-[3rem]" />
+                <div className="absolute inset-0 w-full h-full z-10 rounded-[3rem]" />
 
                 <TransitionLink
                   href={`/cities/${city.name}`}

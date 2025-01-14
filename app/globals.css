@@ -443,3 +443,15 @@ main.page-transition-end {
   opacity: 1;
   transform: translateY(0);
 }
+
+.text-indent-last-line {
+  margin-bottom: 1.5em;
+}
+
+.text-indent-last-line::after {
+  content: "";
+  display: block;
+  margin-top: -1.5em; /* Equal to margin-bottom */
+  height: 1.5em; /* Equal to margin-bottom */
+  overflow: hidden;
+}

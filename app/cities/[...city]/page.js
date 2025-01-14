@@ -25,47 +25,69 @@ const CityPage = async ({ params }) => {
   }
 
   return (
-    <Wrapper>
-      <div className="grid grid-flow-col justify-between mt-12 max-w-screen-2xl p-4 m-auto">
-        <div className="custom-outline w-fit h-fit py-4 px-6 bg-[#0f1a57] text-white rounded-2xl">
-          <h3 className="font-bold text-6xl md:text-7xl mb-2">{name}</h3>
-          <h3 className="font-normal leading-3 text-sm opacity-80">
-            {country}
-          </h3>
-        </div>
-        <Clock weatherData={weatherData} />
-      </div>
-      <div className="max-w-screen-2xl m-auto justify-around p-4 rounded-2xl gap-6 2xl:flex ">
-        <div className="w-auto mb-8 bg-dynamic rounded-3xl shadow-lg p-4 2xl:mb-0">
-          <div className="flex flex-col">
-            <span className="text-md mt-2 text-justify">{description}</span>
-            <div className="w-full text-end">
-              <Link
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-end text-blue-700 hover:text-blue-500 hover:underline visited:text-violet-700"
-              >
-                Wikipedia
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div>
-            {image && (
-              <div className="mb-8 w-full  rounded-3xl shadow-xl">
+    <Wrapper className="h-screen-minus-nav w-screen flex justify-center">
+      <div className="max-w-screen-lg m-auto border rounded-[2rem] gap-6 p-4 shadow-lg">
+        <div className="flex flex-col">
+          {image && (
+            <div className="mb-8 w-full">
+              <div className="relative w-full max-h-2xl rounded-[1.2rem] overflow-hidden">
                 <Image
                   src={image}
                   alt={`Image of ${name}`}
-                  width={600}
-                  height={600}
-                  className="w-full rounded-3xl shadow-inner"
+                  width={1000}
+                  height={640}
+                  style={{
+                    objectFit: "cover",
+                    height: "40rem",
+                  }}
+                  className="w-full max-h-2xl rounded-[1.2rem] brightness-75"
                 />
+                <div
+                  className="absolute inset-0 z-10"
+                  style={{
+                    maskImage:
+                      "linear-gradient(to top, rgba(0,0,0,1) 10%, transparent)",
+                    WebkitMaskImage:
+                      "linear-gradient(to top, rgba(0,0,0,1) 20%, transparent)",
+                    backdropFilter: "blur(20px)",
+                  }}
+                >
+                  <div className="absolute bottom-0 px-4 py-2">
+                    <span className="text-md mt-2 text-justify line-clamp-5 text-white">
+                      {description}
+                    </span>
+                    <div className="w-full text-end">
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-end text-blue-300 hover:text-blue-100 hover:underline visited:text-violet-300"
+                      >
+                        Wikipedia
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
-            )}
-            <Weather weatherData={weatherData} name={name} country={country} />
-          </div>
+
+              <div className="flex justify-between items-center p-4">
+                <div>
+                  <h3 className="text-5xl mb-2">{name}</h3>
+                  <h3 className="font-normal leading-3 text-sm opacity-80">
+                    {country}
+                  </h3>
+                </div>
+                <div className="">
+                  <Weather
+                    weatherData={weatherData}
+                    name={name}
+                    country={country}
+                  />
+                  <Clock weatherData={weatherData} />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Wrapper>

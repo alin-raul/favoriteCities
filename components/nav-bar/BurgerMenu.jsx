@@ -9,7 +9,7 @@ const BurgerMenu = ({ icon, ...props }) => {
   return (
     <div>
       <button
-        className="p-2 rounded-md hover:bg-dynamic md:hidden"
+        className="p-2 rounded-md hover:bg-dynamic md:hidden z-50"
         onClick={toggleSidebar}
         {...props}
       >

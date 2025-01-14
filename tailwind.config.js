@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       opacity: {
         1: ".01",
+        60: "0.6",
       },
       colors: {
         background: "hsl(var(--background))",
@@ -89,8 +90,9 @@ module.exports = {
       boxShadow: {
         dotted: "0 0 0 2px rgba(0, 0, 0, 0.4) dotted",
       },
-      opacity: {
-        60: "0.6",
+
+      scale: {
+        99: "0.99", // 99% scale
       },
     },
   },

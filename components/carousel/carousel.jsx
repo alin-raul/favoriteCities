@@ -67,7 +67,7 @@ const Carousel = ({ cities }) => {
                     objectFit: "cover",
                     width: "70rem",
                     height: "30rem",
-                    borderRadius: "2rem", // Apply the border radius
+                    borderRadius: "2rem",
                   }}
                   className="border rounded-2xl brightness-75 "
                   width={700}
@@ -103,9 +103,9 @@ const Carousel = ({ cities }) => {
           </div>
         </Swiper>
       </div>
-      <div className="p-6 max-w-xl m-auto hidden xl:block">
+      <div className="p-6 max-w-2xl m-auto hidden xl:block">
         <h1 className="text-6xl font-bold mb-8 font-serif">Spin the Globe!</h1>
-        <p className="text-2xl font-light opacity-80 ">
+        <p className="text-2xl font-light opacity-80 text-justify max-w-md">
           Let your wanderlust take the lead! Each spin unveils a handpicked
           selection of exciting cities from around the world, waiting for you to
           explore. Dive into the map, uncover unique destinations, and learn

@@ -66,7 +66,7 @@ export default function HandleLogin() {
         </span>
         <Button
           onClick={handleGitHubLogin}
-          className="bg-zinc-800 text-white w-full py-2 rounded-2xl hover:bg-zinc-600"
+          className="bg-zinc-900 text-white w-full py-2 rounded-2xl hover:bg-zinc-800"
         >
           <FaGithubAlt /> Login with GitHub
         </Button>

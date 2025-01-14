@@ -28,6 +28,7 @@ const FavoriteCities = () => {
 
       if (!citiesData) {
         console.log("Error fetching data");
+        setLoading(false);
         return [];
       }
 
@@ -44,7 +45,7 @@ const FavoriteCities = () => {
   return (
     <>
       {loading ? (
-        <div className="flex gap-4 mb-2 w-full bg-dynamic lg:p-8 border rounded-[3rem]  m-auto min-h-96 pointer-events-none opacity-50 p-4">
+        <div className="flex gap-4 mb-2 w-full bg-dynamic lg:p-8 border rounded-[3rem]  m-auto min-h-96 pointer-events-none opacity-50">
           {Array.from({ length: 5 }).map((_, index) => (
             <div
               className="flex flex-col justify-center w-fit h-fit border rounded-[3rem] bg-dynamic bg-dynamic-h h transition-all m-auto p-4"
@@ -63,7 +64,7 @@ const FavoriteCities = () => {
           ))}
         </div>
       ) : cities.length > 0 ? (
-        <div className="">
+        <div>
           <div className="lg:flex flex-col items-center justify-center xl:max-w-screen-lg text-center mb-8 mx-auto hidden ">
             <h2 className="text-6xl font-bold mb-4 relative font-serif">
               View your saved destinations!
@@ -77,7 +78,7 @@ const FavoriteCities = () => {
           </div>
 
           <div className="flex gap-8 overflow-x-scroll">
-            <div className="flex gap-4 overflow-x-auto p-4 w-full max-w-screen-3xl">
+            <div className="flex gap-4 overflow-x-auto w-full max-w-screen-3xl p-4">
               {citiesWithImages.map((city, index) => (
                 <div key={index}>
                   <TransitionLink href={`/cities/${city.name}`} className="">
@@ -89,7 +90,7 @@ const FavoriteCities = () => {
                             alt={`${city.name} image`}
                             layout="fill"
                             objectFit="cover"
-                            className="rounded-[2rem] group-hover:brightness-110 scale-105 group-hover:scale-100 transition-all"
+                            className="rounded-[2rem] group-hover:brightness-110 scale-105 saturate-50 group-hover:saturate-100 group-hover:scale-100 transition-all ease-in-out "
                           />
                         </div>
                       </div>
@@ -105,14 +106,14 @@ const FavoriteCities = () => {
                 </div>
               ))}
               {citiesWithoutImages.length > 0 && (
-                <div className="grid grid-cols-2 auto-cols-fr auto-rows-1fr gap-2 min-w-96 max-h-[514px] overflow-y-auto pr-4 ">
+                <div className="grid grid-cols-2 auto-cols-fr auto-rows-1fr gap-2 min-w-96 max-h-[514px] overflow-y-auto pr-4">
                   {citiesWithoutImages.map((city, index) => (
                     <div key={index}>
                       <TransitionLink
                         href={`/cities/${city.name}`}
                         className="h-fit"
                       >
-                        <div className="flex flex-col justify-center h-[253px] w-full p-4 border rounded-[3rem] shadow-inner hover:shadow-md active:shadow-lg bg-dynamic bg-dynamic-h transition-all text-center m-auto">
+                        <div className="flex flex-col justify-center h-[253px] w-full p-4 border rounded-[3rem] shadow-inner bg-dynamic bg-dynamic-h transition-all text-center m-auto">
                           <h3 className="text-xl font-semibold">{city.name}</h3>
                           <p className="text-sm opacity-50">
                             {city.country}, {city.countrycode}
@@ -154,11 +155,11 @@ const FavoriteCities = () => {
         </div>
       ) : (
         <div className="flex justify-center items-center bg-dynamic max-h-[512px] max-w-screen-lg w-full mx-auto flex-grow lg:p-8 border rounded-[4rem] relative overflow-hidden">
-          <div className="mb-8 max-w-md hidden lg:block">
+          <div className="mb-8 max-w-md hidden lg:block ">
             <h2 className="text-6xl font-bold mb-4 relative font-serif">
               Explore Your Favorite Cities!
             </h2>
-            <p className="text-2xl font-light opacity-80 ">
+            <p className="text-2xl font-light opacity-80 text-justify mr-5">
               Keep track of the places you love or dream of visiting with our
               &quot;Favorite Cities&quot; feature. Create a personalized list of
               destinations and easily revisit them anytime, helping you plan

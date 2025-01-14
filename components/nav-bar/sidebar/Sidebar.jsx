@@ -36,22 +36,23 @@ const Sidebar = () => {
         />
       )}
 
-      {/* Sidebar */}
       <nav
-        className={` backdrop-blur-xl fixed top-0 left-0 h-full w-full p-6 z-50 transition-transform duration-300 ease-in-out transform md:hidden ${
-          isVisible ? "translate-x-0" : "-translate-x-full"
+        className={`backdrop-blur-xl fixed top-0 left-0 h-full w-full p-6 z-50 duration-300 ease-in-out md:hidden  ${
+          isVisible
+            ? "opacity-100 scale-100 pointer-events-auto blur-none"
+            : "opacity-0 scale-99 pointer-events-none blur-md invisible"
         }`}
       >
-        {/* Close Button */}
-        <BurgerMenu className="absolute top-4 right-4" icon={<IoClose />} />
+        <BurgerMenu
+          className="absolute top-4 right-4"
+          icon={<IoClose className="w-6 h-6" />}
+        />
 
-        {/* Logo */}
         <div className="flex items-center text-4xl text-white gap-1 font-bold mt-3">
           <Logo height="2.2rem" width="2.2rem" />
           <span className="ml-4">Cardinal</span>
         </div>
 
-        {/* Navigation Links */}
         <div className="pl-14 text-white">
           <ul className="mt-4">
             {navLinks.map((item) => (

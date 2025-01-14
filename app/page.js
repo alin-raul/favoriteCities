@@ -28,7 +28,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <p className="text-xl font-light opacity-80 max-w-5xl">
+              <p className="text-xl text-justify font-light opacity-80 max-w-5xl">
                 Imagine having every city&apos;s best-kept secrets, scenic
                 routes, and essential details at your fingertips. Our platform
                 empowers explorers, travelers, and urban adventurers to make the

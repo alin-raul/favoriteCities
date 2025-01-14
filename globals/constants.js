@@ -33,7 +33,7 @@ export const weatherCodeDescriptions = {
 
 export const weatherIconsCodeDescriptionsURL = {
   0: "/images/weather/a_1_sunny.svg",
-  1: "/images/weather/a_4_night.svg",
+  1: "/images/weather/a_1_sunny.svg",
   2: "/images/weather/b_1_partly_cloudy.svg",
   3: "/images/weather/b_2_cloudy.svg",
   45: "/images/weather/d_4_fog.svg",
