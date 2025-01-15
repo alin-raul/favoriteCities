@@ -16,7 +16,6 @@ const LocalCities = ({
   onRoute,
   endRoute,
   setOnRoute,
-  ...props
 }) => {
   const [cities, setCities] = useState([]);
   const router = useRouter();
@@ -152,7 +151,7 @@ const LocalCities = ({
                   return (
                     <div
                       key={index}
-                      {...props}
+                      className="h-fit p-4 rounded-3xl border dynamic-border shadow-inner flex flex-col justify-between bg-dynamic-s bg-dynamic-h mb-8 cursor-pointer hover:shadow-md active:shadow-lg transition-all"
                       onClick={() => {
                         if (pathname === "/cities") {
                           router.push(`/cities/${city.properties.name}`);
@@ -163,12 +162,8 @@ const LocalCities = ({
                       }}
                     >
                       <div
-                        className={`p-4 ${
-                          pathname === "/search" ||
-                          (pathname === "/" &&
-                            city.properties.extent === selectedCityArea)
-                            ? "rounded-2xl bg-dynamic-s shadow-md"
-                            : ""
+                        className={` ${
+                          pathname === "/search" ? "rounded-2xl shadow-md" : ""
                         }`}
                       >
                         <div className="flex justify-end">

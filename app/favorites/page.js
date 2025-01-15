@@ -35,12 +35,15 @@ const Favorites = async () => {
         ) : (
           <div className="flex flex-col mt-32 w-full max-w-screen-2xl gap-4 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
             {cities.map((city, index) => (
-              <div className="relative w-full h-full">
+              <div
+                key={city.name + `-${index}`}
+                className="relative w-full h-full"
+              >
                 <div className="absolute inset-0 w-full h-full z-10 rounded-[3rem]" />
 
                 <TransitionLink
                   href={`/cities/${city.name}`}
-                  className="w-full h-full p-6 border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all relative z-30"
+                  className="w-full h-full p-6 border dynamic-border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all relative z-30"
                   card={true}
                   key={index}
                 >

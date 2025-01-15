@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Image from "next/image";
 import TransitionLink from "../utils/TransitionLink";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -21,6 +22,43 @@ import {
 } from "swiper/modules";
 
 const Carousel = ({ cities }) => {
+  const slides = useMemo(() => {
+    return cities.map((city, index) => (
+      <SwiperSlide key={index} className="max-w-[700px] my-[3rem]">
+        <div className="relative flex justify-center items-center ">
+          <Image
+            src={city.image}
+            alt={`${city.name} image`}
+            style={{
+              objectFit: "cover",
+              width: "70rem",
+              height: "30rem",
+              borderRadius: "2rem",
+            }}
+            className="border rounded-2xl brightness-75 "
+            width={700}
+            height={480}
+          />
+          <div className="z-50 w-full absolute bottom-0 left-0 top-0 p-8 gradient-slider text-white rounded-[32px]">
+            <div className="flex flex-col justify-end h-full">
+              <TransitionLink
+                className="block text-6xl font-semibold"
+                href={`/cities/${city.name}`}
+              >
+                <div className="flex group items-center opacity-80 hover:opacity-100 transition-all">
+                  <h1 className="">{city.name}</h1>
+
+                  <FaArrowRightLong className="ml-2 group-hover:ml-4 w-10 transition-all" />
+                </div>
+              </TransitionLink>
+              <span className="block text-2xl opacity-75">{city.country}</span>
+            </div>
+          </div>
+        </div>
+      </SwiperSlide>
+    ));
+  }, [cities]);
+
   return (
     <div className="flex border bg-dynamic rounded-[3rem] max-w-screen-2xl">
       <div className="border pb-6 w-full bg-dynamic-minimal xl:max-w-screen-md m-auto rounded-[2.5rem]">
@@ -34,8 +72,7 @@ const Carousel = ({ cities }) => {
           onProgress={(swiper) => {
             swiper.slides.forEach((slide) => {
               const slideProgress = slide.progress;
-
-              slide.style.setProperty("--progress", Math.abs(slideProgress)); //
+              slide.style.setProperty("--progress", Math.abs(slideProgress));
             });
           }}
           coverflowEffect={{
@@ -57,42 +94,7 @@ const Carousel = ({ cities }) => {
           modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
           className="swiper_container max-w-screen-2xl card-shadow"
         >
-          {cities.map((city, index) => (
-            <SwiperSlide key={index} className="max-w-[700px] my-[3rem]">
-              <div className="relative flex justify-center items-center ">
-                <Image
-                  src={city.image}
-                  alt={`${city.name} image`}
-                  style={{
-                    objectFit: "cover",
-                    width: "70rem",
-                    height: "30rem",
-                    borderRadius: "2rem",
-                  }}
-                  className="border rounded-2xl brightness-75 "
-                  width={700}
-                  height={480}
-                />
-                <div className="z-50 w-full absolute bottom-0 left-0 top-0 p-8 gradient-slider text-white rounded-[32px]">
-                  <div className="flex flex-col justify-end h-full">
-                    <TransitionLink
-                      className="block text-6xl font-semibold"
-                      href={`/cities/${city.name}`}
-                    >
-                      <div className="flex group items-center opacity-80 hover:opacity-100 transition-all">
-                        <h1 className="">{city.name}</h1>
-
-                        <FaArrowRightLong className="ml-2 group-hover:ml-4 w-10 transition-all" />
-                      </div>
-                    </TransitionLink>
-                    <span className="block text-2xl opacity-75">
-                      {city.country}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+          {slides}
           <div className="slider-controler max-w-14 mx-auto">
             <div className="slider-arrow swiper-button-prev ">
               <MdOutlineArrowBackIosNew name="arrow-back-outline" />

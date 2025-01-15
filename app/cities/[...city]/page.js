@@ -61,7 +61,7 @@ const CityPage = async ({ params }) => {
                         href={link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-end text-blue-300 hover:text-blue-100 hover:underline visited:text-violet-300"
+                        className="flex-end text-blue-400 hover:text-blue-100 hover:underline visited:text-violet-400 "
                       >
                         Wikipedia
                       </a>

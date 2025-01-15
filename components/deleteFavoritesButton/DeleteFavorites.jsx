@@ -25,7 +25,7 @@ const DeleteFavorite = ({ label, city }) => {
   return (
     <button
       onClick={handleClick}
-      className="bg-dynamic-secondary z-30 rounded-2xl bg-dynamic p-3 border hover:bg-white/20  hover:drop-shadow-lg"
+      className="bg-dynamic-secondary z-30 rounded-2xl bg-dynamic p-3 border dynamic-border hover:bg-white/20  hover:drop-shadow-lg"
     >
       {label || "Delete"}
     </button>

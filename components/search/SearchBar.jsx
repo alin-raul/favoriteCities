@@ -101,7 +101,7 @@ const SearchBar = ({ width, height }) => {
       </div>
       <div className="flex justify-end">
         <Link href="/search">
-          <button className="bg-dynamic rounded-full p-6 border shadow-md font-medium text-xl h-full hover:brightness-110 hover:bg-gradient-to-br hover:from-[#4934b549] hover:to-[#86458e2f] transition-all">
+          <button className="bg-dynamic rounded-full p-6 border dynamic-border shadow-md font-medium text-xl h-full hover:brightness-110 hover:bg-gradient-to-br hover:from-[#4934b549] hover:to-[#86458e2f] transition-all">
             Click to Search
           </button>
         </Link>

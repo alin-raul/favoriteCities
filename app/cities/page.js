@@ -10,11 +10,7 @@ const City = () => {
           <LuHistory className="w-6 h-6" />{" "}
           <span> Cities searched history</span>
         </div>
-        <LocalCities
-          className={
-            "h-fit p-4 rounded-2xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-8 cursor-pointer hover:shadow-md active:shadow-lg transition-all"
-          }
-        />
+        <LocalCities />
       </div>
     </Wrapper>
   );

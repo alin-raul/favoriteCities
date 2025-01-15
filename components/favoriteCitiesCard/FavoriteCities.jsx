@@ -82,7 +82,7 @@ const FavoriteCities = () => {
               {citiesWithImages.map((city, index) => (
                 <div key={index}>
                   <TransitionLink href={`/cities/${city.name}`} className="">
-                    <div className="p-4 border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all group">
+                    <div className="p-4 border dynamic-border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all group">
                       <div className="relative w-80 h-96 border rounded-[2rem] overflow-hidden">
                         <div className="relative w-full h-full">
                           <Image
@@ -90,7 +90,7 @@ const FavoriteCities = () => {
                             alt={`${city.name} image`}
                             layout="fill"
                             objectFit="cover"
-                            className="rounded-[2rem] group-hover:brightness-110 scale-105 saturate-50 group-hover:saturate-100 group-hover:scale-100 transition-all ease-in-out "
+                            className="rounded-[2rem] saturate-50 group-hover:saturate-100 group-hover:scale-100 transition-all ease-in-out "
                           />
                         </div>
                       </div>
@@ -113,7 +113,7 @@ const FavoriteCities = () => {
                         href={`/cities/${city.name}`}
                         className="h-fit"
                       >
-                        <div className="flex flex-col justify-center h-[253px] w-full p-4 border rounded-[3rem] shadow-inner bg-dynamic bg-dynamic-h transition-all text-center m-auto">
+                        <div className="flex flex-col justify-center h-[253px] w-full p-4 border dynamic-border rounded-[3rem] shadow-inner bg-dynamic bg-dynamic-h transition-all text-center m-auto">
                           <h3 className="text-xl font-semibold">{city.name}</h3>
                           <p className="text-sm opacity-50">
                             {city.country}, {city.countrycode}
