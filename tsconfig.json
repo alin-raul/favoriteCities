@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".", // Base URL set to root of the project
+    "paths": {
+      "@/*": ["src/*"] // Map "@" to the src folder
+    },
+    "target": "esnext", // Set to modern JavaScript
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false, // Optional: set to true if you want stricter type checking
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve", // Ensure JSX works in TypeScript
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts", // Include Next.js environment types
+    "src/**/*", // Include all TypeScript files in src
+    "**/*.ts", // Include TypeScript files globally
+    "**/*.tsx", // Include TypeScript JSX files globally
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules" // Exclude the node_modules directory
+  ]
+}
