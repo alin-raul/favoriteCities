@@ -84,12 +84,11 @@ main.page-transition-end {
 
 .bg-dynamic {
   background-color: #f8f9fa5d;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
 }
 
 .dark .bg-dynamic {
   background: #0f0f0f5b;
-  backdrop-filter: blur(4px);
 }
 
 .bg-dynamic-s {

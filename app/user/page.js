@@ -7,7 +7,6 @@ import { FaUserCircle } from "react-icons/fa";
 
 export default async function User() {
   const session = await getServerSession(options);
-  console.log(session);
 
   return (
     <Wrapper className="h-screen-minus-nav flex flex-col justify-center items-center">
@@ -17,7 +16,7 @@ export default async function User() {
             You are already logged in.
           </span>
 
-          <div className="h-fit w-96 p-8 bg-dynamic rounded-2xl shadow-md">
+          <div className="h-fit w-96 p-8 bg-dynamic rounded-3xl border shadow-md">
             <div className="flex flex-col gap-4">
               <div>
                 {session.user.image ? (

@@ -7,7 +7,7 @@ import { Logo } from "./NavBar";
 const NavLinks = ({ pathname }) => {
   return (
     <div className="flex items-center gap-6">
-      <BurgerMenu icon={<RxHamburgerMenu />} />
+      <BurgerMenu icon={<RxHamburgerMenu className="w-6 h-6 opacity-75" />} />
       <div className="hidden items-center gap-6 md:flex">
         <ul className="flex">
           <div className="flex items-center gap-1 ">

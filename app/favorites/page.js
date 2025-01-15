@@ -33,11 +33,11 @@ const Favorites = async () => {
             <p>No cities added yet.</p>
           </div>
         ) : (
-          <div className="flex flex-col mt-32 w-full max-w-screen-2xl gap-4 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3">
+          <div className="flex flex-col mt-32 w-full max-w-screen-2xl gap-4 justify-center items-center lg:grid lg:grid-cols-2 2xl:grid-cols-3 last:mb-4">
             {cities.map((city, index) => (
               <div
                 key={city.name + `-${index}`}
-                className="relative w-full h-full"
+                className="relative w-full h-full  "
               >
                 <div className="absolute inset-0 w-full h-full z-10 rounded-[3rem]" />
 

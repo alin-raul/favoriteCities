@@ -4,7 +4,6 @@ import { ModeToggle } from "../mode-toggle/ModeToggle";
 import NavLinks from "./NavLinks";
 import SignInAndOutButton from "./SignInAndOutButton";
 import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
-import TransitionLink from "../utils/TransitionLink";
 
 export const Logo = ({ width, height, fill = "#fff" }) => {
   return (
@@ -37,7 +36,7 @@ const Navbar = ({ session }) => {
         ["/login", "/signup"].includes(pathname) ? "hidden" : "sticky"
       }`}
     >
-      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 backdrop-blur-md">
+      <nav className="flex items-center justify-center w-screen md:border-b border-white/20 h-14 bg-dynamic">
         <div className="max-w-screen-xl flex items-center justify-between w-full mx-2 sm:mx-8">
           <NavLinks pathname={pathname} />
           <div className="gap-2 flex items-center">

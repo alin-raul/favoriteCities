@@ -44,7 +44,7 @@ const Sidebar = () => {
         }`}
       >
         <BurgerMenu
-          className="absolute top-4 right-4"
+          className="absolute top-4 right-8"
           icon={<IoClose className="w-6 h-6" />}
         />
 
