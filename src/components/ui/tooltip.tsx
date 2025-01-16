@@ -5,13 +5,20 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
 import { cn } from "@/lib/utils";
 
+// Define props for TooltipContent component
+interface TooltipContentProps
+  extends React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> {
+  className?: string;
+  sideOffset?: number;
+}
+
 const TooltipProvider = TooltipPrimitive.Provider;
 
 const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
-const TooltipContent = React.forwardRef(
+const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ className, sideOffset = 4, ...props }, ref) => (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content

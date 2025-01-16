@@ -1,9 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { FC, ButtonHTMLAttributes } from "react";
 import { useSidebar } from "@/context/SidebarContext";
 
-const BurgerMenu = ({ icon, ...props }) => {
+interface BurgerMenuProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  icon: React.ReactNode;
+}
+
+const BurgerMenu: FC<BurgerMenuProps> = ({ icon, ...props }) => {
   const { toggleSidebar } = useSidebar();
 
   return (

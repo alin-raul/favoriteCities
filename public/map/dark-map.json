@@ -180,18 +180,17 @@
       "type": "fill",
       "source": "openmaptiles",
       "source-layer": "building",
-      "minzoom": 12,
-      "filter": [
-        "match",
-        ["geometry-type"],
-        ["MultiPolygon", "Polygon"],
-        true,
-        false
-      ],
+      "minzoom": 13,
+      "maxzoom": 14,
       "paint": {
-        "fill-antialias": true,
-        "fill-color": "rgb(10,10,10)",
-        "fill-outline-color": "rgb(27 ,27 ,29)"
+        "fill-color": "rgba(22, 22, 22, 1)",
+        "fill-outline-color": {
+          "base": 1,
+          "stops": [
+            [13, "rgba(44, 44, 44, 0.32)"],
+            [14, "rgba(44, 44, 44, 0.32)"]
+          ]
+        }
       }
     },
     {
@@ -201,10 +200,16 @@
       "source-layer": "building",
       "minzoom": 14,
       "paint": {
-        "fill-extrusion-base": ["get", "render_min_height"],
-        "fill-extrusion-color": "rgb(10,10,10)",
-        "fill-extrusion-height": ["get", "render_height"],
-        "fill-extrusion-opacity": 0.8
+        "fill-extrusion-color": "rgba(8, 8, 8, 1)",
+        "fill-extrusion-height": {
+          "property": "render_height",
+          "type": "identity"
+        },
+        "fill-extrusion-base": {
+          "property": "render_min_height",
+          "type": "identity"
+        },
+        "fill-extrusion-opacity": 1
       }
     },
     {
@@ -767,9 +772,10 @@
           "match",
           ["geometry-type"],
           ["LineString", "MultiLineString"],
-          [true, false],
-          ["all", ["==", ["get", "class"], "rail"], ["has", "service"]]
-        ]
+          true,
+          false
+        ],
+        ["all", ["==", ["get", "class"], "rail"], ["has", "service"]]
       ],
       "layout": {
         "line-join": "round"
@@ -791,9 +797,10 @@
           "match",
           ["geometry-type"],
           ["LineString", "MultiLineString"],
-          [true, false],
-          ["all", ["==", ["get", "class"], "rail"], ["has", "service"]]
-        ]
+          true,
+          false
+        ],
+        ["all", ["==", ["get", "class"], "rail"], ["has", "service"]]
       ],
       "layout": {
         "line-join": "round"
@@ -816,10 +823,11 @@
           "match",
           ["geometry-type"],
           ["LineString", "MultiLineString"],
-          [true, false],
-          ["==", ["get", "class"], "rail"],
-          ["!", ["has", "service"]]
-        ]
+          true,
+          false
+        ],
+        ["==", ["get", "class"], "rail"],
+        ["!", ["has", "service"]]
       ],
       "layout": {
         "line-join": "round"
@@ -849,10 +857,11 @@
           "match",
           ["geometry-type"],
           ["LineString", "MultiLineString"],
-          [true, false],
-          ["==", ["get", "class"], "rail"],
-          ["!", ["has", "service"]]
-        ]
+          true,
+          false
+        ],
+        ["==", ["get", "class"], "rail"],
+        ["!", ["has", "service"]]
       ],
       "layout": {
         "line-join": "round"

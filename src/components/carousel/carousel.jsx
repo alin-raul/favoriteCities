@@ -24,7 +24,7 @@ import {
 const Carousel = ({ cities }) => {
   const slides = useMemo(() => {
     return cities.map((city, index) => (
-      <SwiperSlide key={index} className="max-w-[700px] my-[3rem]">
+      <SwiperSlide key={index} className="max-w-[700px] lg:my-[3rem]">
         <div className="relative flex justify-center items-center ">
           <Image
             src={city.image}
@@ -61,7 +61,7 @@ const Carousel = ({ cities }) => {
 
   return (
     <div className="flex border bg-dynamic rounded-[3rem] max-w-screen-2xl">
-      <div className="border pb-6 w-full bg-dynamic-minimal xl:max-w-screen-md mx-auto rounded-[2.5rem]">
+      <div className="border pb-6 w-full bg-dynamic-minimal xl:max-w-screen-md mx-auto rounded-[2.5rem] overflow-hidden">
         <Swiper
           effect="coverflow"
           centeredSlides={true}
@@ -80,7 +80,7 @@ const Carousel = ({ cities }) => {
             stretch: 0,
             depth: 100,
             modifier: 3,
-            slideShadows: true,
+            slideShadows: false,
           }}
           pagination={{ el: ".swiper-pagination", clickable: true }}
           navigation={{

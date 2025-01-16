@@ -30,7 +30,6 @@ const TransitionLink: React.FC<TransitionLinkProps> = ({
 
   useEffect(() => {
     if (prevPathRef.current !== currentPath) {
-      console.log(currentPath);
       prevPathRef.current = currentPath;
     }
   }, [currentPath]);

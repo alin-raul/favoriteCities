@@ -4,7 +4,11 @@ import BurgerMenu from "./BurgerMenu";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Logo } from "./NavBar";
 
-const NavLinks = ({ pathname }) => {
+type NavLinksProps = {
+  pathname: string;
+};
+
+const NavLinks: React.FC<NavLinksProps> = ({ pathname }) => {
   return (
     <div className="flex items-center gap-6">
       <BurgerMenu icon={<RxHamburgerMenu className="w-6 h-6 opacity-75" />} />
@@ -13,7 +17,7 @@ const NavLinks = ({ pathname }) => {
           <div className="flex items-center gap-1 ">
             <TransitionLink href="/" isActive={pathname === "/"} ignore={true}>
               <div className="cardinal flex items-center gap-1 mr-2 transition-all">
-                <Logo height="24px" />
+                <Logo height="24px" width="24px" />
                 <span className="font-bold pr-2 text-lg">Cardinal</span>
               </div>
             </TransitionLink>

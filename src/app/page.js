@@ -46,7 +46,7 @@ export default function Home() {
 
       <Wrapper className=" flex flex-col justify-center h-[1200px] gradient-bg-cities">
         <div className="flex flex-col py-4 max-w-xl mx-auto text-center xl:hidden">
-          <h1 className="text-6xl font-bold mb-8 font-serif">
+          <h1 className="text-6xl font-bold mx-auto mb-8 font-serif">
             Spin the Globe!
           </h1>
           <p className="text-xl font-light opacity-80 mb-8">

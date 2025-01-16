@@ -3,12 +3,19 @@
 import React, { useState, useEffect } from "react";
 import { RANDOM_CITIES } from "@/globals/constants";
 import Carousel from "../carousel/carousel";
-import Wrapper from "../pageWrapper/wrapper";
 
-const RandomCities = () => {
-  const [cities, setCities] = useState([]);
+type City = {
+  name: string;
+  image: string;
+  country: string;
+  lat: number;
+  lon: number;
+};
 
-  const getRandomCities = () => {
+const RandomCities: React.FC = () => {
+  const [cities, setCities] = useState<City[]>([]);
+
+  const getRandomCities = (): City[] => {
     const shuffled = RANDOM_CITIES.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 7);
   };

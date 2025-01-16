@@ -25,7 +25,7 @@ export default function MapDisplay({
 
   const mapStyle = useMemo(() => {
     const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
-    const darkMapStyle = "https://tiles.openfreemap.org/styles/dark";
+    const darkMapStyle = "/map/dark-map.json";
 
     return (theme === "system" ? resolvedTheme : theme) === "dark"
       ? darkMapStyle

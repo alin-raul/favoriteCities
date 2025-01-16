@@ -5,7 +5,14 @@ import * as SeparatorPrimitive from "@radix-ui/react-separator";
 
 import { cn } from "@/lib/utils";
 
-const Separator = React.forwardRef(
+interface SeparatorProps
+  extends React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> {
+  className?: string;
+  orientation?: "horizontal" | "vertical";
+  decorative?: boolean;
+}
+
+const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
   (
     { className, orientation = "horizontal", decorative = true, ...props },
     ref
@@ -23,6 +30,7 @@ const Separator = React.forwardRef(
     />
   )
 );
+
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
 export { Separator };

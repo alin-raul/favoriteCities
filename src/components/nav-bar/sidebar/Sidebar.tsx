@@ -8,7 +8,7 @@ import navLinks from "@/globals/NavLinks";
 import { useSidebar } from "@/context/SidebarContext";
 import BurgerMenu from "../BurgerMenu";
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   const { isVisible, hideSidebar } = useSidebar();
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const Sidebar = () => {
         />
 
         <div className="flex items-center text-4xl text-white gap-1 font-bold mt-3">
-          <Logo height="2.2rem" width="2.2rem" />
+          <Logo height="2.2rem" width="2.2rem" fill="#000" />
           <span className="ml-4">Cardinal</span>
         </div>
 

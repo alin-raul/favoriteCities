@@ -7,7 +7,23 @@ import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
 
-const SignInAndOutButton = ({ session }) => {
+type User = {
+  name: string;
+  email: string;
+  image: string | null;
+};
+
+type Session = {
+  user: User;
+};
+
+type SignButtonProps = {
+  session: Session | null;
+};
+
+const SignInAndOutButton: React.FC<SignButtonProps> = ({
+  session,
+}): JSX.Element => {
   return (
     <>
       {session ? (
