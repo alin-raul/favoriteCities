@@ -1,16 +1,27 @@
 import { FaReact, FaDatabase, FaLock, FaCloud } from "react-icons/fa";
-import { SiNextdotjs, SiSqlite } from "react-icons/si";
+import {
+  SiNextdotjs,
+  SiSqlite,
+  SiTypescript,
+  SiTailwindcss,
+} from "react-icons/si";
 import Link from "next/link";
 
+interface CarouselItem {
+  name: string;
+  url: string;
+  icon: React.ReactNode;
+}
+
 const InfiniteCarousel = () => {
-  const items = [
+  const items: CarouselItem[] = [
     { name: "React", url: "https://reactjs.org", icon: <FaReact /> },
     { name: "Next.js", url: "https://nextjs.org", icon: <SiNextdotjs /> },
     { name: "SQLite", url: "https://www.sqlite.org", icon: <SiSqlite /> },
     { name: "TypeORM", url: "https://typeorm.io", icon: <FaDatabase /> },
     {
-      name: "Authentication (Auth)",
-      url: "https://auth0.com",
+      name: "Authentication",
+      url: "https://next-auth.js.org/",
       icon: <FaLock />,
     },
     {
@@ -18,11 +29,21 @@ const InfiniteCarousel = () => {
       url: "https://www.restapitutorial.com",
       icon: <FaCloud />,
     },
+    {
+      name: "TypeScript",
+      url: "https://www.typescriptlang.org/",
+      icon: <SiTypescript />,
+    },
+    {
+      name: "Tailwind CSS",
+      url: "https://tailwindcss.com/",
+      icon: <SiTailwindcss />,
+    },
   ];
 
   return (
     <div className="carousel">
-      <div className="group-carousel-links ">
+      <div className="group-carousel-links">
         {[...items].map((item, index) => (
           <Link
             key={index}
@@ -39,7 +60,7 @@ const InfiniteCarousel = () => {
         ))}
       </div>
 
-      <div className="group-carousel-links ">
+      <div className="group-carousel-links">
         {[...items].map((item, index) => (
           <Link
             key={index}

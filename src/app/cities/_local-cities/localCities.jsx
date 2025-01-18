@@ -202,8 +202,13 @@ const LocalCities = ({
                                       e.stopPropagation();
                                       setOnRoute({
                                         routeStatus: true,
-                                        from: [],
-                                        to: city.geometry.coordinates,
+                                        route: {
+                                          from: {},
+                                          to: {
+                                            lon: city.geometry.coordinates[0],
+                                            lat: city.geometry.coordinates[1],
+                                          },
+                                        },
                                       });
                                     }}
                                     className="rounded-3xl z-30"

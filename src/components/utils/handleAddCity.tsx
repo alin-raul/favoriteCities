@@ -8,7 +8,7 @@ type CityProperties = {
   countrycode: string;
   osm_value: string;
   name: string;
-  county: string;
+  county?: string;
   type: string;
 };
 
@@ -21,7 +21,7 @@ type City = {
   geometry: CityGeometry;
   type: string;
   properties: CityProperties;
-  image: string;
+  image?: string;
 };
 
 const fetchImageFromFlickr = async (

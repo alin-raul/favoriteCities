@@ -4,24 +4,45 @@ import { Map, Source, Layer } from "@vis.gl/react-maplibre";
 import { middleOfRo } from "@/globals/constants";
 import YouAreHere from "../you-are-here/YouAreHere";
 import { useTheme } from "next-themes";
-import { useMemo, useEffect, useRef, useState } from "react";
+import { useMemo, useEffect, useRef, useState, ReactElement } from "react";
 import axios from "axios";
 import polyline from "polyline";
 import { Marker } from "@vis.gl/react-maplibre";
 import { FaLocationDot } from "react-icons/fa6";
 
+type Location = {
+  lon: Number;
+  lat: number;
+};
+
+type MapDisplayProps = {
+  selectedCityArea?: [number, number, number, number];
+  rounded?: [string, string, string, string] | string;
+  zIndex?: number;
+  noFetch?: boolean;
+  onRoute?: {
+    routeStatus: boolean;
+    route: {
+      from: Location;
+      to: Location;
+    };
+  };
+};
+
 export default function MapDisplay({
   selectedCityArea,
-  rounded = [0, 0, 0, 0],
+  rounded = ["0px", "0px", "0px", "0px"],
   zIndex,
   noFetch,
   onRoute,
-}) {
+}: MapDisplayProps) {
   const { theme, resolvedTheme } = useTheme();
-  const mapRef = useRef(null);
-  const [location, setLocation] = useState(null);
-  const [polygonData, setPolygonData] = useState(null);
-  const [routeData, setRouteData] = useState(null);
+  const mapRef = useRef<any>(null);
+  const [location, setLocation] = useState<Location | null>(null);
+  const [polygonData, setPolygonData] = useState<any | null>(null);
+  const [routeData, setRouteData] = useState<Array<[number, number]> | null>(
+    null
+  );
 
   const mapStyle = useMemo(() => {
     const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
@@ -60,12 +81,22 @@ export default function MapDisplay({
     const fetchRoute = async () => {
       if (!onRoute) return;
       if (onRoute.routeStatus === false) return setRouteData([]);
-      const startLocation = onRoute.from;
-      const endLocation = onRoute.to;
-      if (!endLocation.length) return console.log("No endpoint location");
 
-      const start = startLocation.length ? startLocation : location;
-      if (!start) return;
+      const startLocation = onRoute?.route?.from;
+      const endLocation = onRoute?.route?.to;
+
+      if (!endLocation) {
+        return console.log("No endpoint location");
+      }
+
+      const start =
+        startLocation && startLocation.lon && startLocation.lat
+          ? startLocation
+          : location;
+
+      if (!start || !start.lon || !start.lat) {
+        return console.log("No valid start location available.");
+      }
 
       try {
         const apiUrl = "/api/directions";
@@ -77,6 +108,7 @@ export default function MapDisplay({
 
         const routeGeometry = response.data.routes[0].geometry;
         const decodedCoordinates = polyline.decode(routeGeometry);
+
         setRouteData(decodedCoordinates);
       } catch (error) {
         console.error(
@@ -88,6 +120,19 @@ export default function MapDisplay({
 
     fetchRoute();
   }, [onRoute, location]);
+
+  useEffect(() => {
+    if (!routeData || routeData.length === 0 || !mapRef.current) return;
+
+    const { minLng, minLat, maxLng, maxLat } = calculateBoundingBox(routeData);
+    mapRef.current.fitBounds(
+      [
+        [minLng, minLat],
+        [maxLng, maxLat],
+      ],
+      { padding: 50 }
+    );
+  }, [routeData]);
 
   const calculateBoundingBox = (coordinates) => {
     let minLng = Infinity,
@@ -110,7 +155,6 @@ export default function MapDisplay({
         longitude: middleOfRo[0],
         latitude: middleOfRo[1],
         zoom: 2,
-        antialias: true,
       }}
       style={{
         borderTopLeftRadius: rounded[0],
@@ -188,17 +232,6 @@ export default function MapDisplay({
               <div className="h-4 w-4 bg-slate-50 rounded-full border-2 border-gray-400"></div>
             </div>
           </Marker>
-          {(() => {
-            const { minLng, minLat, maxLng, maxLat } =
-              calculateBoundingBox(routeData);
-            mapRef.current?.fitBounds(
-              [
-                [minLng, minLat],
-                [maxLng, maxLat],
-              ],
-              { padding: 50 }
-            );
-          })()}
         </>
       )}
 

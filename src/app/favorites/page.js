@@ -4,14 +4,11 @@ import Wrapper from "@/components/pageWrapper/wrapper";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import getFlagEmoji from "@/lib/getFlagEmoji";
 import Image from "next/image";
-import { log } from "console";
 
 const Favorites = async () => {
   const citiesData = await getFavoriteCities();
 
   const cities = citiesData.data;
-
-  console.log(cities[1].geometry);
 
   // Might use later
 

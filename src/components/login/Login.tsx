@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 
-const Login = () => {
+const Login: React.FC = () => {
   const { data: session } = useSession();
   return (
     <>

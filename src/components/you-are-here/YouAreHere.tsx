@@ -17,7 +17,7 @@ type YouAreHereProps = {
 export default function YouAreHere({
   noFetch,
   setLocation,
-}: YouAreHereProps): JSX.Element {
+}: YouAreHereProps): React.ReactNode {
   const [popupLocation, setPopupLocation] = useState<Location>(middleOfRo);
   const { current: map } = useMap();
 
@@ -44,7 +44,7 @@ export default function YouAreHere({
   return (
     <>
       {!noFetch && (
-        <div className="">
+        <div>
           <Popup longitude={popupLocation.lon} latitude={popupLocation.lat}>
             <h3>You are approximately here!</h3>
           </Popup>

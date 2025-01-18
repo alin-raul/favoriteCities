@@ -6,9 +6,14 @@ import { Input } from "../ui/input";
 import { RANDOM_CITIES } from "@/globals/constants";
 import Link from "next/link";
 
-const waitForMs = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const waitForMs = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-async function typeSentence(sentence, setQuery, delay = 100) {
+async function typeSentence(
+  sentence: string,
+  setQuery: (text: string) => void,
+  delay: number = 100
+): Promise<void> {
   const letters = sentence.split("");
   let currentText = "";
 
@@ -21,11 +26,14 @@ async function typeSentence(sentence, setQuery, delay = 100) {
   setQuery(currentText + "|");
 }
 
-async function deleteSentence(setQuery, delay = 100) {
+async function deleteSentence(
+  setQuery: React.Dispatch<React.SetStateAction<string>>,
+  delay: number = 100
+): Promise<void> {
   while (true) {
     await waitForMs(delay);
     let shouldBreak = false;
-    setQuery((prev) => {
+    setQuery((prev: string) => {
       if (prev.length <= 1) {
         shouldBreak = true;
         return "|";
@@ -37,8 +45,13 @@ async function deleteSentence(setQuery, delay = 100) {
   }
 }
 
-const SearchBar = ({ width, height }) => {
-  const [query, setQuery] = useState("|");
+interface SearchBarProps {
+  width: string;
+  height: string;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ width, height }) => {
+  const [query, setQuery] = useState<string>("|");
 
   useEffect(() => {
     let isMounted = true;
@@ -48,7 +61,6 @@ const SearchBar = ({ width, height }) => {
         setQuery("|");
         await waitForMs(500);
 
-        // Use the 'name' property from RANDOM_CITIES
         await typeSentence(RANDOM_CITIES[i].name, (currentText) =>
           setQuery(currentText)
         );

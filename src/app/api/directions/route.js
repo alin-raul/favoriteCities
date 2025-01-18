@@ -7,14 +7,19 @@ export async function POST(req) {
 
     const apiKey = process.env.OPENROUTESERVICE_SECRET;
 
-    const coordinates = [startLocation, endLocation];
+    const coordinates = [
+      [startLocation.lon, startLocation.lat],
+      [endLocation.lon, endLocation.lat],
+    ];
+
+    // console.log(coordinates);
 
     const apiUrl = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&units=km`;
 
     const response = await axios.post(
       apiUrl,
       {
-        coordinates: coordinates.map((coord) => [coord[0], coord[1]]),
+        coordinates: coordinates,
       },
       {
         headers: {

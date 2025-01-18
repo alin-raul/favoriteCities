@@ -21,8 +21,6 @@ const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
     fetchWeatherData();
   }, [selectedCity]);
 
-  console.log(selectedCity);
-
   return (
     <div className="w-full md:px-4">
       <TransitionLink
@@ -36,7 +34,13 @@ const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
                 e.preventDefault();
                 e.stopPropagation();
                 onClose();
-                setOnRoute({ routeStatus: false, from: [], to: [] });
+                setOnRoute({
+                  routeStatus: false,
+                  route: {
+                    from: {},
+                    to: {},
+                  },
+                });
               }}
               className="opacity-60 hover:opacity-100"
               aria-label="Close city card"
@@ -71,8 +75,13 @@ const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
                   e.stopPropagation();
                   setOnRoute({
                     routeStatus: true,
-                    from: [],
-                    to: selectedCity.geometry.coordinates,
+                    route: {
+                      from: {},
+                      to: {
+                        lon: selectedCity.geometry.coordinates[0],
+                        lat: selectedCity.geometry.coordinates[1],
+                      },
+                    },
                   });
                 }}
                 className="mt-4 rounded-3xl z-30"

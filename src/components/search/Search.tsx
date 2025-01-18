@@ -9,23 +9,60 @@ import MapDisplay from "../map/Map";
 import CityCard from "../../app/search/_city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/app/cities/_local-cities/localCities";
-import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
 import handleAddCity from "../utils/handleAddCity";
 
-const Search = ({ height, noFetch = false }) => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [selectedCityArea, setSelectedCityArea] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [onRoute, setOnRoute] = useState({
-    routeStatus: false,
-    from: [],
-    to: [],
-  });
+type CityProperties = {
+  osm_type: string;
+  osm_id: number;
+  extent: number[];
+  country: string;
+  osm_key: string;
+  city: string;
+  countrycode: string;
+  osm_value: string;
+  name: string;
+  county?: string;
+  type: string;
+};
 
-  const pathname = useNavigationEvents();
+type CityGeometry = {
+  coordinates: number[];
+  type: string;
+};
+
+type City = {
+  geometry: CityGeometry;
+  properties: CityProperties;
+  type: string;
+  image?: string;
+};
+
+type Location = {
+  lon: Number;
+  lat: number;
+};
+
+type OnRoute = {
+  routeStatus: boolean;
+  route: { from: Location; to: Location };
+};
+
+const Search = ({ height, noFetch = false }) => {
+  const [query, setQuery] = useState<string>("");
+  const [results, setResults] = useState<City[]>([]);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [selectedCityArea, setSelectedCityArea] = useState<
+    [number, number, number, number] | null
+  >(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [onRoute, setOnRoute] = useState<OnRoute>({
+    routeStatus: false,
+    route: {
+      from: { lon: 0, lat: 0 },
+      to: { lon: 0, lat: 0 },
+    },
+  });
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -61,7 +98,13 @@ const Search = ({ height, noFetch = false }) => {
   };
 
   const endRoute = () => {
-    setOnRoute({ routeStatus: false, from: [], to: [] });
+    setOnRoute({
+      routeStatus: false,
+      route: {
+        from: { lon: 0, lat: 0 },
+        to: { lon: 0, lat: 0 },
+      },
+    });
   };
 
   return (
@@ -138,9 +181,6 @@ const Search = ({ height, noFetch = false }) => {
         </div>
         <div className="flex-grow overflow-y-auto hidden md:block">
           <LocalCities
-            className={
-              "w-full rounded-2xl border shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h mb-4 cursor-pointer hover:shadow-md active:scale-105 active:shadow-lg transition-all"
-            }
             selectedCityArea={selectedCityArea}
             setSelectedCityArea={setSelectedCityArea}
             endRoute={endRoute}
