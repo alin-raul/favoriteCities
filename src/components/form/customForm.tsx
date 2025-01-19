@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { User, Mail, Lock, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,22 @@ import { useRouter } from "next/navigation";
 import Wrapper from "../pageWrapper/wrapper";
 import GradientBackground from "../cardinal/GradientBackground";
 
-const CustomForm = ({
+interface CustomFormProps {
+  onSubmit: (formData: Record<string, string>) => void;
+  placeholders: string[];
+  error?: string;
+  redirectUrl: string;
+  title: string;
+  inputTypes: string[];
+  fieldNames: string[];
+  redirectText: string;
+  buttonText: string;
+  linkText: string;
+  children?: React.ReactNode;
+  formType: "signup" | "login";
+}
+
+const CustomForm: React.FC<CustomFormProps> = ({
   onSubmit,
   placeholders,
   error,
@@ -23,7 +38,7 @@ const CustomForm = ({
   formType,
 }) => {
   const router = useRouter();
-  const [formData, setFormData] = useState(
+  const [formData, setFormData] = useState<Record<string, string>>(
     Object.fromEntries(fieldNames.map((fieldName) => [fieldName, ""]))
   );
   const [passwordMismatch, setPasswordMismatch] = useState(false);
@@ -40,12 +55,12 @@ const CustomForm = ({
     );
   }, [formType, fieldNames]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     if (formType === "signup") {
@@ -72,7 +87,6 @@ const CustomForm = ({
         <div className="flex flex-col gap-4 w-full">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {fieldNames.map((fieldName, index) => {
-              // Skip the confirm password field for login
               if (formType === "login" && fieldName === fieldNames[3])
                 return null;
 

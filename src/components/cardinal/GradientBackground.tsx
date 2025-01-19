@@ -3,17 +3,30 @@
 import React, { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
-const GradientBackground = () => {
-  const canvasRef = useRef(null);
-  const rotationRef = useRef(0);
-  const scrollYRef = useRef(0);
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+interface ColorPalette {
+  color1: string;
+  color2: string;
+  color3: string;
+  color4: string;
+}
+
+const GradientBackground: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const rotationRef = useRef<number>(0);
+  const scrollYRef = useRef<number>(0);
   const { theme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (canvasRef.current) {
         canvasRef.current.style.transition = "opacity 1s ease-in-out";
-        canvasRef.current.style.opacity = 1;
+        canvasRef.current.style.opacity = "1";
       }
     }, 100);
 
@@ -21,8 +34,8 @@ const GradientBackground = () => {
   }, []);
 
   useEffect(() => {
-    const ditherPalette = (palette) => {
-      const ditheredPalette = [];
+    const ditherPalette = (palette: RGB[]): RGB[] => {
+      const ditheredPalette: RGB[] = [];
 
       for (let i = 0; i < palette.length; i++) {
         let color = palette[i];
@@ -35,12 +48,14 @@ const GradientBackground = () => {
     };
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas?.getContext("2d");
+
+    if (!canvas || !ctx) return;
 
     canvas.style.width = "2000px";
     canvas.style.height = "2000px";
 
-    const colors = {
+    const colors: ColorPalette = {
       color1:
         (theme === "system" ? resolvedTheme : theme) === "dark"
           ? "#3730cc"
@@ -70,9 +85,9 @@ const GradientBackground = () => {
       image.data[i + 3] = 255;
     }
 
-    const distance = (x, y) => Math.sqrt(x * x + y * y);
+    const distance = (x: number, y: number): number => Math.sqrt(x * x + y * y);
 
-    const heightMap1 = [];
+    const heightMap1: number[] = [];
     for (let u = 0; u < mapSize; u++) {
       for (let v = 0; v < mapSize; v++) {
         const i = u * mapSize + v;
@@ -86,7 +101,7 @@ const GradientBackground = () => {
       }
     }
 
-    const heightMap2 = [];
+    const heightMap2: number[] = [];
     for (let u = 0; u < mapSize; u++) {
       for (let v = 0; v < mapSize; v++) {
         const i = u * mapSize + v;
@@ -102,7 +117,7 @@ const GradientBackground = () => {
       }
     }
 
-    const interpolate = (c1, c2, f) => {
+    const interpolate = (c1: RGB, c2: RGB, f: number): RGB => {
       return {
         r: Math.floor(c1.r + (c2.r - c1.r) * f),
         g: Math.floor(c1.g + (c2.g - c1.g) * f),
@@ -110,7 +125,7 @@ const GradientBackground = () => {
       };
     };
 
-    const hexToRgb = (hex) => {
+    const hexToRgb = (hex: string): RGB => {
       return {
         r: parseInt(hex.slice(1, 3), 16),
         g: parseInt(hex.slice(3, 5), 16),
@@ -118,8 +133,8 @@ const GradientBackground = () => {
       };
     };
 
-    const makeGradient = (c1, c2, c3, c4) => {
-      const g = [];
+    const makeGradient = (c1: RGB, c2: RGB, c3: RGB, c4: RGB): RGB[] => {
+      const g: RGB[] = [];
 
       for (let i = 0; i < 64; i++) {
         const f = i / 64;
@@ -153,7 +168,7 @@ const GradientBackground = () => {
     let dx2 = 0;
     let dy2 = 0;
 
-    const moveHeightMaps = (t) => {
+    const moveHeightMaps = (t: number): void => {
       const timeFactor = 0.00004;
 
       dx1 = Math.floor(
@@ -170,7 +185,7 @@ const GradientBackground = () => {
       );
     };
 
-    const updateImageData = () => {
+    const updateImageData = (): void => {
       for (let u = 0; u < imgSize; u++) {
         for (let v = 0; v < imgSize; v++) {
           const i = (u + dy1) * mapSize + (v + dx1);
@@ -187,7 +202,7 @@ const GradientBackground = () => {
       }
     };
 
-    const tick = (time) => {
+    const tick = (time: number): void => {
       moveHeightMaps(time);
       updateImageData();
       ctx.putImageData(image, 0, 0);
@@ -196,7 +211,7 @@ const GradientBackground = () => {
 
     requestAnimationFrame(tick);
 
-    const animateRotation = () => {
+    const animateRotation = (): void => {
       rotationRef.current += 0.02;
       const scrollRotation = scrollYRef.current * 0.1;
       const scrollY = scrollYRef.current;
@@ -218,7 +233,8 @@ const GradientBackground = () => {
       requestAnimationFrame(animateRotation);
     };
     animateRotation();
-    const handleScroll = () => {
+
+    const handleScroll = (): void => {
       scrollYRef.current = window.scrollY;
     };
 
@@ -229,7 +245,7 @@ const GradientBackground = () => {
     };
   }, [theme, resolvedTheme]);
 
-  const addNoise = (color, intensity = 2) => {
+  const addNoise = (color: RGB, intensity = 2): RGB => {
     return {
       r: Math.min(
         255,

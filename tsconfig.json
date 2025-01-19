@@ -2,10 +2,16 @@
   "compilerOptions": {
     "baseUrl": ".", // Base URL set to root of the project
     "paths": {
-      "@/*": ["src/*"] // Map "@" to the src folder
+      "@/*": [
+        "src/*"
+      ] // Map "@" to the src folder
     },
     "target": "esnext", // Set to modern JavaScript
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false, // Optional: set to true if you want stricter type checking

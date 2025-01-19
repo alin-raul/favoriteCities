@@ -1,4 +1,4 @@
-import LocalCities from "./_local-cities/localCities";
+import LocalCities from "../../components/_local-cities/localCities";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import { LuHistory } from "react-icons/lu";
 

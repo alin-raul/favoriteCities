@@ -16,7 +16,7 @@ type Location = {
 };
 
 type MapDisplayProps = {
-  selectedCityArea?: [number, number, number, number];
+  selectedCityArea?: number[];
   rounded?: [string, string, string, string] | string;
   zIndex?: number;
   noFetch?: boolean;

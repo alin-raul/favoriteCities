@@ -2,8 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 
-const Clock = ({ weatherData }) => {
-  const [currentTime, setCurrentTime] = useState({
+type WeatherData = {
+  timezone: string;
+};
+
+type CurrentTime = {
+  weekday: string;
+  month: string;
+  day: string;
+  year: string;
+  time: string;
+};
+
+type ClockProps = {
+  weatherData: WeatherData;
+};
+
+const Clock = ({ weatherData }: ClockProps) => {
+  const [currentTime, setCurrentTime] = useState<CurrentTime>({
     weekday: "",
     month: "",
     day: "",
@@ -43,7 +59,6 @@ const Clock = ({ weatherData }) => {
       const timeFormatter = new Intl.DateTimeFormat([], {
         hour: "2-digit",
         minute: "2-digit",
-
         hour12: false,
         timeZone: weatherData.timezone,
       });
@@ -70,7 +85,7 @@ const Clock = ({ weatherData }) => {
 
   return (
     <div className="flex justify-end w-full">
-      <span className="">{currentTime.time}</span>
+      <span>{currentTime.time}</span>
     </div>
   );
 };

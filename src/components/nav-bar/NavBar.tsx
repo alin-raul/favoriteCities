@@ -4,7 +4,6 @@ import { ModeToggle } from "../mode-toggle/ModeToggle";
 import NavLinks from "./NavLinks";
 import SignInAndOutButton from "./SignInAndOutButton";
 import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
-import { log } from "console";
 
 type LogoProps = {
   width: string | number;
@@ -23,7 +22,7 @@ type User = {
 };
 
 type NavbarProps = {
-  session: Session | null;
+  session?: Session;
 };
 
 export const Logo: React.FC<LogoProps> = ({ width, height, fill = "#fff" }) => {

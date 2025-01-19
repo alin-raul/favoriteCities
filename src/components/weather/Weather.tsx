@@ -58,6 +58,10 @@ const Weather = ({ weatherData, name = "", country = "", tiny = false }) => {
           )}
           className="h-10 w-10 md:h-12 md:w-12"
         />
+        <span className="ml-2">
+          {weatherData.current_weather.temperature}
+          {weatherData.current_weather_units.temperature}
+        </span>
       </div>
     );
   }

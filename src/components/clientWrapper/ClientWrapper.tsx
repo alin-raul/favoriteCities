@@ -3,10 +3,13 @@
 import { usePathname } from "next/navigation";
 import Navbar from "../nav-bar/NavBar";
 
-export default function ClientWrapper({ children }) {
+type ClientWrapperProps = {
+  children: React.ReactNode;
+};
+
+export default function ClientWrapper({ children }: ClientWrapperProps) {
   const pathname = usePathname();
 
-  // Define paths where the navbar should be hidden
   const hiddenPaths = ["/login", "/signup"];
 
   return (

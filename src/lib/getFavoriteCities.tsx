@@ -32,7 +32,7 @@ type City = {
 
 import { headers } from "next/headers";
 
-export async function getFavoriteCities(): Promise<City> {
+export async function getFavoriteCities(): Promise<City[] | []> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/cities`,
@@ -46,11 +46,11 @@ export async function getFavoriteCities(): Promise<City> {
       throw new Error(`Error fetching cities: ${response.statusText}`);
     }
 
-    const data: City = await response.json();
+    const cities = await response.json();
 
-    return data;
+    return cities.data;
   } catch (error) {
     console.error("Failed to fetch cities:", error.message);
-    return null;
+    return [];
   }
 }

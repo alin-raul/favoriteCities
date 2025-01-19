@@ -1,12 +1,48 @@
 "use client";
 
-import { React, useTransition } from "react";
+import * as React from "react";
+import { useTransition } from "react";
 import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
 
-const DeleteFavorite = ({ label, city }) => {
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  password: string | null;
+  createdAt: string;
+  githubId: string | null;
+};
+
+type Geometry = {
+  coordinates: number[];
+};
+
+type City = {
+  id: number;
+  name: string;
+  country: string;
+  countrycode: string;
+  county: string;
+  osm_type: string;
+  osm_id: number;
+  osm_key: string;
+  osm_value: string;
+  extent: number[];
+  geometry: Geometry;
+  selected: boolean;
+  image: string;
+  users: User[];
+};
+
+type DeleteFavoriteProps = {
+  label?: string;
+  city: City;
+};
+
+const DeleteFavorite = ({ label, city }: DeleteFavoriteProps) => {
   const [isPending, startTransition] = useTransition();
 
-  const handleClick = async (e) => {
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 

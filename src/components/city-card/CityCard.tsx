@@ -9,12 +9,126 @@ import { Button } from "@/components/ui/button";
 import Weather from "@/components/weather/Weather";
 import { getWeatherData } from "@/lib/getWeather";
 
-const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
-  const [weatherData, setWeatherData] = useState(null);
+type CityProperties = {
+  osm_type: string;
+  osm_id: number;
+  extent: number[];
+  country: string;
+  osm_key: string;
+  city: string;
+  countrycode: string;
+  osm_value: string;
+  name: string;
+  county?: string;
+  type: string;
+};
+
+type CityGeometry = {
+  coordinates: number[];
+  type: string;
+};
+
+type City = {
+  geometry: CityGeometry;
+  properties: CityProperties;
+  type: string;
+  image?: string;
+};
+
+type WeatherUnits = {
+  time: string;
+  interval: string;
+  temperature: string;
+  windspeed: string;
+  winddirection: string;
+  is_day: string;
+  weathercode: string;
+};
+
+type CurrentWeather = {
+  time: string;
+  interval: number;
+  temperature: number;
+  windspeed: number;
+  winddirection: number;
+  is_day: number;
+  weathercode: number;
+};
+
+type HourlyUnits = {
+  time: string;
+  temperature_2m: string;
+  precipitation: string;
+  windspeed_10m: string;
+};
+
+type HourlyData = {
+  time: string[];
+  temperature_2m: number[];
+  precipitation: number[];
+  windspeed_10m: number[];
+};
+
+type DailyUnits = {
+  time: string;
+  temperature_2m_max: string;
+  temperature_2m_min: string;
+  precipitation_sum: string;
+};
+
+type DailyData = {
+  time: string[];
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+  precipitation_sum: number[];
+};
+
+type WeatherData = {
+  latitude: number;
+  longitude: number;
+  generationtime_ms: number;
+  utc_offset_seconds: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  elevation: number;
+  current_weather_units: WeatherUnits;
+  current_weather: CurrentWeather;
+  hourly_units: HourlyUnits;
+  hourly: HourlyData;
+  daily_units: DailyUnits;
+  daily: DailyData;
+};
+
+type Location = {
+  lon: number;
+  lat: number;
+};
+
+type OnRoute = {
+  routeStatus: boolean;
+  route: { from: Location; to: Location };
+};
+
+type CityCardProps = {
+  selectedCity: City;
+  onClose: () => void;
+  endRoute: () => void;
+  onRoute: OnRoute;
+  setOnRoute: (onRoute: OnRoute) => void;
+};
+
+const CityCard: React.FC<CityCardProps> = ({
+  selectedCity,
+  onClose,
+  endRoute,
+  onRoute,
+  setOnRoute,
+}) => {
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
-      if (!selectedCity) return null;
+      if (!selectedCity) return;
       const weather = await getWeatherData(selectedCity);
       setWeatherData(weather);
     };
@@ -37,8 +151,8 @@ const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
                 setOnRoute({
                   routeStatus: false,
                   route: {
-                    from: {},
-                    to: {},
+                    from: { lon: 0, lat: 0 },
+                    to: { lon: 0, lat: 0 },
                   },
                 });
               }}
@@ -76,7 +190,7 @@ const CityCard = ({ selectedCity, onClose, endRoute, onRoute, setOnRoute }) => {
                   setOnRoute({
                     routeStatus: true,
                     route: {
-                      from: {},
+                      from: {} as Location,
                       to: {
                         lon: selectedCity.geometry.coordinates[0],
                         lat: selectedCity.geometry.coordinates[1],

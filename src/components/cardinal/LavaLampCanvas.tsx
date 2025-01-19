@@ -3,11 +3,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
-const LavaLampCanvas = ({}) => {
-  const canvasRef = useRef(null);
+type Colors = {
+  color1: string;
+  color2: string;
+  color3: string;
+  color4: string;
+};
+
+const LavaLampCanvas: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const theme = useTheme();
 
-  const [colors, setColors] = useState({
+  const [colors, setColors] = useState<Colors>({
     color1: theme.theme === "dark" ? "#3730cc" : "#c29dff",
     color2: theme.theme === "dark" ? "#000000" : "#fff",
     color3: theme.theme === "dark" ? "#cb6ad8" : "#a2c6fc",
@@ -25,7 +32,11 @@ const LavaLampCanvas = ({}) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const c = canvas.getContext("2d");
+
+    if (!c) return;
 
     const imgSize = 512;
     const mapSize = 1024;
@@ -42,9 +53,9 @@ const LavaLampCanvas = ({}) => {
       image.data[i + 3] = 255;
     }
 
-    const distance = (x, y) => Math.sqrt(x * x + y * y);
+    const distance = (x: number, y: number) => Math.sqrt(x * x + y * y);
 
-    const heightMap1 = [];
+    const heightMap1: number[] = [];
     for (let u = 0; u < mapSize; u++) {
       for (let v = 0; v < mapSize; v++) {
         const i = u * mapSize + v;
@@ -58,7 +69,7 @@ const LavaLampCanvas = ({}) => {
       }
     }
 
-    const heightMap2 = [];
+    const heightMap2: number[] = [];
     for (let u = 0; u < mapSize; u++) {
       for (let v = 0; v < mapSize; v++) {
         const i = u * mapSize + v;
@@ -74,7 +85,11 @@ const LavaLampCanvas = ({}) => {
       }
     }
 
-    const interpolate = (c1, c2, f) => {
+    const interpolate = (
+      c1: { r: number; g: number; b: number },
+      c2: { r: number; g: number; b: number },
+      f: number
+    ) => {
       return {
         r: Math.floor(c1.r + (c2.r - c1.r) * f),
         g: Math.floor(c1.g + (c2.g - c1.g) * f),
@@ -83,7 +98,7 @@ const LavaLampCanvas = ({}) => {
     };
 
     // Convert hex color to RGB object
-    const hexToRgb = (hex) => {
+    const hexToRgb = (hex: string) => {
       return {
         r: parseInt(hex.slice(1, 3), 16),
         g: parseInt(hex.slice(3, 5), 16),
@@ -92,8 +107,13 @@ const LavaLampCanvas = ({}) => {
     };
 
     // Create gradient with 4 defined colors
-    const makeGradient = (c1, c2, c3, c4) => {
-      const g = [];
+    const makeGradient = (
+      c1: { r: number; g: number; b: number },
+      c2: { r: number; g: number; b: number },
+      c3: { r: number; g: number; b: number },
+      c4: { r: number; g: number; b: number }
+    ) => {
+      const g: { r: number; g: number; b: number }[] = [];
       for (let i = 0; i < 64; i++) {
         const f = i / 64;
         g[i] = interpolate(c1, c2, f);
@@ -125,7 +145,7 @@ const LavaLampCanvas = ({}) => {
     let dx2 = 0;
     let dy2 = 0;
 
-    const moveHeightMaps = (t) => {
+    const moveHeightMaps = (t: number) => {
       const timeFactor = 0.00004;
 
       dx1 = Math.floor(
@@ -157,7 +177,7 @@ const LavaLampCanvas = ({}) => {
       }
     };
 
-    const tick = (time) => {
+    const tick = (time: number) => {
       moveHeightMaps(time);
       updateImageData();
       c.putImageData(image, 0, 0);

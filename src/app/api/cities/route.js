@@ -35,10 +35,7 @@ export async function POST(req) {
     const userRepo = AppDataSource.getRepository(User);
     const data = await req.json();
 
-    console.log(data);
-
     const session = await getServerSession(options);
-    console.log(session);
 
     const userEntities = [];
 

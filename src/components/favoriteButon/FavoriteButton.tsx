@@ -5,7 +5,58 @@ import React, { useState } from "react";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
 
-async function handlePostFavorite(city) {
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  password: string | null;
+  createdAt: string;
+  githubId: string | null;
+};
+
+type Geometry = {
+  coordinates: number[];
+};
+
+type City = {
+  id: number;
+  name: string;
+  country: string;
+  countrycode: string;
+  county: string;
+  osm_type: string;
+  osm_id: number;
+  osm_key: string;
+  osm_value: string;
+  extent: number[];
+  geometry: Geometry;
+  selected: boolean;
+  image: string;
+  users: User[];
+};
+
+type CityProperties = {
+  osm_id: number;
+  name: string;
+  country: string;
+  countrycode: string;
+  county: string;
+  osm_type: string;
+  osm_key: string;
+  osm_value: string;
+  extent: number[];
+};
+
+type CityWithProperties = {
+  properties: CityProperties;
+  geometry: Geometry;
+  image: string;
+  selected: boolean;
+};
+
+async function handlePostFavorite(
+  city: CityWithProperties
+): Promise<City[] | undefined> {
   if (!city || !city.properties) {
     console.error("Invalid city data for POST operation");
     return;
@@ -40,12 +91,22 @@ async function handlePostFavorite(city) {
     console.log("City successfully added to favorites");
 
     return await getFavoriteCities();
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to create city:", error.message);
   }
 }
 
-const FavoriteButton = ({ handleToggleFavorite, city, full = false }) => {
+type FavoriteButtonProps = {
+  handleToggleFavorite: (osmId: number) => void;
+  city: CityWithProperties;
+  full?: boolean;
+};
+
+const FavoriteButton: React.FC<FavoriteButtonProps> = ({
+  handleToggleFavorite,
+  city,
+  full = false,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {

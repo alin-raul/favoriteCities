@@ -7,9 +7,39 @@ import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import TransitionLink from "../utils/TransitionLink";
 import Image from "next/image";
 
-const FavoriteCities = () => {
-  const [cities, setCities] = useState([]);
-  const [loading, setLoading] = useState(true);
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  password: string | null;
+  createdAt: string;
+  githubId: string | null;
+};
+
+type Geometry = {
+  coordinates: number[];
+};
+
+type City = {
+  id: number;
+  name: string;
+  country: string;
+  countrycode: string;
+  county: string;
+  osm_type: string;
+  osm_id: number;
+  osm_key: string;
+  osm_value: string;
+  extent: number[];
+  geometry: Geometry;
+  selected: boolean;
+  image: string;
+  users: User[];
+};
+
+const FavoriteCities: React.FC = () => {
+  const [cities, setCities] = useState<City[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const { theme, resolvedTheme } = useTheme();
 
@@ -23,16 +53,18 @@ const FavoriteCities = () => {
       : "/images/illustrations/navigation-94-light.svg";
 
   useEffect(() => {
-    const fetchCities = async () => {
+    const fetchCities = async (): Promise<City[]> => {
       const citiesData = await getFavoriteCities();
+
+      console.log(citiesData);
 
       if (!citiesData) {
         console.log("Error fetching data");
         setLoading(false);
-        return [];
+        return;
       }
 
-      setCities(citiesData.data);
+      setCities(citiesData);
       setLoading(false);
     };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import FavoriteButton from "@/components/favoriteButon/FavoriteButton";
 import { FaXmark } from "react-icons/fa6";
@@ -10,14 +10,60 @@ import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 
+type CityProperties = {
+  osm_type: string;
+  osm_id: number;
+  extent: number[];
+  country: string;
+  osm_key: string;
+  city: string;
+  countrycode: string;
+  osm_value: string;
+  name: string;
+  county?: string;
+  type: string;
+};
+
+type CityGeometry = {
+  coordinates: number[];
+  type: string;
+};
+
+type LocalCity = {
+  geometry: CityGeometry;
+  properties: CityProperties;
+  image?: string;
+  addedAt: string;
+  selected: boolean;
+  type: "Feature";
+};
+
+type Location = {
+  lon: number;
+  lat: number;
+};
+
+type OnRoute = {
+  routeStatus: boolean;
+  route: { from: Location; to: Location };
+};
+
+type LocalCitiesProps = {
+  selectedCityArea: number[] | null;
+  setSelectedCityArea: (selectedCityArea: number[]) => void;
+  onRoute: OnRoute;
+  endRoute: () => void;
+  setOnRoute: (onRoute: OnRoute) => void;
+};
+
 const LocalCities = ({
   selectedCityArea,
   setSelectedCityArea,
   onRoute,
   endRoute,
   setOnRoute,
-}) => {
-  const [cities, setCities] = useState([]);
+}: LocalCitiesProps) => {
+  const [cities, setCities] = useState<LocalCity[]>([]);
   const router = useRouter();
   const pathname = useNavigationEvents();
 
@@ -34,7 +80,7 @@ const LocalCities = ({
         const favoriteCities = await getFavoriteCities();
 
         const favoriteCityNames = new Set(
-          favoriteCities.data.map((fav) => fav.name)
+          favoriteCities.map((fav) => fav.name)
         );
 
         const updatedCities = validCities.map((city) => {
@@ -46,7 +92,10 @@ const LocalCities = ({
           }
         });
 
-        updatedCities.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+        updatedCities.sort(
+          (a, b) =>
+            new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime()
+        );
         setCities(updatedCities);
       } else {
         setCities([]);
@@ -70,7 +119,7 @@ const LocalCities = ({
     };
   }, []);
 
-  const handleToggleFavorite = (id) => {
+  const handleToggleFavorite = (id: number) => {
     const updatedCities = cities.map((city) => {
       if (city.properties.osm_id === id) {
         return { ...city, selected: !city.selected };
@@ -82,7 +131,7 @@ const LocalCities = ({
     localStorage.setItem("cities", JSON.stringify(updatedCities));
   };
 
-  const categorizeCities = () => {
+  const categorizeCities = useMemo(() => {
     const categories = {
       Today: [],
       Yesterday: [],
@@ -122,14 +171,12 @@ const LocalCities = ({
     });
 
     return categories;
-  };
-
-  const categories = categorizeCities();
+  }, [cities]);
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex-grow overflow-y-auto">
-        {Object.entries(categories).map(
+        {Object.entries(categorizeCities).map(
           ([category, cities]) =>
             cities.length > 0 && (
               <div key={category} className="w-full p-4">
@@ -203,7 +250,10 @@ const LocalCities = ({
                                       setOnRoute({
                                         routeStatus: true,
                                         route: {
-                                          from: {},
+                                          from: {
+                                            lon: null,
+                                            lat: null,
+                                          },
                                           to: {
                                             lon: city.geometry.coordinates[0],
                                             lat: city.geometry.coordinates[1],

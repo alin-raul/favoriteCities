@@ -14,6 +14,18 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
 
+type City = {
+  country: string;
+  name: string;
+  lat: number;
+  lon: number;
+  image?: string;
+};
+
+type CarouselProps = {
+  cities: City[];
+};
+
 import {
   EffectCoverflow,
   Pagination,
@@ -21,14 +33,16 @@ import {
   Autoplay,
 } from "swiper/modules";
 
-const Carousel = ({ cities }) => {
+const Carousel = ({ cities }: CarouselProps) => {
   const slides = useMemo(() => {
+    console.log(cities);
+
     return cities.map((city, index) => (
       <SwiperSlide key={index} className="max-w-[700px] lg:my-[3rem]">
         <div className="relative flex justify-center items-center ">
           <Image
-            src={city.image}
-            alt={`${city.name} image`}
+            src={city.image || ""}
+            alt={`${city.name} -image`}
             style={{
               objectFit: "cover",
               width: "70rem",
@@ -71,8 +85,11 @@ const Carousel = ({ cities }) => {
           watchSlidesProgress={true}
           onProgress={(swiper) => {
             swiper.slides.forEach((slide) => {
-              const slideProgress = slide.progress;
-              slide.style.setProperty("--progress", Math.abs(slideProgress));
+              const slideProgress = (slide as any).progress;
+              slide.style.setProperty(
+                "--progress",
+                String(Math.abs(slideProgress))
+              );
             });
           }}
           coverflowEffect={{

@@ -8,7 +8,7 @@ import Image from "next/image";
 const Favorites = async () => {
   const citiesData = await getFavoriteCities();
 
-  const cities = citiesData.data;
+  const cities = citiesData;
 
   // Might use later
 

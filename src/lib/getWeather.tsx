@@ -65,7 +65,7 @@ type WeatherData = {
 };
 
 export const getWeatherData = async (location: {
-  geometry?: { coordinates?: [number, number] };
+  geometry?: { coordinates?: number[] };
 }): Promise<WeatherData> => {
   if (!location || !location?.geometry?.coordinates) {
     console.error("Invalid location data");

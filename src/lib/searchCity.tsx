@@ -36,10 +36,32 @@ export default async function searchCity(
       )}&lang=en`
     );
     if (!response.ok) throw new Error("Network response was not ok");
+
     const data = await response.json();
 
-    return data.features || [];
+    const features = data.features as Feature[];
+
+    console.log(data);
+
+    const filteredFeatures = features.filter((feature: Feature) => {
+      const { osm_type, type } = feature.properties;
+
+      const isCityType =
+        type === "city" || type === "town" || type === "village";
+      const isNotRegionOrCountry = osm_type !== "relation";
+
+      return isCityType && isNotRegionOrCountry;
+    });
+
+    const uniqueFeatures = Array.from(
+      new Map(
+        filteredFeatures.map((feature) => [feature.properties.osm_id, feature])
+      ).values()
+    );
+
+    return uniqueFeatures || [];
   } catch (error) {
     console.error("Failed to fetch locations:", error);
+    return [];
   }
 }

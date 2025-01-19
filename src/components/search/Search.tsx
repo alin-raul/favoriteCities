@@ -6,9 +6,9 @@ import { IoMdSearch } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import { LuHistory } from "react-icons/lu";
 import MapDisplay from "../map/Map";
-import CityCard from "../../app/search/_city-card/CityCard";
+import CityCard from "../city-card/CityCard";
 import searchCity from "@/lib/searchCity";
-import LocalCities from "@/app/cities/_local-cities/localCities";
+import LocalCities from "@/components/_local-cities/localCities";
 import handleAddCity from "../utils/handleAddCity";
 
 type CityProperties = {
@@ -38,7 +38,7 @@ type City = {
 };
 
 type Location = {
-  lon: Number;
+  lon: number;
   lat: number;
 };
 
@@ -51,9 +51,9 @@ const Search = ({ height, noFetch = false }) => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
-  const [selectedCityArea, setSelectedCityArea] = useState<
-    [number, number, number, number] | null
-  >(null);
+  const [selectedCityArea, setSelectedCityArea] = useState<number[] | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [onRoute, setOnRoute] = useState<OnRoute>({
