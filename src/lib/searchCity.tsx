@@ -41,8 +41,6 @@ export default async function searchCity(
 
     const features = data.features as Feature[];
 
-    console.log(data);
-
     const filteredFeatures = features.filter((feature: Feature) => {
       const { osm_type, type } = feature.properties;
 

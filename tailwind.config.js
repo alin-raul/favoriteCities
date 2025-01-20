@@ -9,6 +9,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ["var(--font-dmSerif)"],
+        sans: ["var(--font-inter)"],
+      },
       opacity: {
         1: ".01",
         60: "0.6",

@@ -5,7 +5,7 @@ import ListCarousel from "@/components/list-carousel/ListCarousel";
 import GradientBackground from "@/components/cardinal/GradientBackground";
 import SearchBar from "@/components/search/SearchBar";
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <>
       <div className="pointer-events-none z-0">
@@ -104,4 +104,6 @@ export default function Home() {
       </section>
     </>
   );
-}
+};
+
+export default Home;

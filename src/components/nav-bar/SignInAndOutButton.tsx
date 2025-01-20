@@ -23,7 +23,7 @@ type SignButtonProps = {
 
 const SignInAndOutButton: React.FC<SignButtonProps> = ({
   session,
-}): JSX.Element => {
+}): React.JSX.Element => {
   return (
     <>
       {session ? (

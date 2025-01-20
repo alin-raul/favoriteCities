@@ -56,8 +56,6 @@ const FavoriteCities: React.FC = () => {
     const fetchCities = async (): Promise<City[]> => {
       const citiesData = await getFavoriteCities();
 
-      console.log(citiesData);
-
       if (!citiesData) {
         console.log("Error fetching data");
         setLoading(false);
@@ -120,8 +118,13 @@ const FavoriteCities: React.FC = () => {
                           <Image
                             src={city.image}
                             alt={`${city.name} image`}
-                            layout="fill"
-                            objectFit="cover"
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%",
+                            }}
+                            width={320}
+                            height={400}
                             className="rounded-[2rem] saturate-50 group-hover:saturate-100 group-hover:scale-100 transition-all ease-in-out "
                           />
                         </div>
@@ -172,11 +175,14 @@ const FavoriteCities: React.FC = () => {
                             : "/images/illustrations/undraw_choose-card_es1o-light.svg"
                         }
                         alt="cards"
-                        layout="fill"
                         style={{
                           objectFit: "cover",
                           objectPosition: "top",
+                          width: "full",
+                          height: "full",
                         }}
+                        width={1100}
+                        height={1000}
                       />
                     </div>
                   </div>

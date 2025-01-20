@@ -1,6 +1,6 @@
 import Wrapper from "@/components/pageWrapper/wrapper";
 
-const Loading = () => {
+const Loading: React.FC = () => {
   return (
     <Wrapper>
       <div className="w-full h-screen-minus-nav flex justify-center items-center relative">

@@ -12,7 +12,7 @@ type LogoProps = {
 };
 
 type Session = {
-  user: User;
+  user: User | null;
 };
 
 type User = {

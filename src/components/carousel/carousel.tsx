@@ -35,8 +35,6 @@ import {
 
 const Carousel = ({ cities }: CarouselProps) => {
   const slides = useMemo(() => {
-    console.log(cities);
-
     return cities.map((city, index) => (
       <SwiperSlide key={index} className="max-w-[700px] lg:my-[3rem]">
         <div className="relative flex justify-center items-center ">
