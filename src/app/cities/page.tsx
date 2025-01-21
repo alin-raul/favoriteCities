@@ -1,8 +1,8 @@
-import LocalCities from "../../components/_local-cities/localCities";
+import LocalCities from "../../components/local-cities/localCities";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import { LuHistory } from "react-icons/lu";
 
-const City = () => {
+const City: React.FC = () => {
   return (
     <Wrapper>
       <div className="max-w-screen-2xl w-full m-auto">
@@ -10,7 +10,13 @@ const City = () => {
           <LuHistory className="w-6 h-6" />{" "}
           <span> Cities searched history</span>
         </div>
-        <LocalCities />
+        <LocalCities
+          selectedCityArea={null}
+          setSelectedCityArea={null}
+          onRoute={null}
+          endRoute={null}
+          setOnRoute={null}
+        />
       </div>
     </Wrapper>
   );

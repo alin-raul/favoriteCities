@@ -5,10 +5,38 @@ import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import getFlagEmoji from "@/lib/getFlagEmoji";
 import Image from "next/image";
 
-const Favorites = async () => {
-  const citiesData = await getFavoriteCities();
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  password: string | null;
+  createdAt: string;
+  githubId: string | null;
+};
 
-  const cities = citiesData;
+type Geometry = {
+  coordinates: number[];
+};
+
+type City = {
+  id: number;
+  name: string;
+  country: string;
+  countrycode: string;
+  county: string;
+  osm_type: string;
+  osm_id: number;
+  osm_key: string;
+  osm_value: string;
+  extent: number[];
+  geometry: Geometry;
+  selected: boolean;
+  image: string;
+  users: User[];
+};
+
+const Favorites = async (): Promise<React.ReactNode> => {
+  const cities: City[] = await getFavoriteCities();
 
   // Might use later
 

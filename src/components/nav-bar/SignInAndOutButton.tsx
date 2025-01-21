@@ -2,38 +2,25 @@
 
 import React from "react";
 import { Button } from "../ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
+import TransitionLink from "../utils/TransitionLink";
 
-type User = {
-  name: string;
-  email: string;
-  image: string | null;
-};
+const SignInAndOutButton: React.FC = (): React.JSX.Element => {
+  const { data: session } = useSession();
 
-type Session = {
-  user: User;
-};
-
-type SignButtonProps = {
-  session: Session | null;
-};
-
-const SignInAndOutButton: React.FC<SignButtonProps> = ({
-  session,
-}): React.JSX.Element => {
   return (
     <>
       {session ? (
-        <div className="flex items-center ">
+        <div className="flex items-center">
           <Button variant="ghost" onClick={() => signOut({ callbackUrl: "/" })}>
             Logout
           </Button>
-          <button className="ml-2 w-8 h-8flex justify-center items-center rounded-full">
+          <button className="ml-2 w-8 h-8 flex justify-center items-center rounded-full">
             <Link href="/user">
-              {session.user.image ? (
+              {session.user?.image ? (
                 <Image
                   src={session.user.image}
                   alt="Avatar"
@@ -48,9 +35,9 @@ const SignInAndOutButton: React.FC<SignButtonProps> = ({
           </button>
         </div>
       ) : (
-        <Button variant="ghost">
-          <Link href="/login">Login</Link>
-        </Button>
+        <TransitionLink href="/login">
+          <Button variant="ghost">Login</Button>
+        </TransitionLink>
       )}
     </>
   );

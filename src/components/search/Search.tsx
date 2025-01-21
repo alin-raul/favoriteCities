@@ -8,7 +8,7 @@ import { LuHistory } from "react-icons/lu";
 import MapDisplay from "../map/Map";
 import CityCard from "../city-card/CityCard";
 import searchCity from "@/lib/searchCity";
-import LocalCities from "@/components/_local-cities/localCities";
+import LocalCities from "@/components/local-cities/localCities";
 import handleAddCity from "../utils/handleAddCity";
 
 type CityProperties = {
@@ -47,7 +47,7 @@ type OnRoute = {
   route: { from: Location; to: Location };
 };
 
-const Search = ({ height, noFetch = false }) => {
+const Search = ({ height = 0, noFetch = false }) => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);

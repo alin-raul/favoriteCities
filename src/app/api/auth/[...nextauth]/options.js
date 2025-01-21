@@ -37,8 +37,14 @@ export const options = {
         },
       },
       authorize: async (credentials) => {
+        if (!AppDataSource.isInitialized) {
+          await AppDataSource.initialize();
+        }
+
         try {
           const userRepo = AppDataSource.getRepository(User);
+
+          console.log(userRepo);
 
           const user = await userRepo.findOne({
             where: { username: credentials?.username },
@@ -66,7 +72,7 @@ export const options = {
             image: user.profileImage || null,
           };
         } catch (error) {
-          console.error("Authorization error:", error.message);
+          console.error("Authorization error:", error);
           throw new Error("Invalid username or password");
         }
       },

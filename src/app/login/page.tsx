@@ -1,19 +1,20 @@
 import { options } from "../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
-import HandleLogin from "./_handleLogin";
+import HandleLogin from "../../components/login/handleLogin";
 import Wrapper from "@/components/pageWrapper/wrapper";
-import HandleLogout from "./_handleLogout";
+import HandleLogout from "../../components/login/handleLogout";
+import type { Session } from "../user/page";
 
-export default async function Login() {
-  const session = await getServerSession(options);
+const Login = async (): Promise<React.ReactNode> => {
+  const session: Session | null = await getServerSession(options);
 
   if (!session) {
-    return <HandleLogin session={session} />;
+    return <HandleLogin />;
   }
 
   return (
     <Wrapper className="h-screen-minus-nav flex flex-col justify-center items-center">
-      <div className="h-fit p-4 bg-dynamic rounded-2xl w-fit shadow-md">
+      <div className="h-fit p-6 bg-dynamic rounded-2xl w-fit shadow-md border">
         <div className="flex flex-col gap-4">
           <span>
             You are already logged in,{" "}
@@ -28,4 +29,6 @@ export default async function Login() {
       </div>
     </Wrapper>
   );
-}
+};
+
+export default Login;

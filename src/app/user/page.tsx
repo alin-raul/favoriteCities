@@ -1,12 +1,22 @@
 import { options } from "../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import Wrapper from "@/components/pageWrapper/wrapper";
-import HandleLogout from "../login/_handleLogout";
+import HandleLogout from "../../components/login/handleLogout";
 import Image from "next/image";
 import { FaUserCircle } from "react-icons/fa";
 
+export type User = {
+  name: string;
+  email: string;
+  image: string | null;
+};
+
+export type Session = {
+  user: User | null;
+};
+
 export default async function User() {
-  const session = await getServerSession(options);
+  const session: Session | null = await getServerSession(options);
 
   return (
     <Wrapper className="h-screen-minus-nav flex flex-col justify-center items-center">

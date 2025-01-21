@@ -11,20 +11,6 @@ type LogoProps = {
   fill?: string;
 };
 
-type Session = {
-  user: User | null;
-};
-
-type User = {
-  name: string;
-  email: string;
-  image: string | null;
-};
-
-type NavbarProps = {
-  session?: Session;
-};
-
 export const Logo: React.FC<LogoProps> = ({ width, height, fill = "#fff" }) => {
   return (
     <div className="logo">
@@ -43,7 +29,7 @@ export const Logo: React.FC<LogoProps> = ({ width, height, fill = "#fff" }) => {
   );
 };
 
-const Navbar: React.FC<NavbarProps> = ({ session }) => {
+const Navbar: React.FC = () => {
   const pathname: string = useNavigationEvents();
   return (
     <div
@@ -56,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({ session }) => {
           <NavLinks pathname={pathname} />
           <div className="gap-2 flex items-center">
             <ModeToggle />
-            <SignInAndOutButton session={session} />
+            <SignInAndOutButton />
           </div>
         </div>
       </nav>

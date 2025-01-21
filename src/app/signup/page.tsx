@@ -1,7 +1,7 @@
 import React from "react";
-import HandleSignUp from "./_handleSignUp";
+import HandleSignUp from "@/components/signup/handleSignUp";
 
-const signUp = () => {
+const signUp: React.FC = () => {
   return (
     <div>
       <HandleSignUp />

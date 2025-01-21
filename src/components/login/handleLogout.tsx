@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 
-const HandleLogout = () => {
+const HandleLogout: React.FC = () => {
   return <Button onClick={() => signOut()}>Logout</Button>;
 };
 

@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from "react";
 import CustomForm from "@/components/form/customForm";
 
-const HandleSignUp = () => {
-  const [error, setError] = useState(null);
-  const [callbackUrl, setCallbackUrl] = useState("/login");
+const HandleSignUp: React.FC = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [callbackUrl, setCallbackUrl] = useState<string>("/login");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,9 +15,7 @@ const HandleSignUp = () => {
     }
   }, []);
 
-  const handleSignup = async (formData) => {
-    console.log(formData);
-
+  const handleSignup = async (formData: Record<string, string>) => {
     const { username, email, password } = formData;
 
     try {
@@ -29,14 +27,30 @@ const HandleSignUp = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Signup failed: ${errorData.message}`);
+        console.log(errorData);
+
+        if (
+          errorData.error ===
+          "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.email"
+        ) {
+          throw new Error(`Email already exists`);
+        } else if (
+          errorData.error ===
+          "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username"
+        ) {
+          throw new Error(`Username already exists`);
+        } else {
+          throw new Error(errorData.error);
+        }
       }
 
-      console.log("User created");
-
       window.location.href = callbackUrl;
-    } catch (err) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 

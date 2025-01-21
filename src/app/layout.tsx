@@ -1,11 +1,13 @@
-import "maplibre-gl/dist/maplibre-gl.css";
+import { Inter, DM_Serif_Display } from "next/font/google";
+import "src/app/globals.css";
 import { ThemeProvider } from "next-themes";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { SidebarProvider } from "@/context/SidebarContext";
 import Navbar from "@/components/nav-bar/NavBar";
 import Sidebar from "@/components/nav-bar/sidebar/Sidebar";
+import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
-import { Inter, DM_Serif_Display } from "next/font/google";
-import "src/app/globals.css";
+import SessionProviderWrapper from "@/components/sessionProviderWrapper/SessionProviderWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,19 +35,7 @@ type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-type Session = {
-  user: User | null;
-};
-
-type User = {
-  name: string;
-  email: string;
-  image: string | null;
-};
-
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const session: Session = await getServerSession();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -57,13 +47,16 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <Sidebar />
-            <div className="relative">
-              <Navbar session={session} />
-              <main>{children}</main>
-            </div>
-          </SidebarProvider>
+          <SessionProviderWrapper>
+            <SidebarProvider>
+              <Sidebar />
+              <div className="relative">
+                <Navbar />
+                <main>{children}</main>
+                <Toaster />
+              </div>
+            </SidebarProvider>
+          </SessionProviderWrapper>
         </ThemeProvider>
       </body>
     </html>
