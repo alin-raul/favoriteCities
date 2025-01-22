@@ -66,7 +66,7 @@ const GradientBackground: React.FC = () => {
           : "#ffc99d",
       color3:
         (theme === "system" ? resolvedTheme : theme) === "dark"
-          ? "#cb6ad8"
+          ? "#79208f"
           : "#a2c6fc",
       color4:
         (theme === "system" ? resolvedTheme : theme) === "dark"

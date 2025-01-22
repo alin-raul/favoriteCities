@@ -10,37 +10,8 @@ import CityCard from "../city-card/CityCard";
 import searchCity from "@/lib/searchCity";
 import LocalCities from "@/components/local-cities/localCities";
 import handleAddCity from "../utils/handleAddCity";
-
-type CityProperties = {
-  osm_type: string;
-  osm_id: number;
-  extent: number[];
-  country: string;
-  osm_key: string;
-  city: string;
-  countrycode: string;
-  osm_value: string;
-  name: string;
-  county?: string;
-  type: string;
-};
-
-type CityGeometry = {
-  coordinates: number[];
-  type: string;
-};
-
-type City = {
-  geometry: CityGeometry;
-  properties: CityProperties;
-  type: string;
-  image?: string;
-};
-
-type Location = {
-  lon: number;
-  lat: number;
-};
+import type { Location } from "../map/Map";
+import type { LocalCity } from "@/components/local-cities/localCities";
 
 type OnRoute = {
   routeStatus: boolean;
@@ -49,8 +20,8 @@ type OnRoute = {
 
 const Search = ({ height = 0, noFetch = false }) => {
   const [query, setQuery] = useState<string>("");
-  const [results, setResults] = useState<City[]>([]);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [results, setResults] = useState<LocalCity[]>([]);
+  const [selectedCity, setSelectedCity] = useState<LocalCity | null>(null);
   const [selectedCityArea, setSelectedCityArea] = useState<number[] | null>(
     null
   );

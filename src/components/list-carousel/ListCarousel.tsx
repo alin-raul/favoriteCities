@@ -7,11 +7,11 @@ import {
 } from "react-icons/si";
 import Link from "next/link";
 
-interface CarouselItem {
+type CarouselItem = {
   name: string;
   url: string;
   icon: React.ReactNode;
-}
+};
 
 const InfiniteCarousel = () => {
   const items: CarouselItem[] = [

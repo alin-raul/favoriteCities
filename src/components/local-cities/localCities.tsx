@@ -9,6 +9,7 @@ import { MdOutlineDirections, MdOutlineDirectionsOff } from "react-icons/md";
 import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
+import type { Location } from "../map/Map";
 
 type CityProperties = {
   osm_type: string;
@@ -29,18 +30,13 @@ type CityGeometry = {
   type: string;
 };
 
-type LocalCity = {
+export type LocalCity = {
   geometry: CityGeometry;
   properties: CityProperties;
   image?: string;
-  addedAt: string;
-  selected: boolean;
+  addedAt?: string;
+  selected?: boolean;
   type: "Feature";
-};
-
-type Location = {
-  lon: number;
-  lat: number;
 };
 
 type OnRoute = {

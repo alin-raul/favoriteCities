@@ -13,7 +13,7 @@ type Geometry = {
   coordinates: number[];
 };
 
-type City = {
+export type City = {
   id: number;
   name: string;
   country: string;

@@ -1,6 +1,6 @@
 const { EntitySchema } = require("typeorm");
 
-const User = new EntitySchema({
+export const User = new EntitySchema({
   name: "User",
   tableName: "users",
   columns: {
@@ -30,7 +30,7 @@ const User = new EntitySchema({
     githubId: {
       type: "varchar",
       unique: true,
-      nullable: true, // Null if the user is local, not from GitHub
+      nullable: true,
     },
   },
   relations: {

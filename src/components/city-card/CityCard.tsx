@@ -8,6 +8,7 @@ import TransitionLink from "@/components/utils/TransitionLink";
 import { Button } from "@/components/ui/button";
 import Weather from "@/components/weather/Weather";
 import { getWeatherData } from "@/lib/getWeather";
+import type { WeatherData } from "@/lib/getWeather";
 
 type CityProperties = {
   osm_type: string;
@@ -81,22 +82,6 @@ type DailyData = {
   temperature_2m_max: number[];
   temperature_2m_min: number[];
   precipitation_sum: number[];
-};
-
-type WeatherData = {
-  latitude: number;
-  longitude: number;
-  generationtime_ms: number;
-  utc_offset_seconds: number;
-  timezone: string;
-  timezone_abbreviation: string;
-  elevation: number;
-  current_weather_units: WeatherUnits;
-  current_weather: CurrentWeather;
-  hourly_units: HourlyUnits;
-  hourly: HourlyData;
-  daily_units: DailyUnits;
-  daily: DailyData;
 };
 
 type Location = {

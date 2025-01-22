@@ -12,11 +12,13 @@ type Location = {
 type YouAreHereProps = {
   noFetch: boolean;
   setLocation: (location: Location) => void;
+  advancedView: boolean;
 };
 
 export default function YouAreHere({
   noFetch,
   setLocation,
+  advancedView,
 }: YouAreHereProps): React.ReactNode {
   const [popupLocation, setPopupLocation] = useState<Location>(middleOfRo);
   const { current: map } = useMap();
@@ -30,7 +32,7 @@ export default function YouAreHere({
       if (location && location !== middleOfRo) {
         setPopupLocation(location);
         if (map) {
-          map.flyTo({ center: location, zoom: 8 });
+          map.flyTo({ center: location, zoom: 16 });
         }
       }
     };
@@ -43,7 +45,7 @@ export default function YouAreHere({
 
   return (
     <>
-      {!noFetch && (
+      {!noFetch && !advancedView && (
         <div>
           <Popup longitude={popupLocation.lon} latitude={popupLocation.lat}>
             <h3>You are approximately here!</h3>

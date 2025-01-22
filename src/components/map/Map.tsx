@@ -1,16 +1,17 @@
 "use client";
 
 import { Map, Source, Layer } from "@vis.gl/react-maplibre";
+import mapboxgl from "mapbox-gl"; // Import mapbox-gl for advanced features
 import { middleOfRo } from "@/globals/constants";
 import YouAreHere from "../you-are-here/YouAreHere";
 import { useTheme } from "next-themes";
-import { useMemo, useEffect, useRef, useState, ReactElement } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import polyline from "polyline";
 import { Marker } from "@vis.gl/react-maplibre";
 import { FaLocationDot } from "react-icons/fa6";
 
-type Location = {
+export type Location = {
   lon: Number;
   lat: number;
 };
@@ -20,6 +21,7 @@ type MapDisplayProps = {
   rounded?: [string, string, string, string] | string;
   zIndex?: number;
   noFetch?: boolean;
+  advancedView?: boolean; // Prop for enabling advanced features
   onRoute?: {
     routeStatus: boolean;
     route: {
@@ -34,6 +36,7 @@ export default function MapDisplay({
   rounded = ["0px", "0px", "0px", "0px"],
   zIndex,
   noFetch,
+  advancedView = false,
   onRoute,
 }: MapDisplayProps) {
   const { theme, resolvedTheme } = useTheme();
@@ -76,6 +79,54 @@ export default function MapDisplay({
       });
     }
   }, [selectedCityArea]);
+
+  useEffect(() => {
+    if (advancedView && location && mapRef.current) {
+      const map = mapRef.current.getMap();
+
+      // Perform zoom-in and centering with pitch and initial bearing
+      map.flyTo({
+        center: [location.lon, location.lat],
+        zoom: 18, // Very close zoom
+        pitch: 60, // Add pitch for a 3D perspective
+        bearing: 0, // Start with no rotation
+        duration: 2000, // Smooth animation
+      });
+
+      let animationFrameId: number; // To store the ID for cleanup
+      let startTime: number | null = null; // For smooth rotation timing
+
+      const startContinuousRotation = () => {
+        const rotateMap = (timestamp: number) => {
+          if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
+
+          // Rotate at 10 degrees per second (adjust for desired speed)
+          const newBearing = map.getBearing() + 2 * (elapsed / 1000);
+          map.setBearing(newBearing % 360); // Keep bearing within 0-360 degrees
+
+          startTime = timestamp; // Reset the start time for the next frame
+          animationFrameId = requestAnimationFrame(rotateMap); // Request the next frame
+        };
+
+        animationFrameId = requestAnimationFrame(rotateMap); // Start the animation loop
+      };
+
+      // Start rotation after the zoom-in animation completes
+      const handleMoveEnd = () => {
+        map.off("moveend", handleMoveEnd); // Remove the listener
+        startContinuousRotation(); // Start the rotation
+      };
+
+      map.on("moveend", handleMoveEnd); // Attach the listener
+
+      // Cleanup the animation when component unmounts
+      return () => {
+        map.off("moveend", handleMoveEnd);
+        if (animationFrameId) cancelAnimationFrame(animationFrameId); // Cancel the animation loop
+      };
+    }
+  }, [advancedView, location]);
 
   useEffect(() => {
     const fetchRoute = async () => {
@@ -151,10 +202,15 @@ export default function MapDisplay({
   return (
     <Map
       ref={mapRef}
+      antialias={advancedView}
+      touchInteraction={advancedView ? "none" : "on"}
+      clickInteraction={advancedView ? "none" : "on"}
       initialViewState={{
         longitude: middleOfRo[0],
         latitude: middleOfRo[1],
-        zoom: 2,
+        zoom: advancedView ? 8 : 2, // Higher zoom for advanced view
+        pitch: advancedView ? 60 : 0, // Add pitch for a 3D view
+        bearing: advancedView ? 0 : 0, // Initial bearing for camera rotation
       }}
       style={{
         borderTopLeftRadius: rounded[0],
@@ -235,7 +291,11 @@ export default function MapDisplay({
         </>
       )}
 
-      <YouAreHere noFetch={noFetch} setLocation={setLocation} />
+      <YouAreHere
+        noFetch={noFetch}
+        setLocation={setLocation}
+        advancedView={advancedView}
+      />
     </Map>
   );
 }

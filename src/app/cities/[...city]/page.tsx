@@ -6,14 +6,16 @@ import { getWikipediaData } from "@/lib/getWikipediaData";
 import { getWeatherData } from "@/lib/getWeather";
 import Clock from "@/components/clock/Clock";
 import ReactHtmlParser from "html-react-parser";
+import type { WeatherData } from "@/lib/getWeather";
+import type { CitiesQuery } from "@/lib/searchCity";
 
 const CityPage = async ({ params }) => {
   const resolvedParams = await params;
   const cityName = decodeURIComponent(resolvedParams.city[0]);
 
-  const location = await searchCity(cityName);
+  const location: CitiesQuery[] = await searchCity(cityName);
 
-  const weatherData = await getWeatherData(location[0]);
+  const weatherData: WeatherData = await getWeatherData(location[0]);
 
   const { description, image, link } = await getWikipediaData(cityName);
 

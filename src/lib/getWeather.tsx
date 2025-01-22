@@ -48,7 +48,7 @@ type DailyData = {
   precipitation_sum: number[];
 };
 
-type WeatherData = {
+export type WeatherData = {
   latitude: number;
   longitude: number;
   generationtime_ms: number;

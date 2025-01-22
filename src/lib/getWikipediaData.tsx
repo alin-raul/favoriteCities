@@ -2,7 +2,6 @@
 
 import { citiesTranslations } from "@/globals/constants";
 
-// Define the type for the Wikipedia response
 type WikipediaSearchData = {
   description: string;
   image: string | null;

@@ -4,35 +4,10 @@ import { TiStarFullOutline } from "react-icons/ti";
 import React, { useState } from "react";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
-
-type User = {
-  id: number;
-  username: string;
-  email: string;
-  password: string | null;
-  createdAt: string;
-  githubId: string | null;
-};
+import type { City } from "@/lib/getFavoriteCities";
 
 type Geometry = {
   coordinates: number[];
-};
-
-type City = {
-  id: number;
-  name: string;
-  country: string;
-  countrycode: string;
-  county: string;
-  osm_type: string;
-  osm_id: number;
-  osm_key: string;
-  osm_value: string;
-  extent: number[];
-  geometry: Geometry;
-  selected: boolean;
-  image: string;
-  users: User[];
 };
 
 type CityProperties = {
@@ -52,6 +27,12 @@ type CityWithProperties = {
   geometry: Geometry;
   image: string;
   selected: boolean;
+};
+
+type FavoriteButtonProps = {
+  handleToggleFavorite: (osmId: number) => void;
+  city: CityWithProperties;
+  full?: boolean;
 };
 
 async function handlePostFavorite(
@@ -95,12 +76,6 @@ async function handlePostFavorite(
     console.error("Failed to create city:", error.message);
   }
 }
-
-type FavoriteButtonProps = {
-  handleToggleFavorite: (osmId: number) => void;
-  city: CityWithProperties;
-  full?: boolean;
-};
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   handleToggleFavorite,

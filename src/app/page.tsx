@@ -4,6 +4,8 @@ import FavoriteCities from "@/components/favoriteCitiesCard/FavoriteCities";
 import ListCarousel from "@/components/list-carousel/ListCarousel";
 import GradientBackground from "@/components/cardinal/GradientBackground";
 import SearchBar from "@/components/search/SearchBar";
+import Minimap from "@/components/minimap/minimap";
+import LavaLampCanvas from "@/components/cardinal/LavaLampCanvas";
 
 const Home: React.FC = () => {
   return (
@@ -15,30 +17,35 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-3xl m-auto h-screen-minus-nav relative">
+      <div className="m-auto h-screen-minus-nav relative">
+        {/* <div className="absolute w-full h-full pointer-events-none z-0">
+          <Minimap />
+        </div> */}
         <div className="flex h-full px-4">
-          <div className="flex flex-col m-auto gap-12">
-            <div className="w-fit">
-              <div className="flex items-center text-9xl h-24 font-bold mb-8 font-serif ">
-                <div className="slider-container h-36 overflow-hidden">
-                  <div className="slider-text1">Search</div>
-                  <div className="slider-text2">Plan</div>
-                  <div className="slider-text3">Travel</div>
-                  <div className="slider-text4">Explore</div>
+          <div className="flex justify-center items-center gap-36 m-auto">
+            <div className="max-w-3xl flex flex-col m-auto gap-12 my-8">
+              <div className="">
+                <div className="flex items-center text-9xl h-24 font-bold mb-8 font-serif ">
+                  <div className="slider-container h-36 overflow-hidden">
+                    <div className="slider-text1">Search</div>
+                    <div className="slider-text2">Plan</div>
+                    <div className="slider-text3">Travel</div>
+                    <div className="slider-text4">Explore</div>
+                  </div>
                 </div>
-              </div>
 
-              <p className="text-xl text-justify font-light opacity-80 max-w-5xl">
-                Imagine having every city&apos;s best-kept secrets, scenic
-                routes, and essential details at your fingertips. Our platform
-                empowers explorers, travelers, and urban adventurers to make the
-                most of every city visit. Whether you&apos;re planning a weekend
-                getaway, a business trip, or just dreaming about your next
-                adventure — we&apos;ve got you covered.
-              </p>
-            </div>
-            <div className="flex flex-col items-end gap-8">
-              <SearchBar width="w-full" height="h-28" />
+                <p className="text-xl text-justify font-light opacity-80 max-w-5xl">
+                  Imagine having every city&apos;s best-kept secrets, scenic
+                  routes, and essential details at your fingertips. Our platform
+                  empowers explorers, travelers, and urban adventurers to make
+                  the most of every city visit. Whether you&apos;re planning a
+                  weekend getaway, a business trip, or just dreaming about your
+                  next adventure — we&apos;ve got you covered.
+                </p>
+              </div>
+              <div className="flex flex-col items-end gap-8">
+                <SearchBar width="w-full" height="h-28" />
+              </div>
             </div>
           </div>
         </div>

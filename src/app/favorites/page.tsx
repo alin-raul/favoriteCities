@@ -4,36 +4,7 @@ import Wrapper from "@/components/pageWrapper/wrapper";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import getFlagEmoji from "@/lib/getFlagEmoji";
 import Image from "next/image";
-
-type User = {
-  id: number;
-  username: string;
-  email: string;
-  password: string | null;
-  createdAt: string;
-  githubId: string | null;
-};
-
-type Geometry = {
-  coordinates: number[];
-};
-
-type City = {
-  id: number;
-  name: string;
-  country: string;
-  countrycode: string;
-  county: string;
-  osm_type: string;
-  osm_id: number;
-  osm_key: string;
-  osm_value: string;
-  extent: number[];
-  geometry: Geometry;
-  selected: boolean;
-  image: string;
-  users: User[];
-};
+import type { City } from "@/lib/getFavoriteCities";
 
 const Favorites = async (): Promise<React.ReactNode> => {
   const cities: City[] = await getFavoriteCities();

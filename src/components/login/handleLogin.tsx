@@ -7,9 +7,14 @@ import CustomForm from "@/components/form/customForm";
 import { Button } from "@/components/ui/button";
 import { FaGithubAlt } from "react-icons/fa";
 
-export default function HandleLogin() {
-  const [error, setError] = useState(null);
-  const [callbackUrl, setCallbackUrl] = useState("/");
+export type LoginForm = {
+  username: string;
+  password: string;
+};
+
+const HandleLogin: React.FC = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [callbackUrl, setCallbackUrl] = useState<string>("/");
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +25,7 @@ export default function HandleLogin() {
     }
   }, []);
 
-  const handleLogin = async (formData) => {
+  const handleLogin = async (formData: LoginForm) => {
     const { username, password } = formData;
 
     const result = await signIn("credentials", {
@@ -73,4 +78,6 @@ export default function HandleLogin() {
       </div>
     </CustomForm>
   );
-}
+};
+
+export default HandleLogin;

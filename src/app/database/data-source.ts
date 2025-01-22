@@ -1,7 +1,6 @@
 const { DataSource } = require("typeorm");
 const { City } = require("../entity/City");
 const { User } = require("../entity/User");
-import "reflect-metadata";
 
 const AppDataSource = new DataSource({
   type: "sqlite",

@@ -1,34 +1,9 @@
 "use server";
 
 import { getFavoriteCities } from "./getFavoriteCities";
+import type { LocalCity } from "@/components/local-cities/localCities";
 
-type CityProperties = {
-  osm_type: string;
-  osm_id: number;
-  extent: number[];
-  country: string;
-  osm_key: string;
-  city: string;
-  countrycode: string;
-  osm_value: string;
-  name: string;
-  county: string;
-  type: string;
-};
-
-type CityGeometry = {
-  coordinates: number[];
-  type: string;
-};
-
-type City = {
-  geometry: CityGeometry;
-  type: string;
-  properties: CityProperties;
-  image: string;
-};
-
-export async function handlePostFavorite(city: City): Promise<any> {
+export async function handlePostFavorite(city: LocalCity): Promise<any> {
   if (!city || !city.properties) {
     console.error("Invalid city data for POST operation");
     return;

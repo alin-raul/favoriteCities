@@ -1,6 +1,6 @@
 "use server";
 
-type Feature = {
+export type CitiesQuery = {
   geometry: {
     coordinates: [number, number];
     type: "Point";
@@ -24,11 +24,9 @@ type Feature = {
   };
 };
 
-type FeaturesResponse = Feature[];
-
 export default async function searchCity(
   searchQuery: string
-): Promise<FeaturesResponse> {
+): Promise<CitiesQuery[]> {
   try {
     const response = await fetch(
       `https://photon.komoot.io/api/?q=${encodeURIComponent(
@@ -39,9 +37,9 @@ export default async function searchCity(
 
     const data = await response.json();
 
-    const features = data.features as Feature[];
+    const features = data.features as CitiesQuery[];
 
-    const filteredFeatures = features.filter((feature: Feature) => {
+    const filteredFeatures = features.filter((feature: CitiesQuery) => {
       const { osm_type, type } = feature.properties;
 
       const isCityType =

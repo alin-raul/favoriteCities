@@ -5,7 +5,7 @@ import HandleLogout from "../../components/login/handleLogout";
 import Image from "next/image";
 import { FaUserCircle } from "react-icons/fa";
 
-export type User = {
+type User = {
   name: string;
   email: string;
   image: string | null;
