@@ -36,7 +36,7 @@ const fetchImageFromFlickr = async (
     `${cityName}`,
     `${cityName} aerial view`,
   ];
-  const radius = 20; // Broader search radius
+  const radius = 20; 
 
   for (const query of queries) {
     try {

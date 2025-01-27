@@ -1,11 +1,8 @@
 "use server";
 
-type Location = {
-  lon: Number;
-  lat: number;
-};
 
 import { middleOfRo } from "@/globals/constants";
+import type { Location } from "@/components/map/Map";
 
 export async function getLocation(): Promise<Location> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";

@@ -7,6 +7,7 @@ import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import TransitionLink from "../utils/TransitionLink";
 import Image from "next/image";
 import type { City } from "@/lib/getFavoriteCities";
+import { GiModernCity } from "react-icons/gi";
 
 const FavoriteCities: React.FC = () => {
   const [cities, setCities] = useState<City[]>([]);
@@ -66,8 +67,8 @@ const FavoriteCities: React.FC = () => {
         </div>
       ) : cities.length > 0 ? (
         <div>
-          <div className="lg:flex flex-col items-center justify-center xl:max-w-screen-lg text-center mb-8 mx-auto hidden ">
-            <h2 className="text-6xl font-bold mb-4 relative font-serif">
+          <div className="lg:flex flex-col items-center justify-center text-center mb-8 mx-auto hidden ">
+            <h2 className="font-bold text-5xl xl:text-7xl 2xl:text-8xl mx-auto mb-4 font-serif">
               View your saved destinations!
             </h2>
             <p className="text-xl font-light opacity-80 max-w-2xl">
@@ -84,7 +85,7 @@ const FavoriteCities: React.FC = () => {
                 <div key={index}>
                   <TransitionLink href={`/cities/${city.name}`} className="">
                     <div className="p-4 border dynamic-border rounded-[3rem] shadow-inner flex flex-col justify-between bg-dynamic bg-dynamic-h hover:shadow-md active:shadow-lg transition-all group">
-                      <div className="relative w-80 h-96 border rounded-[2rem] overflow-hidden">
+                      <div className="relative w-80 h-96 border rounded-[2rem] overflow-crop">
                         <div className="relative w-full h-full">
                           <Image
                             src={city.image}
@@ -117,9 +118,12 @@ const FavoriteCities: React.FC = () => {
                     <div key={index}>
                       <TransitionLink
                         href={`/cities/${city.name}`}
-                        className="h-fit"
+                        className="h-fit "
                       >
-                        <div className="flex flex-col justify-center h-[253px] w-full p-4 border dynamic-border rounded-[3rem] shadow-inner bg-dynamic bg-dynamic-h transition-all text-center m-auto">
+                        <div className="flex flex-col justify-center items-center h-[253px] w-full p-4 border dynamic-border rounded-[3rem] shadow-inner bg-dynamic-h transition-all text-center m-auto bg-dynamic relative">
+                          {/* <div className="w-10 h-10 bg-violet-700 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-125 blur-2xl"></div> */}
+
+                          <GiModernCity className="w-10 h-10 mx-auto mb-2" />
                           <h3 className="text-xl font-semibold">{city.name}</h3>
                           <p className="text-sm opacity-50">
                             {city.country}, {city.countrycode}
@@ -131,31 +135,11 @@ const FavoriteCities: React.FC = () => {
                 </div>
               )}
               {cities.length > 0 && citiesWithImages.length < 4 && (
-                <div className="flex flex-col justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow border rounded-[3rem] transition-all overflow-hidden">
-                  <div className="translate-y-[30%] h-full w-full relative">
-                    <div className="">
-                      <p className="text-center text-2xl -translate-y-16 opacity-70">
-                        Great. You can add other now!
-                      </p>
-                      <Image
-                        src={
-                          theme === "system"
-                            ? systemThemeImageAddCards
-                            : theme === "dark"
-                            ? "/images/illustrations/undraw_choose-card_es1o.svg"
-                            : "/images/illustrations/undraw_choose-card_es1o-light.svg"
-                        }
-                        alt="cards"
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "top",
-                          width: "full",
-                          height: "full",
-                        }}
-                        width={1100}
-                        height={1000}
-                      />
-                    </div>
+                <div className="flex flex-col justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow border rounded-[3rem] transition-all">
+                  <div className="flex justify-center items-center h-full w-full relative">
+                    <p className="text-2xl mt-4 opacity-70">
+                      Great. You can add other now!
+                    </p>
                   </div>
                 </div>
               )}

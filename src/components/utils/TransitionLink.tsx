@@ -65,7 +65,7 @@ const TransitionLink: React.FC<TransitionLinkProps> = ({
     <Link
       href={href}
       onClick={handleTransition}
-      className={`hover:opacity-100 ${
+      className={`hover:opacity-100 transition-all ${
         card
           ? ""
           : isActive

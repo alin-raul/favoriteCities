@@ -1,4 +1,5 @@
 import { Inter, DM_Serif_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "src/app/globals.css";
 import { ThemeProvider } from "next-themes";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -26,6 +27,32 @@ const dmSerifDisplay = DM_Serif_Display({
   variable: "--font-dmSerif",
 });
 
+const chiaroscura = localFont({
+  src: [
+    {
+      path: "../../public/fonts/EMT_Chiaroscura_TRIAL/ChiaroscuraTRIAL-SmBd.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/EMT_Chiaroscura_TRIAL/ChiaroscuraTRIAL-Md.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/EMT_Chiaroscura_TRIAL/ChiaroscuraTRIAL-Rg.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/EMT_Chiaroscura_TRIAL/ChiaroscuraTRIAL-XLt.otf",
+      weight: "200",
+      style: "normal",
+    },
+  ],
+  variable: "--font-chiaroscura",
+});
+
 export const metadata = {
   title: "Cardinal",
   description: "Discover, Plan...",
@@ -39,7 +66,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${dmSerifDisplay.variable} font-sans`}
+        className={`${inter.variable} ${dmSerifDisplay.variable} ${chiaroscura.variable} font-sans `}
       >
         <ThemeProvider
           attribute="class"
@@ -50,7 +77,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <SessionProviderWrapper>
             <SidebarProvider>
               <Sidebar />
-              <div className="relative">
+              <div className="relative overflow-clip">
                 <Navbar />
                 <main>{children}</main>
                 <Toaster />

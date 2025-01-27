@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { IoMdSearch } from "react-icons/io";
+import { MdArrowOutward } from "react-icons/md";
 import { Input } from "../ui/input";
 import { RANDOM_CITIES } from "@/globals/constants";
 import Link from "next/link";
@@ -11,7 +12,7 @@ const waitForMs = (ms: number) =>
 
 async function typeSentence(
   sentence: string,
-  setQuery: (text: string) => void,
+  setQuery: React.Dispatch<React.SetStateAction<string>>,
   delay: number = 100
 ): Promise<void> {
   const letters = sentence.split("");
@@ -50,29 +51,31 @@ interface SearchBarProps {
   height: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ width, height }) => {
-  const [query, setQuery] = useState<string>("|");
+const SearchBar: React.FC<SearchBarProps> = memo(({ width, height }) => {
+  const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     let isMounted = true;
+
     async function runCityTyping() {
       let i = 0;
       while (isMounted) {
-        setQuery("|");
-        await waitForMs(500);
+        await waitForMs(250);
+        for (let j = 0; j < 3; j++) {
+          // Blink twice before starting
+          setQuery((prev) =>
+            prev.endsWith("|") ? prev.slice(0, -1) : prev + "|"
+          );
+          await waitForMs(500);
+        }
 
-        await typeSentence(RANDOM_CITIES[i].name, (currentText) =>
-          setQuery(currentText)
-        );
+        // Start typing
+        await typeSentence(RANDOM_CITIES[i].name, setQuery);
 
-        let cursorVisible = true;
         const cursorBlinkInterval = setInterval(() => {
-          if (cursorVisible) {
-            setQuery(RANDOM_CITIES[i].name + "|");
-          } else {
-            setQuery(RANDOM_CITIES[i].name + " ");
-          }
-          cursorVisible = !cursorVisible;
+          setQuery((prev) =>
+            prev.endsWith("|") ? prev.slice(0, -1) : prev + "|"
+          );
         }, 500);
 
         await waitForMs(3000);
@@ -95,8 +98,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ width, height }) => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8 w-full ">
-      <div className="relative ">
+    <div className="flex flex-col gap-8 w-full h-full">
+      <div className="relative h-full">
         <IoMdSearch
           className="absolute left-6 top-1/2 transform -translate-y-1/2 w-10 h-10 opacity-80 z-10"
           aria-hidden="true"
@@ -113,13 +116,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ width, height }) => {
       </div>
       <div className="flex justify-end">
         <Link href="/search">
-          <button className="bg-dynamic rounded-full p-6 border dynamic-border shadow-md font-medium text-xl h-full hover:brightness-110 hover:bg-gradient-to-br hover:from-[#4934b549] hover:to-[#86458e2f] transition-all">
-            Click to Search
+          <button className="bg-dynamic rounded-full p-6 border dynamic-border shadow-md font-medium text-xl h-full hover:brightness-110 hover:bg-gradient-to-br hover:from-[#4934b590] hover:to-[#86458e50] transition-all">
+            <div className="flex gap-6 items-center">
+              Click to Search
+              <MdArrowOutward className="w-6 h-6" />
+            </div>
           </button>
         </Link>
       </div>
     </div>
   );
-};
+});
 
 export default SearchBar;

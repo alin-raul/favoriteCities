@@ -16,7 +16,7 @@ interface ColorPalette {
   color4: string;
 }
 
-const GradientBackground: React.FC = () => {
+const CardinalRotatingBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rotationRef = useRef<number>(0);
   const scrollYRef = useRef<number>(0);
@@ -34,26 +34,13 @@ const GradientBackground: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const ditherPalette = (palette: RGB[]): RGB[] => {
-      const ditheredPalette: RGB[] = [];
-
-      for (let i = 0; i < palette.length; i++) {
-        let color = palette[i];
-
-        color = addNoise(color);
-
-        ditheredPalette.push(color);
-      }
-      return ditheredPalette;
-    };
-
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
 
     if (!canvas || !ctx) return;
 
-    canvas.style.width = "2000px";
-    canvas.style.height = "2000px";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
 
     const colors: ColorPalette = {
       color1:
@@ -153,7 +140,7 @@ const GradientBackground: React.FC = () => {
         g[i] = interpolate(c4, c4, f);
       }
 
-      return ditherPalette(g);
+      return g;
     };
 
     const color1Rgb = hexToRgb(colors.color1);
@@ -213,16 +200,16 @@ const GradientBackground: React.FC = () => {
 
     const animateRotation = (): void => {
       rotationRef.current += 0.02;
-      const scrollRotation = scrollYRef.current * 0.1;
+      const scrollRotation = scrollYRef.current * 0.05;
       const scrollY = scrollYRef.current;
 
       const scaleFactor = 1 + scrollY * 0.0005;
 
       canvas.style.transform = `
-        rotate(${rotationRef.current + scrollRotation}deg)
-        translateY(${scrollY * 0.5}px) 
-        scale(${scaleFactor})
-      `;
+          rotate(${rotationRef.current + scrollRotation}deg)
+        
+          scale(${scaleFactor})
+        `;
 
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -245,34 +232,8 @@ const GradientBackground: React.FC = () => {
     };
   }, [theme, resolvedTheme]);
 
-  const addNoise = (color: RGB, intensity = 2): RGB => {
-    return {
-      r: Math.min(
-        255,
-        Math.max(
-          0,
-          color.r + Math.floor(Math.random() * intensity - intensity / 2)
-        )
-      ),
-      g: Math.min(
-        255,
-        Math.max(
-          0,
-          color.g + Math.floor(Math.random() * intensity - intensity / 2)
-        )
-      ),
-      b: Math.min(
-        255,
-        Math.max(
-          0,
-          color.b + Math.floor(Math.random() * intensity - intensity / 2)
-        )
-      ),
-    };
-  };
-
   return (
-    <div className="flex justify-center blur-3xl fixed z-[-1] opacity-90">
+    <div className="flex blur-[0px] z-[-1] opacity-90 h-56 w-56 scale-[5] ">
       <canvas
         id="gradient-canvas"
         ref={canvasRef}
@@ -291,4 +252,4 @@ const GradientBackground: React.FC = () => {
   );
 };
 
-export default GradientBackground;
+export default CardinalRotatingBackground;

@@ -3,11 +3,8 @@ import { middleOfRo } from "@/globals/constants";
 import { Popup, useMap } from "@vis.gl/react-maplibre";
 import { getLocation } from "@/lib/getLocation";
 import { Marker } from "@vis.gl/react-maplibre";
+import type { Location } from "../map/Map";
 
-type Location = {
-  lon: Number;
-  lat: number;
-};
 
 type YouAreHereProps = {
   noFetch: boolean;

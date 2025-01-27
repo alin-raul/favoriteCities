@@ -21,7 +21,7 @@ type MapDisplayProps = {
   rounded?: [string, string, string, string] | string;
   zIndex?: number;
   noFetch?: boolean;
-  advancedView?: boolean; // Prop for enabling advanced features
+  advancedView?: boolean;
   onRoute?: {
     routeStatus: boolean;
     route: {
@@ -84,46 +84,42 @@ export default function MapDisplay({
     if (advancedView && location && mapRef.current) {
       const map = mapRef.current.getMap();
 
-      // Perform zoom-in and centering with pitch and initial bearing
       map.flyTo({
         center: [location.lon, location.lat],
-        zoom: 18, // Very close zoom
-        pitch: 60, // Add pitch for a 3D perspective
-        bearing: 0, // Start with no rotation
-        duration: 2000, // Smooth animation
+        zoom: 18,
+        pitch: 60,
+        bearing: 0,
+        duration: 2000,
       });
 
-      let animationFrameId: number; // To store the ID for cleanup
-      let startTime: number | null = null; // For smooth rotation timing
+      let animationFrameId: number;
+      let startTime: number | null = null;
 
       const startContinuousRotation = () => {
         const rotateMap = (timestamp: number) => {
           if (!startTime) startTime = timestamp;
           const elapsed = timestamp - startTime;
 
-          // Rotate at 10 degrees per second (adjust for desired speed)
           const newBearing = map.getBearing() + 2 * (elapsed / 1000);
-          map.setBearing(newBearing % 360); // Keep bearing within 0-360 degrees
+          map.setBearing(newBearing % 360);
 
-          startTime = timestamp; // Reset the start time for the next frame
-          animationFrameId = requestAnimationFrame(rotateMap); // Request the next frame
+          startTime = timestamp;
+          animationFrameId = requestAnimationFrame(rotateMap);
         };
 
-        animationFrameId = requestAnimationFrame(rotateMap); // Start the animation loop
+        animationFrameId = requestAnimationFrame(rotateMap);
       };
 
-      // Start rotation after the zoom-in animation completes
       const handleMoveEnd = () => {
-        map.off("moveend", handleMoveEnd); // Remove the listener
-        startContinuousRotation(); // Start the rotation
+        map.off("moveend", handleMoveEnd);
+        startContinuousRotation();
       };
 
-      map.on("moveend", handleMoveEnd); // Attach the listener
+      map.on("moveend", handleMoveEnd);
 
-      // Cleanup the animation when component unmounts
       return () => {
         map.off("moveend", handleMoveEnd);
-        if (animationFrameId) cancelAnimationFrame(animationFrameId); // Cancel the animation loop
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
       };
     }
   }, [advancedView, location]);

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import Weather from "@/components/weather/Weather";
 import { getWeatherData } from "@/lib/getWeather";
 import type { WeatherData } from "@/lib/getWeather";
+import type { Location } from "../map/Map";
 
 type CityProperties = {
   osm_type: string;
@@ -82,11 +83,6 @@ type DailyData = {
   temperature_2m_max: number[];
   temperature_2m_min: number[];
   precipitation_sum: number[];
-};
-
-type Location = {
-  lon: number;
-  lat: number;
 };
 
 type OnRoute = {

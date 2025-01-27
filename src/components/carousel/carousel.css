@@ -5,7 +5,7 @@
 }
 
 .swiper_container {
-  height: 36rem;
+  height: 35rem;
   width: 100%;
   position: relative;
 }
@@ -36,13 +36,17 @@
 
 @media (max-width: 1024px) {
   .swiper_container {
-    height: 32rem;
+    height: 33rem;
   }
 }
 
-@media (max-width: 714px) {
+@media (max-width: 768px) {
   .swiper-slide {
     filter: drop-shadow(0px 0px 0px #0000004d);
+  }
+
+  .swiper_container {
+    height: 21rem;
   }
 }
 

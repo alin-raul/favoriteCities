@@ -1,7 +1,7 @@
 import React from "react";
 import Search from "@/components/search/Search";
 
-const SearchPage = () => {
+const SearchPage: React.FC = () => {
   return (
     <div className="flex flex-col">
       <Search />

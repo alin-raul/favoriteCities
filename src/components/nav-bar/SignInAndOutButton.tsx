@@ -15,7 +15,11 @@ const SignInAndOutButton: React.FC = (): React.JSX.Element => {
     <>
       {session ? (
         <div className="flex items-center">
-          <Button variant="ghost" onClick={() => signOut({ callbackUrl: "/" })}>
+          <Button
+            variant="outline"
+            className="rounded-3xl bg-dynamic"
+            onClick={() => signOut({ callbackUrl: "/" })}
+          >
             Logout
           </Button>
           <button className="ml-2 w-8 h-8 flex justify-center items-center rounded-full">
@@ -36,7 +40,9 @@ const SignInAndOutButton: React.FC = (): React.JSX.Element => {
         </div>
       ) : (
         <TransitionLink href="/login">
-          <Button variant="ghost">Login</Button>
+          <Button variant="outline" className="rounded-3xl bg-dynamic">
+            Login
+          </Button>
         </TransitionLink>
       )}
     </>

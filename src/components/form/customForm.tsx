@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Wrapper from "../pageWrapper/wrapper";
-import GradientBackground from "../cardinal/GradientBackground";
+import CardinalRotating from "../cardinal/CardinalRotating";
 
 interface CustomFormProps {
   onSubmit: (formData: Record<string, string>) => void;
@@ -78,9 +78,6 @@ const CustomForm: React.FC<CustomFormProps> = ({
   return (
     <Wrapper className="h-screen flex flex-col justify-center items-center">
       <div className="noise bg-[url('/images/other/noise.webp')] bg-repeat h-screen w-screen fixed top-0 left-0"></div>
-      <div className="flex justify-center">
-        <GradientBackground />
-      </div>
       <h1 className="text-center font-bold">{title}</h1>
 
       <div className="flex justify-center items-center p-6 bg-dynamic rounded-2xl w-72 mt-6 shadow-md">
@@ -135,6 +132,10 @@ const CustomForm: React.FC<CustomFormProps> = ({
           </p>
         </div>
       </div>
+      <CardinalRotating
+        invert={false}
+        position={"translate-y-[40rem] scale-[6] absolute z-[-1] "}
+      />
     </Wrapper>
   );
 };

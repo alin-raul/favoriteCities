@@ -36,44 +36,45 @@ import {
 const Carousel = ({ cities }: CarouselProps) => {
   const slides = useMemo(() => {
     return cities.map((city, index) => (
-      <SwiperSlide key={index} className="max-w-[700px] lg:my-[3rem]">
-        <div className="relative flex justify-center items-center ">
-          <Image
-            src={city.image || ""}
-            alt={`${city.name} -image`}
-            style={{
-              objectFit: "cover",
-              width: "70rem",
-              height: "30rem",
-              borderRadius: "2rem",
-            }}
-            className="border rounded-2xl brightness-75 "
-            width={700}
-            height={480}
-          />
-          <div className="z-50 w-full absolute bottom-0 left-0 top-0 p-8 gradient-slider text-white rounded-[32px]">
-            <div className="flex flex-col justify-end h-full">
-              <TransitionLink
-                className="block text-6xl font-semibold"
-                href={`/cities/${city.name}`}
-              >
-                <div className="flex group items-center opacity-80 hover:opacity-100 transition-all">
-                  <h1 className="">{city.name}</h1>
+      <SwiperSlide
+        key={index}
+        className="max-w-[600px] md:max-w-[700px] mt-0 sm:mt-4 lg:my-[3rem] h-full max-h-10"
+      >
+        <TransitionLink
+          className="block text-4xl md:text-6xl font-semibold"
+          href={`/cities/${city.name}`}
+        >
+          <div className="relative min-w-full group">
+            <div className="min-w-full w-full h-[18rem] md:h-[29rem] relative">
+              <Image
+                src={city.image || ""}
+                alt={`${city.name} -image`}
+                fill
+                className="border brightness-75 rounded-[3rem] object-cover"
+              />
+            </div>
 
+            <div className="z-50 w-full absolute bottom-0 left-0 top-0 p-8 gradient-slider text-white rounded-[3rem]">
+              <div className="flex flex-col justify-end h-full">
+                <div className="flex items-center opacity-80 hover:opacity-100 transition-all">
+                  <h1 className="">{city.name}</h1>
                   <FaArrowRightLong className="ml-2 group-hover:ml-4 w-10 transition-all" />
                 </div>
-              </TransitionLink>
-              <span className="block text-2xl opacity-75">{city.country}</span>
+
+                <span className="block text-2xl opacity-75">
+                  {city.country}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </TransitionLink>
       </SwiperSlide>
     ));
   }, [cities]);
 
   return (
-    <div className="flex border bg-dynamic rounded-[3rem] max-w-screen-2xl">
-      <div className="border pb-6 w-full bg-dynamic-minimal xl:max-w-screen-md mx-auto rounded-[2.5rem] overflow-hidden">
+    <div className="flex max-w-screen-2xl mx-auto">
+      <div className="border pb-6 w-full max-w-screen-lg bg-dynamic-minimal rounded-[3.5rem] overflow-hidden mx-auto">
         <Swiper
           effect="coverflow"
           centeredSlides={true}
@@ -102,10 +103,10 @@ const Carousel = ({ cities }: CarouselProps) => {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           }}
-          autoplay={{
-            delay: 6000,
-            disableOnInteraction: false,
-          }}
+          // autoplay={{
+          //   delay: 6000,
+          //   disableOnInteraction: false,
+          // }}
           modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
           className="swiper_container max-w-screen-2xl card-shadow"
         >

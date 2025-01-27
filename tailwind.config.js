@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["var(--font-dmSerif)"],
+        serif: ["var(--font-chiaroscura)"],
         sans: ["var(--font-inter)"],
       },
       opacity: {
