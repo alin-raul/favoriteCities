@@ -1,7 +1,6 @@
 export async function GET() {
   try {
     const ipApiResponse = await fetch("http://ip-api.com/json/");
-    console.log(ipApiResponse);
 
     if (!ipApiResponse.ok) {
       throw new Error(

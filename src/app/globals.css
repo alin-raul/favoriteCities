@@ -194,7 +194,7 @@ main.page-transition-end {
   background: #1b1b1bb7;
 }
 
-.custom-outline {
+/* .custom-outline {
   outline-style: dashed;
   outline-offset: 4px;
   outline-color: #000;
@@ -202,7 +202,7 @@ main.page-transition-end {
 
 .dark .custom-outline {
   outline-color: #fff;
-}
+} */
 
 .bg-dynamic-minimal {
   background-color: #ffffff40;
@@ -232,6 +232,16 @@ main.page-transition-end {
     rgba(11, 7, 59, 0.6) 66%,
     rgba(13, 1, 36, 0.4) 90%
   );
+}
+
+.contrast {
+  color: #fff;
+  background: #171717;
+}
+
+.dark .contrast {
+  color: #000;
+  background: #fafafa;
 }
 
 .maplibregl-popup-content {

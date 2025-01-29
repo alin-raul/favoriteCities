@@ -1,7 +1,6 @@
 "use client";
 
 import { Map, Source, Layer } from "@vis.gl/react-maplibre";
-import mapboxgl from "mapbox-gl"; // Import mapbox-gl for advanced features
 import { middleOfRo } from "@/globals/constants";
 import YouAreHere from "../you-are-here/YouAreHere";
 import { useTheme } from "next-themes";
@@ -10,6 +9,7 @@ import axios from "axios";
 import polyline from "polyline";
 import { Marker } from "@vis.gl/react-maplibre";
 import { FaLocationDot } from "react-icons/fa6";
+import type { RouteResponse } from "../search/Search";
 
 export type Location = {
   lon: Number;
@@ -22,6 +22,8 @@ type MapDisplayProps = {
   zIndex?: number;
   noFetch?: boolean;
   advancedView?: boolean;
+  routeData: RouteResponse;
+  setRouteData: (routeData: RouteResponse) => void;
   onRoute?: {
     routeStatus: boolean;
     route: {
@@ -29,6 +31,8 @@ type MapDisplayProps = {
       to: Location;
     };
   };
+  userLocation: Location;
+  refreshTrigger: number;
 };
 
 export default function MapDisplay({
@@ -38,12 +42,16 @@ export default function MapDisplay({
   noFetch,
   advancedView = false,
   onRoute,
+  routeData,
+  setRouteData,
+  userLocation,
+  refreshTrigger,
 }: MapDisplayProps) {
   const { theme, resolvedTheme } = useTheme();
   const mapRef = useRef<any>(null);
   const [location, setLocation] = useState<Location | null>(null);
   const [polygonData, setPolygonData] = useState<any | null>(null);
-  const [routeData, setRouteData] = useState<Array<[number, number]> | null>(
+  const [routePath, setRoutePath] = useState<Array<[number, number]> | null>(
     null
   );
 
@@ -127,7 +135,7 @@ export default function MapDisplay({
   useEffect(() => {
     const fetchRoute = async () => {
       if (!onRoute) return;
-      if (onRoute.routeStatus === false) return setRouteData([]);
+      if (onRoute.routeStatus === false) return setRouteData(null);
 
       const startLocation = onRoute?.route?.from;
       const endLocation = onRoute?.route?.to;
@@ -153,10 +161,14 @@ export default function MapDisplay({
           endLocation,
         });
 
+        const routeDataResponse = response.data;
+        setRouteData(routeDataResponse);
+        console.log(routeDataResponse);
+
         const routeGeometry = response.data.routes[0].geometry;
         const decodedCoordinates = polyline.decode(routeGeometry);
 
-        setRouteData(decodedCoordinates);
+        setRoutePath(decodedCoordinates);
       } catch (error) {
         console.error(
           "Error fetching route:",
@@ -169,9 +181,9 @@ export default function MapDisplay({
   }, [onRoute, location]);
 
   useEffect(() => {
-    if (!routeData || routeData.length === 0 || !mapRef.current) return;
+    if (!routePath || routePath.length === 0 || !mapRef.current) return;
 
-    const { minLng, minLat, maxLng, maxLat } = calculateBoundingBox(routeData);
+    const { minLng, minLat, maxLng, maxLat } = calculateBoundingBox(routePath);
     mapRef.current.fitBounds(
       [
         [minLng, minLat],
@@ -179,7 +191,7 @@ export default function MapDisplay({
       ],
       { padding: 50 }
     );
-  }, [routeData]);
+  }, [routePath]);
 
   const calculateBoundingBox = (coordinates) => {
     let minLng = Infinity,
@@ -255,7 +267,7 @@ export default function MapDisplay({
                 type: "Feature",
                 geometry: {
                   type: "LineString",
-                  coordinates: routeData.map((coord) => [coord[1], coord[0]]),
+                  coordinates: routePath.map((coord) => [coord[1], coord[0]]),
                 },
               },
             ],
@@ -273,11 +285,11 @@ export default function MapDisplay({
         </Source>
       )}
 
-      {routeData && routeData.length > 0 && (
+      {routeData && routePath && routePath.length > 0 && (
         <>
           <Marker
-            longitude={routeData[routeData.length - 1][1]}
-            latitude={routeData[routeData.length - 1][0]}
+            longitude={routePath[routePath.length - 1][1]}
+            latitude={routePath[routePath.length - 1][0]}
           >
             <div className="flex flex-col justify-center items-center mb-10">
               <FaLocationDot className="h-8 w-8 text-red-500 translate-y-2" />
@@ -291,6 +303,7 @@ export default function MapDisplay({
         noFetch={noFetch}
         setLocation={setLocation}
         advancedView={advancedView}
+        refreshTrigger={refreshTrigger}
       />
     </Map>
   );

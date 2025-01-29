@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { IoMdSearch } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import { LuHistory } from "react-icons/lu";
 import MapDisplay from "../map/Map";
@@ -12,14 +10,64 @@ import LocalCities from "@/components/local-cities/localCities";
 import handleAddCity from "../utils/handleAddCity";
 import type { Location } from "../map/Map";
 import type { LocalCity } from "@/components/local-cities/localCities";
+import SearchInput from "./SearchInput";
+import { StopsSearchInput } from "./StopsSearchInput";
 
 type OnRoute = {
   routeStatus: boolean;
   route: { from: Location; to: Location };
 };
 
+export type RouteResponse = {
+  bbox: [number, number, number, number];
+  routes: Array<{
+    summary: {
+      distance: number;
+      duration: number;
+    };
+    segments: Array<{
+      distance: number;
+      duration: number;
+      steps: Array<{
+        distance: number;
+        duration: number;
+        type: number;
+        instruction: string;
+        name: string;
+        way_points: [number, number];
+        [key: string]: any; // For additional step properties
+      }>;
+      [key: string]: any; // For additional segment properties
+    }>;
+    bbox: [number, number, number, number];
+    geometry: string;
+    way_points: [number, number];
+    [key: string]: any; // For additional route properties
+  }>;
+  metadata: {
+    attribution: string;
+    service: string;
+    timestamp: number;
+    query: {
+      coordinates: Array<[number, number]>;
+      profile: string;
+      profileName: string;
+      format: string;
+      [key: string]: any; // For additional query properties
+    };
+    engine: {
+      version: string;
+      build_date: string;
+      graph_date: string;
+      [key: string]: any; // For additional engine properties
+    };
+    [key: string]: any; // For additional metadata properties
+  };
+};
+
 const Search = ({ height = 0, noFetch = false }) => {
   const [query, setQuery] = useState<string>("");
+  const [stopsQuery, setStopsQuery] = useState<string>("");
   const [results, setResults] = useState<LocalCity[]>([]);
   const [selectedCity, setSelectedCity] = useState<LocalCity | null>(null);
   const [selectedCityArea, setSelectedCityArea] = useState<number[] | null>(
@@ -34,6 +82,11 @@ const Search = ({ height = 0, noFetch = false }) => {
       to: { lon: 0, lat: 0 },
     },
   });
+  const [routeData, setRouteData] = useState<RouteResponse | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+  const [userLocation, setUserLocation] = useState<Location | null>(null);
+  const [stops, setStops] = useState<LocalCity[]>([]);
+  const [showStopSearch, setShowStopSearch] = useState<boolean>(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -59,6 +112,14 @@ const Search = ({ height = 0, noFetch = false }) => {
     setSelectedCityArea(city.properties.extent);
     setQuery("");
     setResults([]);
+    setRouteData(null);
+    setOnRoute({
+      routeStatus: false,
+      route: {
+        from: { lon: 0, lat: 0 },
+        to: { lon: 0, lat: 0 },
+      },
+    });
   };
 
   const handleClearSearch = () => {
@@ -78,6 +139,18 @@ const Search = ({ height = 0, noFetch = false }) => {
     });
   };
 
+  const handleRefreshLocation = () => {
+    setRefreshTrigger((prev) => prev + 1);
+  };
+
+  const handleAddStop = (city: LocalCity) => {
+    setStops((prev) => [...prev, city]);
+  };
+
+  const handleRemoveStop = (index: number) => {
+    setStops((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="md:flex relative bg-dynamic rounded-2xl h-full ">
       <div
@@ -86,55 +159,45 @@ const Search = ({ height = 0, noFetch = false }) => {
         }`}
       >
         <div className="md:m-4 border-b md:rounded-2xl md:border shadow-sm hover:shadow-md active:brightness-105 active:backdrop-blur-md transition-all">
-          <div className="p-4 md:p-2 flex flex-col justify-end items-center bg-dynamic w-full md:rounded-2xl">
-            <div className="relative w-full">
-              <IoMdSearch
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
-                aria-hidden="true"
-              />
-              <Input
-                type="text"
-                id="search"
-                placeholder="Search destinations..."
-                className="bg-dynamic rounded-xl pl-10 pr-10 shadow-inner"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                aria-label="Search for a city"
-              />
-              {query && (
-                <button
-                  onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10 opacity-60 hover:opacity-100"
-                  aria-label="Clear search"
+          <div className="p-2 md:p-2 flex flex-col justify-end items-center bg-dynamic w-full md:rounded-2xl">
+            <SearchInput
+              query={query}
+              setQuery={setQuery}
+              handleClearSearch={handleClearSearch}
+              isLoading={isLoading}
+              error={error}
+              results={results}
+              handleCitySelect={handleCitySelect}
+              handleAddCity={handleAddCity}
+            />
+
+            {/* <div className="w-full">
+              {stops.map((stop, index) => (
+                <div
+                  key={index}
+                  className="flex l max-h-60 overflow-y-auto border-y-2 mt-4 p-2 justify-between"
                 >
-                  <IoMdClose />
-                </button>
+                  <span className="">{stop.properties.name}</span>
+                  <button onClick={() => handleRemoveStop(index)}>
+                    <IoMdClose />
+                  </button>
+                </div>
+              ))}
+              <button
+                className="text-sm"
+                onClick={() => setShowStopSearch(true)}
+              >
+                Add Stop
+              </button>
+
+              {showStopSearch && (
+                <StopsSearchInput
+                  onSelect={handleAddStop}
+                  onClose={() => setShowStopSearch(false)}
+                  searchCity={searchCity}
+                />
               )}
-            </div>
-
-            {isLoading && <p className="mt-4 opacity-60 text-sm">Loading...</p>}
-            {error && <p className="mt-4 text-red-500 text-sm">{error}</p>}
-
-            <div className={`mt-4 w-full ${query ? "" : "hidden"}`}>
-              {results.length > 0 ? (
-                <ul className="bg-dynamic rounded-lg max-h-60 overflow-y-auto shadow-inner">
-                  {results.map((result, index) => (
-                    <li
-                      key={index}
-                      className="p-2 cursor-pointer hover:bg-gray-500/10"
-                      onClick={() => {
-                        handleCitySelect(result);
-                        handleAddCity(result);
-                      }}
-                    >
-                      {result.properties.name} - {result.properties.country}
-                    </li>
-                  ))}
-                </ul>
-              ) : query && !isLoading ? (
-                <p className="text-gray-500 text-sm">No results found</p>
-              ) : null}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -145,6 +208,7 @@ const Search = ({ height = 0, noFetch = false }) => {
             endRoute={endRoute}
             onRoute={onRoute}
             setOnRoute={setOnRoute}
+            routeData={routeData}
           />
         )}
         <div className="px-4 pt-4 mb-2 items-center gap-2 opacity-60 hidden md:flex">
@@ -157,6 +221,7 @@ const Search = ({ height = 0, noFetch = false }) => {
             endRoute={endRoute}
             onRoute={onRoute}
             setOnRoute={setOnRoute}
+            routeData={routeData}
           />
         </div>
       </div>
@@ -169,7 +234,11 @@ const Search = ({ height = 0, noFetch = false }) => {
           selectedCityArea={selectedCityArea}
           noFetch={noFetch}
           onRoute={onRoute}
+          routeData={routeData}
+          setRouteData={setRouteData}
           rounded={height ? [".5rem", ".5rem", ".5rem", ".5rem"] : ""}
+          userLocation={userLocation}
+          refreshTrigger={refreshTrigger}
         />
       </div>
     </div>

@@ -10,6 +10,7 @@ import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import type { Location } from "../map/Map";
+import type { RouteResponse } from "../search/Search";
 
 type CityProperties = {
   osm_type: string;
@@ -50,6 +51,7 @@ type LocalCitiesProps = {
   onRoute: OnRoute;
   endRoute: () => void;
   setOnRoute: (onRoute: OnRoute) => void;
+  routeData: RouteResponse;
 };
 
 const LocalCities = ({
@@ -58,10 +60,34 @@ const LocalCities = ({
   onRoute,
   endRoute,
   setOnRoute,
+  routeData,
 }: LocalCitiesProps) => {
   const [cities, setCities] = useState<LocalCity[]>([]);
+  const [pathSummery, setPathSummery] = useState<{
+    distance: number;
+    duration: number;
+  } | null>(null);
   const router = useRouter();
   const pathname = useNavigationEvents();
+
+  useEffect(() => {
+    if (!routeData) setPathSummery(null);
+    if (routeData && routeData.routes && routeData.routes[0]?.summary) {
+      const { distance, duration } = routeData.routes[0].summary;
+
+      if (typeof distance === "number" && typeof duration === "number") {
+        const distanceInKm = (distance / 1000).toFixed(2);
+        const durationInHours = (duration / 3600).toFixed(2);
+
+        setPathSummery({
+          distance: parseFloat(distanceInKm),
+          duration: parseFloat(durationInHours),
+        });
+      } else {
+        console.warn("Invalid route summary:", routeData.routes[0].summary);
+      }
+    }
+  }, [routeData]);
 
   const loadCitiesFromStorage = async () => {
     try {
@@ -237,62 +263,76 @@ const LocalCities = ({
                             pathname === "/search" ||
                             (pathname === "/" &&
                               city.properties.extent === selectedCityArea) ? (
-                              <div className="flex items-center justify-between gap-2 w-full overflow-y-hidden mt-4">
-                                {!onRoute.routeStatus ? (
-                                  <Button
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      setOnRoute({
-                                        routeStatus: true,
-                                        route: {
-                                          from: {
-                                            lon: null,
-                                            lat: null,
+                              <div>
+                                <div className="flex items-center justify-between gap-2 w-full overflow-y-hidden mt-4">
+                                  {!onRoute.routeStatus ? (
+                                    <Button
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        setOnRoute({
+                                          routeStatus: true,
+                                          route: {
+                                            from: {
+                                              lon: null,
+                                              lat: null,
+                                            },
+                                            to: {
+                                              lon: city.geometry.coordinates[0],
+                                              lat: city.geometry.coordinates[1],
+                                            },
                                           },
-                                          to: {
-                                            lon: city.geometry.coordinates[0],
-                                            lat: city.geometry.coordinates[1],
-                                          },
-                                        },
-                                      });
-                                    }}
-                                    className="rounded-3xl z-30"
-                                  >
-                                    <MdOutlineDirections size={24} />
-                                    <span>Directions</span>
-                                  </Button>
-                                ) : (
+                                        });
+                                      }}
+                                      className="rounded-3xl z-30"
+                                    >
+                                      <MdOutlineDirections size={24} />
+                                      <span>Directions</span>
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        endRoute();
+                                      }}
+                                      className="rounded-3xl z-30"
+                                    >
+                                      <MdOutlineDirectionsOff /> Stop drive
+                                    </Button>
+                                  )}
                                   <Button
                                     onClick={(e) => {
                                       e.preventDefault();
                                       e.stopPropagation();
                                       endRoute();
+                                      router.push(
+                                        `/cities/${city.properties.name}`
+                                      );
                                     }}
                                     className="rounded-3xl z-30"
                                   >
-                                    <MdOutlineDirectionsOff /> Stop drive
+                                    <FaArrowRightToCity size={24} />
+                                    <span>City</span>
                                   </Button>
-                                )}
-                                <Button
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    endRoute();
-                                    router.push(
-                                      `/cities/${city.properties.name}`
-                                    );
-                                  }}
-                                  className="rounded-3xl z-30"
-                                >
-                                  <FaArrowRightToCity size={24} />
-                                  <span>City</span>
-                                </Button>
-                                <FavoriteButton
-                                  handleToggleFavorite={handleToggleFavorite}
-                                  city={city}
-                                  full={true}
-                                />
+                                  <FavoriteButton
+                                    handleToggleFavorite={handleToggleFavorite}
+                                    city={city}
+                                    full={true}
+                                  />
+                                </div>
+                                <div>
+                                  {pathSummery ? (
+                                    <div className="contrast flex justify-between py-1 px-3 rounded-[3rem] text-xl mt-4  ">
+                                      <span className="">
+                                        {`${pathSummery.distance} km`}
+                                      </span>
+                                      <span className="">
+                                        {`${pathSummery.duration} h`}
+                                      </span>
+                                    </div>
+                                  ) : null}
+                                </div>
                               </div>
                             ) : null
                           ) : (

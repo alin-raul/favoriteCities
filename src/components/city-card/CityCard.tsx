@@ -10,6 +10,7 @@ import Weather from "@/components/weather/Weather";
 import { getWeatherData } from "@/lib/getWeather";
 import type { WeatherData } from "@/lib/getWeather";
 import type { Location } from "../map/Map";
+import type { RouteResponse } from "../search/Search";
 
 type CityProperties = {
   osm_type: string;
@@ -37,54 +38,6 @@ type City = {
   image?: string;
 };
 
-type WeatherUnits = {
-  time: string;
-  interval: string;
-  temperature: string;
-  windspeed: string;
-  winddirection: string;
-  is_day: string;
-  weathercode: string;
-};
-
-type CurrentWeather = {
-  time: string;
-  interval: number;
-  temperature: number;
-  windspeed: number;
-  winddirection: number;
-  is_day: number;
-  weathercode: number;
-};
-
-type HourlyUnits = {
-  time: string;
-  temperature_2m: string;
-  precipitation: string;
-  windspeed_10m: string;
-};
-
-type HourlyData = {
-  time: string[];
-  temperature_2m: number[];
-  precipitation: number[];
-  windspeed_10m: number[];
-};
-
-type DailyUnits = {
-  time: string;
-  temperature_2m_max: string;
-  temperature_2m_min: string;
-  precipitation_sum: string;
-};
-
-type DailyData = {
-  time: string[];
-  temperature_2m_max: number[];
-  temperature_2m_min: number[];
-  precipitation_sum: number[];
-};
-
 type OnRoute = {
   routeStatus: boolean;
   route: { from: Location; to: Location };
@@ -96,6 +49,7 @@ type CityCardProps = {
   endRoute: () => void;
   onRoute: OnRoute;
   setOnRoute: (onRoute: OnRoute) => void;
+  routeData: RouteResponse;
 };
 
 const CityCard: React.FC<CityCardProps> = ({
@@ -104,8 +58,13 @@ const CityCard: React.FC<CityCardProps> = ({
   endRoute,
   onRoute,
   setOnRoute,
+  routeData,
 }) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [pathSummery, setPathSummery] = useState<{
+    distance: number;
+    duration: number;
+  } | null>(null);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
@@ -115,6 +74,25 @@ const CityCard: React.FC<CityCardProps> = ({
     };
     fetchWeatherData();
   }, [selectedCity]);
+
+  useEffect(() => {
+    if (!routeData) setPathSummery(null);
+    if (routeData && routeData.routes && routeData.routes[0]?.summary) {
+      const { distance, duration } = routeData.routes[0].summary;
+
+      if (typeof distance === "number" && typeof duration === "number") {
+        const distanceInKm = (distance / 1000).toFixed(2);
+        const durationInHours = (duration / 3600).toFixed(2);
+
+        setPathSummery({
+          distance: parseFloat(distanceInKm),
+          duration: parseFloat(durationInHours),
+        });
+      } else {
+        console.warn("Invalid route summary:", routeData.routes[0].summary);
+      }
+    }
+  }, [routeData]);
 
   return (
     <div className="w-full md:px-4">
@@ -162,7 +140,7 @@ const CityCard: React.FC<CityCardProps> = ({
               )}
             </div>
           </div>
-          <div className="">
+          <div>
             {!onRoute.routeStatus ? (
               <Button
                 onClick={(e) => {
@@ -185,16 +163,26 @@ const CityCard: React.FC<CityCardProps> = ({
                 <span>Directions</span>
               </Button>
             ) : (
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  endRoute();
-                }}
-                className="mt-4 rounded-3xl z-30"
-              >
-                <MdOutlineDirectionsOff /> Stop drive
-              </Button>
+              <div className="">
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    endRoute();
+                  }}
+                  className="mt-4 rounded-3xl z-30"
+                >
+                  <MdOutlineDirectionsOff /> Stop drive
+                </Button>
+                <div>
+                  {pathSummery ? (
+                    <div className="contrast flex justify-between py-1 px-3 rounded-[3rem] text-xl mt-4  ">
+                      <span>{`${pathSummery.distance} km`}</span>
+                      <span>{`${pathSummery.duration} h`}</span>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
             )}
           </div>
         </div>
