@@ -11,7 +11,6 @@ import handleAddCity from "../utils/handleAddCity";
 import type { Location } from "../map/Map";
 import type { LocalCity } from "@/components/local-cities/localCities";
 import SearchInput from "./SearchInput";
-import { StopsSearchInput } from "./StopsSearchInput";
 
 type OnRoute = {
   routeStatus: boolean;
@@ -67,7 +66,6 @@ export type RouteResponse = {
 
 const Search = ({ height = 0, noFetch = false }) => {
   const [query, setQuery] = useState<string>("");
-  const [stopsQuery, setStopsQuery] = useState<string>("");
   const [results, setResults] = useState<LocalCity[]>([]);
   const [selectedCity, setSelectedCity] = useState<LocalCity | null>(null);
   const [selectedCityArea, setSelectedCityArea] = useState<number[] | null>(
@@ -86,7 +84,6 @@ const Search = ({ height = 0, noFetch = false }) => {
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<Location | null>(null);
   const [stops, setStops] = useState<LocalCity[]>([]);
-  const [showStopSearch, setShowStopSearch] = useState<boolean>(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -108,7 +105,6 @@ const Search = ({ height = 0, noFetch = false }) => {
   }, [query]);
 
   const handleCitySelect = (city) => {
-    setSelectedCity(city);
     setSelectedCityArea(city.properties.extent);
     setQuery("");
     setResults([]);
@@ -144,7 +140,11 @@ const Search = ({ height = 0, noFetch = false }) => {
   };
 
   const handleAddStop = (city: LocalCity) => {
-    setStops((prev) => [...prev, city]);
+    setStops((prev) => {
+      if (prev.length === 0) return [city];
+      if (prev.length === 1) return [city, ...prev];
+      return [...prev.slice(0, -1), city, ...prev.slice(-1)];
+    });
   };
 
   const handleRemoveStop = (index: number) => {
@@ -158,8 +158,8 @@ const Search = ({ height = 0, noFetch = false }) => {
           height ? `${height}` : "h-fit md:h-screen-minus-nav"
         }`}
       >
-        <div className="md:m-4 border-b md:rounded-2xl md:border shadow-sm hover:shadow-md active:brightness-105 active:backdrop-blur-md transition-all">
-          <div className="p-2 md:p-2 flex flex-col justify-end items-center bg-dynamic w-full md:rounded-2xl">
+        <div className="md:m-4 border-b md:rounded-3xl md:border shadow-sm active:brightness-105 active:backdrop-blur-md transition-all">
+          <div className="flex flex-col justify-end items-center bg-dynamic w-full md:rounded-3xl">
             <SearchInput
               query={query}
               setQuery={setQuery}
@@ -167,43 +167,21 @@ const Search = ({ height = 0, noFetch = false }) => {
               isLoading={isLoading}
               error={error}
               results={results}
-              handleCitySelect={handleCitySelect}
+              handleCitySelect={(city) => {
+                handleCitySelect(city);
+                handleAddStop(city);
+              }}
               handleAddCity={handleAddCity}
+              stops={stops}
+              setStops={setStops}
+              handleRemoveStop={handleRemoveStop}
             />
-
-            {/* <div className="w-full">
-              {stops.map((stop, index) => (
-                <div
-                  key={index}
-                  className="flex l max-h-60 overflow-y-auto border-y-2 mt-4 p-2 justify-between"
-                >
-                  <span className="">{stop.properties.name}</span>
-                  <button onClick={() => handleRemoveStop(index)}>
-                    <IoMdClose />
-                  </button>
-                </div>
-              ))}
-              <button
-                className="text-sm"
-                onClick={() => setShowStopSearch(true)}
-              >
-                Add Stop
-              </button>
-
-              {showStopSearch && (
-                <StopsSearchInput
-                  onSelect={handleAddStop}
-                  onClose={() => setShowStopSearch(false)}
-                  searchCity={searchCity}
-                />
-              )}
-            </div> */}
           </div>
         </div>
 
-        {selectedCity && (
+        {stops[stops.length - 1] && (
           <CityCard
-            selectedCity={selectedCity}
+            stops={stops}
             onClose={() => setSelectedCity(null)}
             endRoute={endRoute}
             onRoute={onRoute}
@@ -222,6 +200,9 @@ const Search = ({ height = 0, noFetch = false }) => {
             onRoute={onRoute}
             setOnRoute={setOnRoute}
             routeData={routeData}
+            stops={stops}
+            setStops={setStops}
+            handleAddStop={handleAddStop}
           />
         </div>
       </div>

@@ -10,9 +10,9 @@ import LavaLampCanvas from "@/components/cardinal/LavaLampCanvas";
 const Home: React.FC = () => {
   return (
     <div className="relative">
-      {/* <div className="noise bg-[url('/images/other/noise.webp')] bg-repeat h-screen w-screen fixed top-0 left-0"></div> */}
+      <div className="noise bg-[url('/images/other/noise.webp')] bg-repeat h-screen w-screen fixed top-0 left-0"></div>
 
-      <div className="m-auto h-screen relative ">
+      <div className="m-auto h-screen relative">
         <div className="flex justify-start absolute w-full z-[-1] ">
           <CardinalRotating
             invert={false}

@@ -163,7 +163,6 @@ export default function MapDisplay({
 
         const routeDataResponse = response.data;
         setRouteData(routeDataResponse);
-        console.log(routeDataResponse);
 
         const routeGeometry = response.data.routes[0].geometry;
         const decodedCoordinates = polyline.decode(routeGeometry);

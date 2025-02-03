@@ -52,6 +52,9 @@ type LocalCitiesProps = {
   endRoute: () => void;
   setOnRoute: (onRoute: OnRoute) => void;
   routeData: RouteResponse;
+  stops: LocalCity[];
+  setStops: (stops: LocalCity[]) => void;
+  handleAddStop: (stops: LocalCity) => void;
 };
 
 const LocalCities = ({
@@ -61,6 +64,9 @@ const LocalCities = ({
   endRoute,
   setOnRoute,
   routeData,
+  stops,
+  setStops,
+  handleAddStop,
 }: LocalCitiesProps) => {
   const [cities, setCities] = useState<LocalCity[]>([]);
   const [pathSummery, setPathSummery] = useState<{
@@ -76,7 +82,7 @@ const LocalCities = ({
       const { distance, duration } = routeData.routes[0].summary;
 
       if (typeof distance === "number" && typeof duration === "number") {
-        const distanceInKm = (distance / 1000).toFixed(2);
+        const distanceInKm = (distance / 1000).toFixed(0);
         const durationInHours = (duration / 3600).toFixed(2);
 
         setPathSummery({
@@ -227,6 +233,7 @@ const LocalCities = ({
                         } else {
                           setSelectedCityArea(city.properties.extent);
                           endRoute();
+                          handleAddStop(city);
                         }
                       }}
                     >

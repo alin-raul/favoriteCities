@@ -44,7 +44,7 @@ type OnRoute = {
 };
 
 type CityCardProps = {
-  selectedCity: City;
+  stops: City[];
   onClose: () => void;
   endRoute: () => void;
   onRoute: OnRoute;
@@ -53,7 +53,7 @@ type CityCardProps = {
 };
 
 const CityCard: React.FC<CityCardProps> = ({
-  selectedCity,
+  stops,
   onClose,
   endRoute,
   onRoute,
@@ -66,14 +66,19 @@ const CityCard: React.FC<CityCardProps> = ({
     duration: number;
   } | null>(null);
 
+  const start =
+    stops[0] === stops[stops.length - 1] ? ({} as Location) : stops[0];
+  const destination = stops[stops.length - 1];
+
   useEffect(() => {
     const fetchWeatherData = async () => {
-      if (!selectedCity) return;
-      const weather = await getWeatherData(selectedCity);
+      if (!stops.length) return;
+      const weather = await getWeatherData(destination);
       setWeatherData(weather);
     };
     fetchWeatherData();
-  }, [selectedCity]);
+    console.log(start);
+  }, [stops]);
 
   useEffect(() => {
     if (!routeData) setPathSummery(null);
@@ -81,7 +86,7 @@ const CityCard: React.FC<CityCardProps> = ({
       const { distance, duration } = routeData.routes[0].summary;
 
       if (typeof distance === "number" && typeof duration === "number") {
-        const distanceInKm = (distance / 1000).toFixed(2);
+        const distanceInKm = (distance / 1000).toFixed(0);
         const durationInHours = (duration / 3600).toFixed(2);
 
         setPathSummery({
@@ -97,7 +102,7 @@ const CityCard: React.FC<CityCardProps> = ({
   return (
     <div className="w-full md:px-4">
       <TransitionLink
-        href={`/cities/${selectedCity.properties.name}`}
+        href={`/cities/${destination.properties.name}`}
         className="w-full h-fit p-4 border md:rounded-2xl shadow-inner mb-2 flex flex-col justify-between bg-dynamic bg-dynamic-h backdrop-blur-md md:backdrop-blur-none hover:shadow-md active:brightness-125 transition-all"
       >
         <div>
@@ -124,11 +129,11 @@ const CityCard: React.FC<CityCardProps> = ({
           <div className="flex justify-between">
             <div className="flex flex-col justify-center">
               <span className="text-2xl font-semibold">
-                {selectedCity.properties.name}
+                {destination.properties.name}
               </span>
               <p className="text-sm opacity-50">
-                {selectedCity.properties.country},{" "}
-                {selectedCity.properties.countrycode}
+                {destination.properties.country},{" "}
+                {destination.properties.countrycode}
               </p>
             </div>
 
@@ -149,10 +154,15 @@ const CityCard: React.FC<CityCardProps> = ({
                   setOnRoute({
                     routeStatus: true,
                     route: {
-                      from: {} as Location,
+                      from: (start as City)?.geometry?.coordinates
+                        ? {
+                            lon: (start as City).geometry.coordinates[0],
+                            lat: (start as City).geometry.coordinates[1],
+                          }
+                        : { lon: NaN, lat: NaN },
                       to: {
-                        lon: selectedCity.geometry.coordinates[0],
-                        lat: selectedCity.geometry.coordinates[1],
+                        lon: destination.geometry.coordinates[0],
+                        lat: destination.geometry.coordinates[1],
                       },
                     },
                   });
