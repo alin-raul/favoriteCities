@@ -10,6 +10,7 @@ import { FaArrowRightToCity } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import type { Location } from "../map/Map";
+import type { OnRoute } from "../search/Search";
 import type { RouteResponse } from "../search/Search";
 
 type CityProperties = {
@@ -38,11 +39,6 @@ export type LocalCity = {
   addedAt?: string;
   selected?: boolean;
   type: "Feature";
-};
-
-type OnRoute = {
-  routeStatus: boolean;
-  route: { from: Location; to: Location };
 };
 
 type LocalCitiesProps = {
@@ -284,6 +280,7 @@ const LocalCities = ({
                                               lon: null,
                                               lat: null,
                                             },
+                                            stopPoints: [],
                                             to: {
                                               lon: city.geometry.coordinates[0],
                                               lat: city.geometry.coordinates[1],

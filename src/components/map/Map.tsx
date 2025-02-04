@@ -10,6 +10,7 @@ import polyline from "polyline";
 import { Marker } from "@vis.gl/react-maplibre";
 import { FaLocationDot } from "react-icons/fa6";
 import type { RouteResponse } from "../search/Search";
+import type { OnRoute } from "../search/Search";
 
 export type Location = {
   lon: Number;
@@ -24,13 +25,7 @@ type MapDisplayProps = {
   advancedView?: boolean;
   routeData: RouteResponse;
   setRouteData: (routeData: RouteResponse) => void;
-  onRoute?: {
-    routeStatus: boolean;
-    route: {
-      from: Location;
-      to: Location;
-    };
-  };
+  onRoute?: OnRoute;
   userLocation: Location;
   refreshTrigger: number;
 };
@@ -137,7 +132,10 @@ export default function MapDisplay({
       if (!onRoute) return;
       if (onRoute.routeStatus === false) return setRouteData(null);
 
+      console.log(onRoute);
+
       const startLocation = onRoute?.route?.from;
+      const middleLocations = onRoute?.route?.stopPoints;
       const endLocation = onRoute?.route?.to;
 
       if (!endLocation) {
@@ -158,6 +156,7 @@ export default function MapDisplay({
 
         const response = await axios.post(apiUrl, {
           startLocation: start,
+          middleLocations,
           endLocation,
         });
 

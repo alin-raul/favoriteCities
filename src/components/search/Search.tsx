@@ -12,9 +12,9 @@ import type { Location } from "../map/Map";
 import type { LocalCity } from "@/components/local-cities/localCities";
 import SearchInput from "./SearchInput";
 
-type OnRoute = {
+export type OnRoute = {
   routeStatus: boolean;
-  route: { from: Location; to: Location };
+  route: { from: Location; stopPoints: Location[]; to: Location };
 };
 
 export type RouteResponse = {
@@ -77,6 +77,7 @@ const Search = ({ height = 0, noFetch = false }) => {
     routeStatus: false,
     route: {
       from: { lon: 0, lat: 0 },
+      stopPoints: [],
       to: { lon: 0, lat: 0 },
     },
   });
@@ -109,13 +110,7 @@ const Search = ({ height = 0, noFetch = false }) => {
     setQuery("");
     setResults([]);
     setRouteData(null);
-    setOnRoute({
-      routeStatus: false,
-      route: {
-        from: { lon: 0, lat: 0 },
-        to: { lon: 0, lat: 0 },
-      },
-    });
+    endRoute();
   };
 
   const handleClearSearch = () => {
@@ -130,13 +125,10 @@ const Search = ({ height = 0, noFetch = false }) => {
       routeStatus: false,
       route: {
         from: { lon: 0, lat: 0 },
+        stopPoints: [],
         to: { lon: 0, lat: 0 },
       },
     });
-  };
-
-  const handleRefreshLocation = () => {
-    setRefreshTrigger((prev) => prev + 1);
   };
 
   const handleAddStop = (city: LocalCity) => {
@@ -175,6 +167,7 @@ const Search = ({ height = 0, noFetch = false }) => {
               stops={stops}
               setStops={setStops}
               handleRemoveStop={handleRemoveStop}
+              endRoute={endRoute}
             />
           </div>
         </div>

@@ -3,12 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { startLocation, endLocation } = await req.json();
+    const { startLocation, middleLocations, endLocation } = await req.json();
 
     const apiKey = process.env.OPENROUTESERVICE_SECRET;
 
-    const coordinates = [
+    const allCoordinates = [
       [startLocation.lon, startLocation.lat],
+      ...middleLocations.map((location) => [location.lon, location.lat]),
       [endLocation.lon, endLocation.lat],
     ];
 
@@ -17,7 +18,7 @@ export async function POST(req) {
     const response = await axios.post(
       apiUrl,
       {
-        coordinates: coordinates,
+        coordinates: allCoordinates,
       },
       {
         headers: {

@@ -11,6 +11,7 @@ import { getWeatherData } from "@/lib/getWeather";
 import type { WeatherData } from "@/lib/getWeather";
 import type { Location } from "../map/Map";
 import type { RouteResponse } from "../search/Search";
+import type { OnRoute } from "../search/Search";
 
 type CityProperties = {
   osm_type: string;
@@ -36,11 +37,6 @@ type City = {
   properties: CityProperties;
   type: string;
   image?: string;
-};
-
-type OnRoute = {
-  routeStatus: boolean;
-  route: { from: Location; to: Location };
 };
 
 type CityCardProps = {
@@ -70,6 +66,13 @@ const CityCard: React.FC<CityCardProps> = ({
     stops[0] === stops[stops.length - 1] ? ({} as Location) : stops[0];
   const destination = stops[stops.length - 1];
 
+  const additionalLocationPoints =
+    stops.length <= 1
+      ? []
+      : stops[0] === stops[stops.length - 1]
+      ? []
+      : stops.slice(1, -1);
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       if (!stops.length) return;
@@ -77,7 +80,6 @@ const CityCard: React.FC<CityCardProps> = ({
       setWeatherData(weather);
     };
     fetchWeatherData();
-    console.log(start);
   }, [stops]);
 
   useEffect(() => {
@@ -112,13 +114,7 @@ const CityCard: React.FC<CityCardProps> = ({
                 e.preventDefault();
                 e.stopPropagation();
                 onClose();
-                setOnRoute({
-                  routeStatus: false,
-                  route: {
-                    from: { lon: 0, lat: 0 },
-                    to: { lon: 0, lat: 0 },
-                  },
-                });
+                endRoute();
               }}
               className="opacity-60 hover:opacity-100"
               aria-label="Close city card"
@@ -160,6 +156,12 @@ const CityCard: React.FC<CityCardProps> = ({
                             lat: (start as City).geometry.coordinates[1],
                           }
                         : { lon: NaN, lat: NaN },
+                      stopPoints: additionalLocationPoints.map(
+                        (point: City) => ({
+                          lon: point.geometry?.coordinates[0],
+                          lat: point.geometry?.coordinates[1],
+                        })
+                      ),
                       to: {
                         lon: destination.geometry.coordinates[0],
                         lat: destination.geometry.coordinates[1],

@@ -18,6 +18,7 @@ const SearchInput = ({
   stops,
   setStops,
   handleRemoveStop,
+  endRoute,
 }) => {
   return (
     <div className="w-full">
@@ -57,14 +58,10 @@ const SearchInput = ({
           {stops.length > 0 && (
             <div className="w-full pr-4 mt-2">
               <SortableStopsList
-                items={stops}
-                onReorder={(startIndex, endIndex) => {
-                  const newStops = [...stops];
-                  const [removed] = newStops.splice(startIndex, 1);
-                  newStops.splice(endIndex, 0, removed);
-                  setStops(newStops);
-                }}
+                stops={stops}
+                setStops={setStops}
                 onRemove={handleRemoveStop}
+                endRoute={endRoute}
               />
             </div>
           )}

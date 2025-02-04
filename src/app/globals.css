@@ -655,30 +655,3 @@ main.page-transition-end {
   );
   backdrop-filter: blur(20px);
 }
-
-/* Custom horizontal drag & drop animations */
-[data-rbd-droppable-id="unique-stops-droppable"] {
-  transition: background-color 0.2s ease;
-}
-
-[data-rbd-draggable-id] {
-  transition: opacity 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Horizontal placeholder styling */
-[data-rbd-drag-placeholder-context-id] {
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 0.75rem;
-  width: 200px !important; /* Match your item width */
-  height: 40px !important; /* Match your item height */
-}
-
-/* Drag handle states */
-[data-rbd-drag-handle-context-id] {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-
-  &:active {
-    transform: scale(0.95);
-    opacity: 1 !important;
-  }
-}
