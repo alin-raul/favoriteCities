@@ -137,7 +137,7 @@ const FavoriteCities: React.FC = () => {
               {cities.length > 0 && citiesWithImages.length < 4 && (
                 <div className="flex flex-col justify-center items-center bg-dynamic h-[515px] min-w-[200px] w-auto flex-grow border rounded-[3rem] transition-all">
                   <div className="flex justify-center items-center h-full w-full relative">
-                    <p className="text-2xl mt-4 opacity-70">
+                    <p className="mt-4 opacity-70 text-center md:text-lg px-2">
                       Great. You can add other now!
                     </p>
                   </div>

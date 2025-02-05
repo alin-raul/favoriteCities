@@ -121,9 +121,11 @@ const Carousel = ({ cities }: CarouselProps) => {
           </div>
         </Swiper>
       </div>
-      <div className="p-6 max-w-2xl m-auto hidden xl:block">
-        <h1 className="text-6xl font-bold mb-8 font-serif">Spin the Globe!</h1>
-        <p className="text-2xl font-light opacity-80 text-justify max-w-md">
+      <div className="ml-4 p-2 my-auto hidden xl:block">
+        <h1 className="text-5xl font-bold mb-8 font-serif 2xl:text-6xl">
+          Spin the Globe!
+        </h1>
+        <p className="text-xl font-light opacity-80 text-justify max-w-md 2xl:text-2xl">
           Let your wanderlust take the lead! Each spin unveils a handpicked
           selection of exciting cities from around the world, waiting for you to
           explore. Dive into the map, uncover unique destinations, and learn

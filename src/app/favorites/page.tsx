@@ -5,6 +5,7 @@ import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import getFlagEmoji from "@/lib/getFlagEmoji";
 import Image from "next/image";
 import type { City } from "@/lib/getFavoriteCities";
+import { GiModernCity } from "react-icons/gi";
 
 const Favorites = async (): Promise<React.ReactNode> => {
   const cities: City[] = await getFavoriteCities();
@@ -49,15 +50,21 @@ const Favorites = async (): Promise<React.ReactNode> => {
                   {city.image ? (
                     <Image
                       src={city.image}
-                      alt="city image"
-                      width={300}
-                      height={200}
+                      alt={`${city.name} image`}
+                      width={600}
+                      height={400}
                       style={{
                         objectFit: "cover",
+                        width: "100%",
+                        height: "100%",
                       }}
                       className="rounded-[2rem] max-h-72 w-full mb-4 z-40"
                     />
-                  ) : null}
+                  ) : (
+                    <div className="h-[288px] w-full flex justify-center items-center  ">
+                      <GiModernCity className="w-14 h-14" />
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between mt-auto z-50">
                     <div className="relative">

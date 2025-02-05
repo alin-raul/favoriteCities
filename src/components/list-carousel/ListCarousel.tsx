@@ -1,79 +1,107 @@
-import { FaReact, FaDatabase, FaLock, FaCloud } from "react-icons/fa";
+import { FaReact, FaCloud } from "react-icons/fa";
 import {
   SiNextdotjs,
   SiSqlite,
   SiTypescript,
   SiTailwindcss,
+  SiTypeorm,
+  SiNextdns,
 } from "react-icons/si";
+import { TbBrandFramerMotion } from "react-icons/tb";
 import Link from "next/link";
 
 type CarouselItem = {
   name: string;
   url: string;
   icon: React.ReactNode;
+  color: string;
 };
 
 const InfiniteCarousel = () => {
   const items: CarouselItem[] = [
-    { name: "React", url: "https://reactjs.org", icon: <FaReact /> },
-    { name: "Next.js", url: "https://nextjs.org", icon: <SiNextdotjs /> },
-    { name: "SQLite", url: "https://www.sqlite.org", icon: <SiSqlite /> },
-    { name: "TypeORM", url: "https://typeorm.io", icon: <FaDatabase /> },
+    {
+      name: "React",
+      url: "https://reactjs.org",
+      icon: <FaReact />,
+      color: "text-sky-600",
+    },
+    {
+      name: "Next.js",
+      url: "https://nextjs.org",
+      icon: <SiNextdotjs />,
+      color: "",
+    },
+    {
+      name: "SQLite",
+      url: "https://www.sqlite.org",
+      icon: <SiSqlite />,
+      color: "text-sky-500",
+    },
+    {
+      name: "TypeORM",
+      url: "https://typeorm.io",
+      icon: <SiTypeorm />,
+      color: "text-red-700",
+    },
     {
       name: "Authentication",
       url: "https://next-auth.js.org/",
-      icon: <FaLock />,
+      icon: <SiNextdns />,
+      color: "text-purple-700",
     },
     {
       name: "Rest API's",
       url: "https://www.restapitutorial.com",
       icon: <FaCloud />,
+      color: "text-yellow-600",
     },
     {
       name: "TypeScript",
       url: "https://www.typescriptlang.org/",
       icon: <SiTypescript />,
+      color: "text-sky-600",
     },
     {
       name: "Tailwind CSS",
       url: "https://tailwindcss.com/",
       icon: <SiTailwindcss />,
+      color: "text-sky-400",
+    },
+    {
+      name: "Framer Motion",
+      url: "https://motion.dev/",
+      icon: <TbBrandFramerMotion />,
+      color: "text-pink-600",
     },
   ];
 
   return (
-    <div className="carousel">
-      <div className="group-carousel-links">
-        {[...items].map((item, index) => (
-          <Link
-            key={index}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 bg-dynamic bg-dynamic-h border rounded-2xl shadow-inner hover:shadow-md active:scale-105 transition-all"
+    <div className="max-w-screen-2xl mx-auto relative">
+      <div
+        className="carousel overflow-hidden relative 
+        [mask-image:_linear-gradient(to_right,transparent_0,white_20%,white_80%,transparent_100%)]
+        [-webkit-mask-image:_linear-gradient(to_right,transparent_0,white_20%,white_80%,transparent_100%)]"
+      >
+        {[...Array(2)].map((_, groupIndex) => (
+          <div
+            key={groupIndex}
+            className="group-carousel-links flex gap-4 animate-scroll"
           >
-            <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
-              <div className="text-3xl">{item.icon}</div>
-              <div>{item.name}</div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      <div className="group-carousel-links">
-        {[...items].map((item, index) => (
-          <Link
-            key={index}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-2 bg-dynamic bg-dynamic-h border rounded-2xl shadow-inner hover:shadow-md active:scale-105 transition-all"
-          >
-            <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
-              <div className="text-3xl">{item.icon}</div>
-              <div>{item.name}</div>
-            </div>
-          </Link>
+            {items.map((item, index) => (
+              <Link
+                key={index}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="carousel-link p-2 border dynamic-border rounded-2xl hover:shadow-sm active:scale-105 transition-all bg-transparent"
+              >
+                <div className="flex justify-center items-center gap-4 min-h-12 min-w-52 cursor-pointer">
+                  <div className={`text-3xl ${item.color}`}>{item.icon}</div>
+                  <div className="text-lg font-semibold">{item.name}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
         ))}
       </div>
     </div>

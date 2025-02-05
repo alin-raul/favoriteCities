@@ -10,12 +10,14 @@ type YouAreHereProps = {
   noFetch: boolean;
   setLocation: (location: Location) => void;
   advancedView: boolean;
+  refreshTrigger?: number;
 };
 
 export default function YouAreHere({
   noFetch,
   setLocation,
   advancedView,
+  refreshTrigger,
 }: YouAreHereProps): React.ReactNode {
   const [popupLocation, setPopupLocation] = useState<Location>(middleOfRo);
   const { current: map } = useMap();
@@ -36,7 +38,7 @@ export default function YouAreHere({
 
     if (!map) return;
     MyLocation();
-  }, [map, noFetch, setLocation]);
+  }, [map, noFetch, setLocation, refreshTrigger]);
 
   if (!map) return null;
 
