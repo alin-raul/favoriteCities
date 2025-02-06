@@ -45,7 +45,7 @@ const Carousel = ({ cities }: CarouselProps) => {
           href={`/cities/${city.name}`}
         >
           <div className="relative min-w-full group">
-            <div className="min-w-full w-full h-[18rem] md:h-[29rem] relative">
+            <div className="min-w-full w-full h-[29rem] relative">
               <Image
                 src={city.image || ""}
                 alt={`${city.name} -image`}
@@ -73,8 +73,8 @@ const Carousel = ({ cities }: CarouselProps) => {
   }, [cities]);
 
   return (
-    <div className="flex max-w-screen-2xl mx-auto">
-      <div className="border pb-6 w-full max-w-screen-lg bg-dynamic-minimal rounded-[3.5rem] overflow-hidden mx-auto">
+    <div className="flex w-full">
+      <div className="pb-6 w-full rounded-[3.5rem] overflow-hidden mx-auto">
         <Swiper
           effect="coverflow"
           centeredSlides={true}
@@ -103,12 +103,12 @@ const Carousel = ({ cities }: CarouselProps) => {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           }}
-          // autoplay={{
-          //   delay: 6000,
-          //   disableOnInteraction: false,
-          // }}
+          autoplay={{
+            delay: 6000,
+            disableOnInteraction: false,
+          }}
           modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
-          className="swiper_container max-w-screen-2xl card-shadow"
+          className="swiper_container  card-shadow"
         >
           {slides}
           <div className="slider-controler max-w-14 mx-auto">
@@ -120,19 +120,6 @@ const Carousel = ({ cities }: CarouselProps) => {
             </div>
           </div>
         </Swiper>
-      </div>
-      <div className="ml-4 p-2 my-auto hidden xl:block">
-        <h1 className="text-5xl font-bold mb-8 font-serif 2xl:text-6xl">
-          Spin the Globe!
-        </h1>
-        <p className="text-xl font-light opacity-80 text-justify max-w-md 2xl:text-2xl">
-          Let your wanderlust take the lead! Each spin unveils a handpicked
-          selection of exciting cities from around the world, waiting for you to
-          explore. Dive into the map, uncover unique destinations, and learn
-          what makes each city special. Whether you're planning your next
-          adventure or just daydreaming about far-off places, let curiosity
-          guide you to discover new horizons and hidden gems.
-        </p>
       </div>
     </div>
   );

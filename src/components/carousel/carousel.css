@@ -1,7 +1,8 @@
 .container {
-  max-width: 124rem;
+  /* max-width: 124rem; */
+  width: 100%;
   padding: 4rem 1rem;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 .swiper_container {
@@ -22,7 +23,8 @@
 
 .swiper-slide {
   --progress: 0; /* Default progress value */
-  filter: blur(calc(var(--progress) * 20px)) drop-shadow(0px 10px 8px #0000004d)
+  filter: drop-shadow(0 0 8px #0000004d)
+    opacity(calc(1 - 1 * var(--progress) + 1))
     opacity(calc(var(--progress) + 2.5))
     brightness(calc(1 + 0.2 * var(--progress)));
 }
@@ -30,8 +32,7 @@
 .dark .swiper-slide {
   --progress: 1;
   filter: brightness(calc(1 - 0.5 * var(--progress)))
-    drop-shadow(0 0 8px #0000004d) opacity(calc(1 - 1 * var(--progress) + 1))
-    blur(calc(var(--progress) * 16px));
+    drop-shadow(0 0 8px #0000004d) opacity(calc(1 - 1 * var(--progress) + 1));
 }
 
 @media (max-width: 1024px) {
@@ -40,13 +41,16 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1700px) {
   .swiper-slide {
-    filter: drop-shadow(0px 0px 0px #0000004d);
+    filter: drop-shadow(0px 0px 8px #0000004d)
+      brightness(calc(1 + 0.2 * var(--progress)))
+      blur(calc(var(--progress) * 20px));
   }
-
-  .swiper_container {
-    height: 21rem;
+  .dark .swiper-slide {
+    filter: drop-shadow(0px 0px 8px #0000004d)
+      brightness(calc(1 - 0.5 * var(--progress)))
+      blur(calc(var(--progress) * 16px));
   }
 }
 

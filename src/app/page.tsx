@@ -9,7 +9,7 @@ import LavaLampCanvas from "@/components/cardinal/LavaLampCanvas";
 
 const Home: React.FC = () => {
   return (
-    <div className="relative">
+    <div className="relative z-20">
       <div className="noise bg-[url('/images/other/noise.webp')] bg-repeat h-screen w-screen fixed top-0 left-0"></div>
 
       <div className="m-auto h-screen relative">
@@ -28,8 +28,8 @@ const Home: React.FC = () => {
         </div>
       </Wrapper> */}
 
-      <Wrapper className=" flex flex-col justify-center h-[1200px] gradient-bg-cities">
-        <div className="flex flex-col py-4 mx-auto text-center xl:hidden">
+      <div className=" flex flex-col justify-center h-[1200px] gradient-bg-cities">
+        <div className="flex flex-col py-4 mx-auto text-center">
           <h1 className="font-bold text-6xl md:text-8xl mx-auto mb-4 font-serif">
             Spin the Globe!
           </h1>
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
         <div>
           <RandomCities />
         </div>
-      </Wrapper>
+      </div>
 
       <Wrapper>
         <section className="flex flex-col justify-center pb-4 xl:max-w-[1900px] m-auto">

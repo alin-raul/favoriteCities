@@ -99,6 +99,7 @@ module.exports = {
       scale: {
         99: "0.99", // 99% scale
       },
+      textColor: ["group-hover"],
     },
   },
   plugins: [
