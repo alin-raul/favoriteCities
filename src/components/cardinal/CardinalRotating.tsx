@@ -204,7 +204,7 @@ const CardinalRotating: React.FC<{ invert: boolean; position: string }> = memo(
     }, [colors, heightMap1, heightMap2, invert]);
 
     return (
-      <div className={`blur-[500px] opacity-90 w-96 h-96 my-auto ${position}`}>
+      <div className={`blur-lg opacity-90 w-96 h-96 my-auto ${position}`}>
         <canvas
           ref={canvasRef}
           style={{

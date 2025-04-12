@@ -80,9 +80,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               <div className="relative overflow-clip">
                 <Navbar />
                 <main>{children}</main>
-                <Toaster />
               </div>
             </SidebarProvider>
+            <Toaster />
           </SessionProviderWrapper>
         </ThemeProvider>
       </body>

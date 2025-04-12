@@ -50,6 +50,8 @@ export default function MapDisplay({
     null
   );
 
+  console.log("Theme:", theme, "Resolved Theme:", resolvedTheme);
+
   const mapStyle = useMemo(() => {
     const lightMapStyle = "https://tiles.openfreemap.org/styles/liberty";
     const darkMapStyle = "/map/dark-map.json";
