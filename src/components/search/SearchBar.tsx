@@ -128,4 +128,6 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ width, height }) => {
   );
 });
 
+SearchBar.displayName = "SearchBar";
+
 export default SearchBar;

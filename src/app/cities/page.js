@@ -2,7 +2,7 @@ import LocalCities from "../../components/local-cities/localCities";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import { LuHistory } from "react-icons/lu";
 
-const City: React.FC = () => {
+const City = () => {
   return (
     <Wrapper>
       <div className="max-w-screen-2xl w-full m-auto">

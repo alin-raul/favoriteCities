@@ -222,4 +222,8 @@ const CardinalRotating: React.FC<{ invert: boolean; position: string }> = memo(
   }
 );
 
+// --- FIX: Add this line ---
+CardinalRotating.displayName = "CardinalRotating";
+// ---------------------------
+
 export default CardinalRotating;

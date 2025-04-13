@@ -21,6 +21,8 @@ export type CitiesQuery = {
     district: string;
     osm_value: string;
     name: string;
+    state: string;
+    county: string;
   };
 };
 

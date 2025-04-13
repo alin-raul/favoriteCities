@@ -12,13 +12,16 @@ export const StopsSearchInput = ({ onSelect, onClose, searchCity }) => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (query) {
+      if (query && searchCity) {
         searchCity(query).then(setResults);
+      } else if (!query) {
+        // Optionally clear results when query is empty
+        setResults([]);
       }
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [query]);
+  }, [query, searchCity]);
 
   return (
     <div className="relative">

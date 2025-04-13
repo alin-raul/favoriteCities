@@ -40,12 +40,14 @@ type City = {
 };
 
 type CityCardProps = {
+  city: City;
   stops: City[];
   onClose: () => void;
   endRoute: () => void;
   onRoute: OnRoute;
   setOnRoute: (onRoute: OnRoute) => void;
   routeData: RouteResponse;
+  userLocation: Location;
 };
 
 const CityCard: React.FC<CityCardProps> = ({
@@ -80,7 +82,7 @@ const CityCard: React.FC<CityCardProps> = ({
       setWeatherData(weather);
     };
     fetchWeatherData();
-  }, [stops]);
+  }, [stops, destination]);
 
   useEffect(() => {
     if (!routeData) setPathSummery(null);

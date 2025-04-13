@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { getFavoriteCities } from "@/lib/getFavoriteCities";
 import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite";
 import type { City } from "@/lib/getFavoriteCities";
+import { LocalCity } from "../local-cities/localCities";
 
 type Geometry = {
   coordinates: number[];
@@ -22,21 +23,21 @@ type CityProperties = {
   extent: number[];
 };
 
-type CityWithProperties = {
-  properties: CityProperties;
-  geometry: Geometry;
-  image: string;
-  selected: boolean;
-};
+// type CityWithProperties = {
+//   properties: CityProperties;
+//   geometry: Geometry;
+//   image: string;
+//   selected: boolean;
+// };
 
 type FavoriteButtonProps = {
   handleToggleFavorite: (osmId: number) => void;
-  city: CityWithProperties;
+  city: LocalCity;
   full?: boolean;
 };
 
 async function handlePostFavorite(
-  city: CityWithProperties
+  city: LocalCity
 ): Promise<City[] | undefined> {
   if (!city || !city.properties) {
     console.error("Invalid city data for POST operation");
