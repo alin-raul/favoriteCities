@@ -350,7 +350,7 @@ const LocalCities: React.FC<LocalCitiesProps> = ({
                       </div>
 
                       {/* Action Buttons Area */}
-                      <div className="mt-2 pt-2 border-t dynamic-border flex flex-wrap items-center justify-start gap-2">
+                      <div className="mt-2 pt-2 border-t flex flex-wrap items-center justify-start gap-2">
                         {" "}
                         {/* Align buttons left */}
                         {/* Add Stop Button */}

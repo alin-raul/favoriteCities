@@ -24,12 +24,16 @@ export const User = new EntitySchema({
       nullable: true,
     },
     createdAt: {
-      type: "datetime",
+      type: "timestamp",
       default: () => "CURRENT_TIMESTAMP",
     },
     githubId: {
       type: "varchar",
       unique: true,
+      nullable: true,
+    },
+    image: {
+      type: "varchar",
       nullable: true,
     },
   },

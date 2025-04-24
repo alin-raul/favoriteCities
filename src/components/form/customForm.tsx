@@ -132,10 +132,10 @@ const CustomForm: React.FC<CustomFormProps> = ({
           </p>
         </div>
       </div>
-      <CardinalRotating
+      {/* <CardinalRotating
         invert={false}
         position={"translate-y-[40rem] scale-[6] absolute z-[-1] "}
-      />
+      /> */}
     </Wrapper>
   );
 };
