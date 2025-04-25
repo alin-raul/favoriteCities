@@ -1,13 +1,21 @@
 import { z } from "zod";
 import { NextResponse } from "next/server";
-import { AppDataSource } from "../../database/data-source";
+// Import ensureDbInitialized and AppDataSource from the central file
+import { ensureDbInitialized, AppDataSource } from "../../database/data-source";
 import { City } from "@/app/entity/City";
 import { User } from "@/app/entity/User";
+// REMOVE getServerSession and options imports
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
-import { ensureDbInitialized } from "../../database/data-source";
 
+// Update citySchema to include the userId that will be sent in the body
 const citySchema = z.object({
+  // Add the user ID field expected from the frontend
+  userId: z
+    .union([z.string().transform((val) => parseInt(val, 10)), z.number()])
+    .refine((val) => !isNaN(val), {
+      message: "User ID must be a valid number",
+    }),
   name: z.string(),
   country: z.string(),
   countrycode: z.string().length(2),
@@ -24,146 +32,23 @@ const citySchema = z.object({
 });
 
 export async function POST(req) {
-  await ensureDbInitialized();
+  await ensureDbInitialized(); // Ensure DB is initialized
+  const cityRepo = AppDataSource.getRepository(City);
+  const userRepo = AppDataSource.getRepository(User);
+
   try {
-    const cityRepo = AppDataSource.getRepository(City);
-    const userRepo = AppDataSource.getRepository(User);
     const data = await req.json();
 
-    const session = await getServerSession(options);
-
-    const userEntities = [];
-
-    // --- START: Corrected Session User Handling ---
-    if (session && session.user) {
-      // Destructure session user data (GitHub user info)
-      const { email, name, id: githubUserId, username } = session.user;
-
-      let user = null; // Initialize user entity
-
-      // 1. Attempt to find user by GitHub ID (primary link)
-      console.log(`Attempting to find user by githubId: ${githubUserId}`);
-      user = await userRepo.findOne({ where: { githubId: githubUserId } });
-
-      if (!user) {
-        // 2. If not found by githubId, attempt to find user by email (might be existing user)
-        console.log(
-          `User not found by githubId. Attempting to find user by email: ${email}`
-        );
-        user = await userRepo.findOne({ where: { email: email } });
-
-        if (user) {
-          // Found user by email. This user exists but isn't linked by this specific githubId.
-          // Check if they are linked to *any* githubId already.
-          if (user.githubId === null) {
-            // 2a. User found by email, not linked to GitHub. Link this account.
-            console.log(
-              `Linking GitHub account ${githubUserId} to existing user with email ${email} (ID: ${user.id}).`
-            );
-            user.githubId = githubUserId;
-            // Optional: Update name/image if desired, but be cautious with username sync.
-            // if (!user.name) user.name = name; // Update name if missing
-            // if (!user.image) user.image = session.user.image; // Update image if missing
-            await userRepo.save(user); // Save the updated user record
-          } else {
-            // 2b. User found by email, but already linked to a *different* GitHub ID.
-            // This is a conflict or indicates a user has multiple accounts (one linked here, one logging in via GitHub).
-            // We cannot link *this* session's githubId. The existing user record is used.
-            console.warn(
-              `Existing user with email ${email} (ID: ${user.id}) found, already linked to GitHub ID ${user.githubId}. Cannot link to ${githubUserId}. Using existing user.`
-            );
-          }
-        } else {
-          // 3. User not found by githubId AND not found by email.
-          // Attempt to find user by username (to prevent duplicate username error on creation)
-          console.log(
-            `User not found by email. Attempting to find user by username: ${username}`
-          );
-          user = await userRepo.findOne({ where: { username: username } });
-
-          if (user) {
-            // 3a. User found by username, but different email/githubId.
-            // This user exists with the desired username, but it's *not* the same account
-            // as the one logging in via GitHub (because email/githubId didn't match).
-            // We cannot create a new user with this username because it's taken.
-            // We cannot link this session to this user found by username because email/githubId don't match.
-            console.error(
-              `Conflict: Existing user found with username ${username} (ID: ${user.id}). Email: ${user.email}. Conflicts with GitHub session user (email: ${email}, githubId: ${githubUserId}). Cannot create or link session user.`
-            );
-            // Set user to null to indicate that the session user could not be resolved/created as a database entity for linking to the city.
-            user = null;
-            // You might consider throwing an error here or returning a specific API response
-            // if linking the city to the session user is mandatory.
-            // throw new Error("Account conflict: Username already exists."); // Example
-            // return NextResponse.json({ success: false, message: "Username already exists. Please use a different login method or contact support." }, { status: 409 }); // Example
-          } else {
-            // 4. User not found by githubId, email, AND username. It is safe to create a new user record.
-            console.log(
-              `User not found by githubId, email, or username. Creating new user for githubId ${githubUserId}, email ${email}, username ${username}.`
-            );
-            user = userRepo.create({
-              githubId: githubUserId, // Store the GitHub ID
-              username: username, // Use GitHub username
-              email: email, // Use GitHub email
-              name: name, // Use GitHub name
-              password: null, // No password for OAuth user
-              // createdAt handled by the entity default
-            });
-            // This save should now succeed as githubId, email, and username are unique among *existing* users.
-            await userRepo.save(user);
-          }
-        }
-      }
-
-      // After the lookup/creation logic, 'user' is either the found/linked user,
-      // a newly created user, or null if a conflict prevented resolution.
-      // Only add the resolved user entity to the list if a valid user object exists.
-      if (user && user.id) {
-        // Check if user object is valid and has a database ID
-        // Avoid pushing duplicates if this logic were inside a loop, although here it's just for the session user.
-        // Still good practice to ensure uniqueness if userEntities might get populated elsewhere.
-        if (!userEntities.find((e) => e.id === user.id)) {
-          userEntities.push(user);
-        }
-      } else {
-        // If user is null here, it means the session user could not be resolved
-        // to a database entity due to a conflict (specifically the username conflict).
-        console.error(
-          "Session user could not be resolved to a database entity for city creation due to conflict."
-        );
-        // Decide if city creation should fail if the session user cannot be linked.
-        // If yes, you should handle this failure explicitly, e.g., by throwing an error
-        // which would be caught by the outer catch block, or by returning a response here.
-        // For now, the code will proceed, but userEntities will not contain the session user.
-        // This might lead to the city being created but not linked to the logged-in user, or failing later
-        // if linking to the session user is implicitly required elsewhere.
-        // A safer approach is to throw an error:
-        // throw new Error("Could not link session user to database.");
-      }
-    }
-    // --- END: Corrected Session User Handling ---
-
-    // Ensure we have at least one user to link the city to (the session user, or users from payload)
-    if (userEntities.length === 0) {
-      console.error("No user entities resolved for city creation.");
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Cannot create city without an associated user.",
-        },
-        { status: 400 } // Or 401 if authentication is mandatory
-      );
-    }
-
-    // ... The rest of your code for handling 'payloadUsers' loop and city creation ...
-    // Note: The loop for `payloadUsers` might also benefit from similar robust find/link/create logic
-    // if those payload users can also potentially conflict with existing users (e.g., if they provide email/username/githubId).
-    // For now, this fix specifically targets the duplicate username error from the session user flow.
+    // REMOVE getServerSession call here
+    // const session = await getServerSession(options);
 
     const parsedData = citySchema.safeParse(data);
 
     if (!parsedData.success) {
-      console.error("Validation errors:", parsedData.error.errors);
+      console.error(
+        "Validation errors in POST /api/cities:",
+        parsedData.error.errors
+      );
       return NextResponse.json(
         {
           success: false,
@@ -174,56 +59,115 @@ export async function POST(req) {
       );
     }
 
-    const { users: payloadUsers = [], ...cityData } = parsedData.data;
+    // Extract the userId directly from the validated data
+    const {
+      userId: dbUserId,
+      users: payloadUsers = [],
+      ...cityData
+    } = parsedData.data;
 
-    // --- Refined Payload User Handling (Optional, but recommended) ---
+    const userEntities = [];
+
+    // --- Find the main user entity based on the userId provided in the body ---
+    // This replaces the session user handling logic
+    if (dbUserId) {
+      console.log(
+        `POST /api/cities: Attempting to find user by ID from body: ${dbUserId}`
+      );
+      const user = await userRepo.findOne({ where: { id: dbUserId } });
+
+      if (user) {
+        console.log(
+          `POST /api/cities: Found user ${user.username} (ID: ${user.id}) from body userId.`
+        );
+        userEntities.push(user);
+      } else {
+        // If the user ID from the body doesn't match a user, it's an authentication/authorization failure.
+        console.error(
+          `POST /api/cities: User ID ${dbUserId} from body not found in database.`
+        );
+        return NextResponse.json(
+          { success: false, message: "Provided user ID not found or invalid." },
+          { status: 401 } // Or 403 Forbidden
+        );
+      }
+    } else {
+      // userId is required by the schema, so this else block might be redundant if schema validation passes,
+      // but it's a safeguard.
+      console.error(
+        "POST /api/cities: userId is missing in the request body after validation."
+      );
+      return NextResponse.json(
+        { success: false, message: "User ID is required in the request body." },
+        { status: 400 }
+      );
+    }
+    // --- END: Handling user ID from body ---
+
+    // --- Refined Payload User Handling (Optional, keep if your payload includes other users to associate) ---
+    // Note: This loop handles additional users sent in the 'users' array of the payload.
+    // If you ONLY associate the currently logged-in user, you can remove this entire loop.
+    // If you keep it, ensure it handles potential conflicts robustly as discussed previously.
     for (const payloadUser of payloadUsers) {
       let userEntity = null;
-      // Try finding by githubId if present in payload
+      // Try finding by githubId, email, or username from payloadUser data
       if (payloadUser.githubId) {
         userEntity = await userRepo.findOne({
           where: { githubId: payloadUser.githubId },
         });
       }
+      if (!userEntity && payloadUser.email) {
+        userEntity = await userRepo.findOne({
+          where: { email: payloadUser.email },
+        });
+      }
+      if (!userEntity && payloadUser.username) {
+        userEntity = await userRepo.findOne({
+          where: { username: payloadUser.username },
+        });
+      }
 
       if (!userEntity) {
-        // Try finding by email or username if not found by githubId
-        userEntity = await userRepo.findOne({
-          where: [
-            { email: payloadUser.email },
-            { username: payloadUser.username },
-          ],
+        // User not found, create new from payload (handle password/githubId based on payload)
+        console.log(
+          `POST /api/cities: Creating new user from payload data (email: ${payloadUser.email}, username: ${payloadUser.username})...`
+        );
+        userEntity = userRepo.create({
+          ...payloadUser,
+          password: payloadUser.githubId ? null : payloadUser.password,
         });
-
-        if (userEntity) {
-          // Found existing user by email/username. Link githubId if not already linked.
-          if (payloadUser.githubId && userEntity.githubId === null) {
-            console.log(
-              `Linking GitHub account ${payloadUser.githubId} from payload to existing user with email ${payloadUser.email}`
-            );
-            userEntity.githubId = payloadUser.githubId;
+        try {
+          await userRepo.save(userEntity);
+        } catch (saveError) {
+          console.error(
+            "POST /api/cities: Error saving payload user:",
+            saveError
+          );
+          // Decide error handling: fail the whole request or skip this user?
+        }
+      } else {
+        // Found existing user from payload, optionally link githubId if not linked
+        if (payloadUser.githubId && userEntity.githubId === null) {
+          console.log(
+            `POST /api/cities: Linking GitHub ID ${payloadUser.githubId} from payload to existing user (ID: ${userEntity.id}).`
+          );
+          userEntity.githubId = payloadUser.githubId;
+          try {
             await userRepo.save(userEntity);
-          } else {
-            // Found user, but couldn't link (already linked elsewhere, or no githubId in payload). Use existing.
-            console.warn(
-              `User from payload (email: ${payloadUser.email}, username: ${payloadUser.username}) matched existing user (ID: ${userEntity.id}), but could not link GitHub ID ${payloadUser.githubId}. Using existing user.`
+          } catch (saveError) {
+            console.error(
+              "POST /api/cities: Error linking payload user:",
+              saveError
             );
           }
         } else {
-          // User not found by githubId, email, or username from payload. Safe to create.
           console.log(
-            `Creating new user from payload: email ${payloadUser.email}, username ${payloadUser.username}`
+            `POST /api/cities: Payload user (email: ${payloadUser.email}) matched existing user (ID: ${userEntity.id}).`
           );
-          userEntity = userRepo.create({
-            ...payloadUser, // Includes username, email, githubId (if present)
-            password: payloadUser.githubId ? null : payloadUser.password, // Apply password logic
-          });
-          // This save should pass if email/username/githubId from payload are unique globally
-          await userRepo.save(userEntity);
         }
       }
 
-      // Add the resolved payload user entity, avoiding duplicates if already added (e.g., session user was also in payload)
+      // Add the resolved payload user entity if valid and not already added (e.g., main user was also in payloadUsers)
       if (
         userEntity &&
         userEntity.id &&
@@ -232,34 +176,38 @@ export async function POST(req) {
         userEntities.push(userEntity);
       } else if (!userEntity) {
         console.error(
-          `Could not resolve payload user (email: ${payloadUser.email}, username: ${payloadUser.username}) to a database entity.`
+          `POST /api/cities: Could not resolve/create payload user (email: ${payloadUser.email}). Skipping association.`
         );
-        // Decide error handling if a payload user cannot be resolved.
       }
     }
     // --- END: Refined Payload User Handling ---
 
-    const city = cityRepo.create({
-      ...cityData,
-      users: userEntities, // Associate all collected user entities (session user + payload users)
-      selected: true,
-    });
-
-    // Ensure the city object is valid and has associated users before saving
-    if (city.users.length === 0) {
-      // This check is technically redundant due to the check after session user handling,
-      // but adds safety if payload user handling somehow results in an empty list.
-      console.error("City has no users associated before save.");
+    // Ensure we have at least one user to link the city to (the main user from the body, plus any from payload)
+    if (userEntities.length === 0) {
+      console.error(
+        "POST /api/cities: No user entities resolved for city creation."
+      );
+      // This should ideally not happen if dbUserId from body was valid
       return NextResponse.json(
         {
           success: false,
-          message: "City must be associated with at least one user.",
+          message: "Cannot create city without an associated user.",
         },
         { status: 400 }
       );
     }
 
+    const city = cityRepo.create({
+      ...cityData, // City data from the payload (excluding userId and payloadUsers)
+      users: userEntities, // Associate the main user + any payload users
+      selected: true, // Assuming selected is true by default when adding
+    });
+
     await cityRepo.save(city); // Save the city and its relations
+
+    console.log(
+      `POST /api/cities: City ${city.id} saved and associated with ${userEntities.length} users.`
+    );
 
     return NextResponse.json(
       {
@@ -271,11 +219,13 @@ export async function POST(req) {
     );
   } catch (error) {
     console.error("Error in POST /api/cities:", error);
-    // IMPORTANT: Check the error type here. If it's still a duplicate key error
-    // after implementing this logic, it might mean the payload user loop
-    // is causing it, or there's a subtle edge case.
+    // Check for specific errors like unique constraints
     if (error.code === "23505") {
       // PostgreSQL unique violation error code
+      console.error(
+        "POST /api/cities: Database unique constraint error:",
+        error.detail
+      );
       return NextResponse.json(
         {
           success: false,
@@ -284,17 +234,17 @@ export async function POST(req) {
         { status: 409 } // 409 Conflict
       );
     }
+    // Handle other errors
     return NextResponse.json(
       {
         success: false,
         message: "Internal Server Error",
-        error: error.message, // Expose error message for debugging, maybe remove in production
+        error: error.message, // Expose message for debugging during development
       },
       { status: 500 }
     );
   }
 }
-
 // app/api/cities/route.js
 
 // ... imports and ensureDbInitialized ...

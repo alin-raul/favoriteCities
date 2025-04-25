@@ -1,19 +1,9 @@
 import { options } from "../api/auth/[...nextauth]/options";
-import { getServerSession } from "next-auth";
+import { getServerSession, type Session } from "next-auth";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import HandleLogout from "../../components/login/handleLogout";
 import Image from "next/image";
 import { FaUserCircle } from "react-icons/fa";
-
-type User = {
-  name: string;
-  email: string;
-  image: string | null;
-};
-
-export type Session = {
-  user: User | null;
-};
 
 export default async function User() {
   const session: Session | null = await getServerSession(options);

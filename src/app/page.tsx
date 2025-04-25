@@ -14,10 +14,10 @@ const Home: React.FC = () => {
 
       <div className="m-auto h-screen relative">
         <div className="flex justify-start absolute w-full z-[-1] ">
-          {/* <CardinalRotating
+          <CardinalRotating
             invert={false}
             position={"translate-x-[10%] scale-[8]"}
-          /> */}
+          />
         </div>
         <SlidingTitle />
       </div>

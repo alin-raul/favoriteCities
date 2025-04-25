@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import HandleLogin from "../../components/login/handleLogin";
 import Wrapper from "@/components/pageWrapper/wrapper";
 import HandleLogout from "../../components/login/handleLogout";
-import type { Session } from "../user/page";
+import type { Session } from "next-auth";
 
 const Login = async (): Promise<React.ReactNode> => {
   const session: Session | null = await getServerSession(options);
