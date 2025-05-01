@@ -1,63 +1,64 @@
 // src/lib/handleDeleteFavorite.tsx
 "use server";
 
-import { getServerSession } from "next-auth";
 import { getFavoriteCities } from "./getFavoriteCities";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { headers } from "next/headers"; // Import headers function
+// *** Import auth from Clerk server ***
+import { auth } from "@clerk/nextjs/server"; // <--- Import auth()
 
 export async function handleDeleteFromFavorite(id: number): Promise<any> {
   try {
-    // Check session here - this confirms the user was authenticated *when calling the Server Action*
-    const session = await getServerSession(options);
-    if (!session || !session.user) {
+    // *** Get Clerk auth object and session token ***
+    const authObject = await auth(); // Get the full auth object
+    const clerkUserId = authObject.userId; // Extract userId
+    const sessionToken = await authObject.getToken();
+
+    // *** Authentication check: User must be logged in (Clerk) ***
+    if (!clerkUserId || !sessionToken) {
+      // Check for both user ID and token
       console.error(
-        "handleDeleteFromFavorite: User not authenticated server-side."
+        "handleDeleteFromFavorite: User not authenticated (Clerk) or session token missing."
       );
-      throw new Error("User not authenticated.");
+      throw new Error("User must be logged in to delete cities.");
     }
     console.log(
-      `handleDeleteFromFavorite: User ${session.user.id} attempting to delete city ${id} via Server Action.`
+      `handleDeleteFromFavorite: Clerk user ${clerkUserId} attempting to delete city ${id} via Server Action.`
     );
 
-    // --- FIX: Await the headers() call ---
-    const requestHeaders = await headers(); // Await the promise
-    const cookieHeader = requestHeaders.get("cookie"); // Now .get() exists on ReadonlyHeaders
-
     // --- Make the internal API fetch call ---
-    const fetchHeaders: HeadersInit = {
-      // Use HeadersInit type for clarity
-      "Content-Type": "application/json",
-      // Add the cookie header IF it exists
-      ...(cookieHeader && { cookie: cookieHeader }), // Spread operator to conditionally add
-    };
-
-    console.log(
-      "handleDeleteFromFavorite: Fetching /api/cities with headers:",
-      fetchHeaders
-    ); // Log headers being sent
-
+    // *** Include the Authorization header with the session token ***
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/cities`,
       {
         method: "DELETE",
-        // Use the fetchHeaders which now include the cookie
-        headers: fetchHeaders,
+        headers: {
+          "Content-Type": "application/json",
+          // *** ADD Authorization header with session token ***
+          Authorization: `Bearer ${sessionToken}`, // <--- Pass the session token
+        },
         body: JSON.stringify({ osm_id: id }),
+        // credentials: 'include' is not needed/relevant for server-to-server fetch
       }
     );
 
-    // --- Handle Response ---
+    // --- Handle Response from API Route ---
     if (!response.ok) {
+      // Check for 401 specifically - this confirms if the API route's auth check passed/failed
       if (response.status === 401) {
-        console.error("handleDeleteFromFavorite: Received 401 from API.");
-        throw new Error("Authentication failed during delete.");
+        console.error(
+          "handleDeleteFromFavorite: Received 401 from API. Clerk user ID:",
+          clerkUserId
+        );
+        // The API route's auth check failed *despite* sending the token. This might indicate token invalidity
+        // or a mismatch in how the API route is validating.
+        throw new Error(
+          "Authentication failed during delete (API returned 401). Please try logging in again."
+        );
       }
-      // Try to parse error body even if not 401, in case of other server errors
+      // Handle other API errors (404, 500, etc.)
       try {
         const errorData = await response.json();
         console.error(
-          "Failed to delete city:",
+          "handleDeleteFromFavorite: API returned error:",
           response.status,
           errorData.message
         );
@@ -66,7 +67,7 @@ export async function handleDeleteFromFavorite(id: number): Promise<any> {
         );
       } catch (jsonError) {
         console.error(
-          "Failed to delete city (could not parse error body):",
+          "handleDeleteFromFavorite: API returned error, could not parse body:",
           response.status,
           response.statusText
         );
@@ -76,15 +77,15 @@ export async function handleDeleteFromFavorite(id: number): Promise<any> {
       }
     }
 
-    console.log("City successfully deleted from favorites");
+    console.log("City successfully deleted from favorites (API returned 2xx)");
 
     // Refetch cities after successful delete
-    // Assuming getFavoriteCities also correctly fetches and is imported
+    // Assuming getFavoriteCities is either a Server Action or client function using Clerk auth
     const updatedCities = await getFavoriteCities();
-    return updatedCities;
-  } catch (error) {
+    return updatedCities; // Return the updated list
+  } catch (error: any) {
     console.error(
-      "Failed to delete city in handleDeleteFromFavorite:",
+      "handleDeleteFromFavorite: Failed to delete city:",
       error.message
     );
     throw error; // Re-throw the error

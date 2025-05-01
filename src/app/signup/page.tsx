@@ -1,12 +1,6 @@
-import React from "react";
-import HandleSignUp from "@/components/signup/handleSignUp";
+// src/app/login/page.tsx
+import { SignUp } from "@clerk/nextjs";
 
-const signUp: React.FC = () => {
-  return (
-    <div>
-      <HandleSignUp />
-    </div>
-  );
-};
-
-export default signUp;
+export default function Page() {
+  return <SignUp />;
+}

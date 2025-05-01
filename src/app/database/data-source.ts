@@ -1,13 +1,12 @@
 const { DataSource } = require("typeorm");
 const { City } = require("../entity/City");
-const { User } = require("../entity/User");
 
 export const AppDataSource = new DataSource({
   type: "postgres",
   url: process.env.DATABASE_URL,
   synchronize: true,
   logging: false,
-  entities: [City, User],
+  entities: [City],
   ssl: {
     rejectUnauthorized: false,
   },

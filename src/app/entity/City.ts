@@ -9,6 +9,10 @@ export const City = new EntitySchema({
       primary: true,
       generated: true,
     },
+    clerkUserId: {
+      type: "varchar",
+      nullable: true,
+    },
     name: {
       type: "varchar",
       nullable: false,
@@ -56,13 +60,6 @@ export const City = new EntitySchema({
     image: {
       type: "varchar",
       nullable: true,
-    },
-  },
-  relations: {
-    users: {
-      target: "User",
-      type: "many-to-many",
-      joinTable: true,
     },
   },
 });

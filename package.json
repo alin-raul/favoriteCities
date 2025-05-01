@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@auth/typeorm-adapter": "^2.7.4",
+    "@clerk/nextjs": "^6.18.2",
     "@maplibre/maplibre-gl-directions": "^0.7.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.6",

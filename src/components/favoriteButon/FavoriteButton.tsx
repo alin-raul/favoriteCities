@@ -3,11 +3,16 @@
 
 import { TiStarFullOutline } from "react-icons/ti";
 import React, { useState } from "react";
-import { getFavoriteCities } from "@/lib/getFavoriteCities"; // Assuming this is client-side too
-import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite"; // This is your Server Action DELETE handler
+import { getFavoriteCities } from "@/lib/getFavoriteCities"; // Assuming this is client-side and will eventually fetch using Clerk auth
+import { handleDeleteFromFavorite } from "@/lib/handleDeleteFavorite"; // This is your Server Action DELETE handler (needs updating for Clerk too)
 import type { City } from "@/lib/getFavoriteCities";
 import { LocalCity } from "../local-cities/localCities";
-import { useSession } from "next-auth/react";
+
+// *** REMOVE NextAuth import ***
+// import { useSession } from "next-auth/react"; // <--- Remove this
+
+// *** KEEP Clerk imports ***
+import { useUser, useAuth } from "@clerk/nextjs"; // <--- Use Clerk hooks
 
 // --- Define types (as you already have) ---
 type Geometry = {
@@ -27,22 +32,23 @@ type CityProperties = {
 };
 
 type FavoriteButtonProps = {
-  // <-- Definition here
   handleToggleFavorite: (osmId: number) => void;
   city: LocalCity;
   full?: boolean;
 };
 
-// Assuming LocalCity type includes properties, geometry, image, and selected
-// type LocalCity = { properties: CityProperties; geometry: Geometry; image: string | null; selected: boolean; }; // Example structure
-
 // --- Corrected Client-Side handlePostFavorite function ---
 // This function runs in the browser
+// It now ACCEPTS the userId as a parameter, obtained from the component using useAuth()
 async function handlePostFavorite(
   city: LocalCity,
-  userId: string | number | undefined // <--- Add userId parameter
+  clerkUserId: string // <--- Accept Clerk userId as a string parameter
 ): Promise<City[] | undefined> {
-  if (!userId) {
+  // *** REMOVE useAuth() call here ***
+  // const { userId } = useAuth(); // <--- REMOVE THIS HOOK CALL
+
+  if (!clerkUserId) {
+    // Check the passed parameter
     console.error("Client: User ID is missing for POST operation.");
     throw new Error("User must be logged in to favorite cities."); // Fail if userId is missing
   }
@@ -54,28 +60,61 @@ async function handlePostFavorite(
 
   try {
     console.log(
-      `Client: Attempting to POST city for user ${userId} to /api/cities...`
+      `Client: Attempting to POST city for user ${clerkUserId} to /api/cities...`
     );
     const response = await fetch("/api/cities", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // FIX: Include userId in the body
+      // FIX: Include clerkUserId in the body
       body: JSON.stringify({
-        ...city.properties, // Include properties directly if they match backend schema
+        // ... city data properties ...
+        osm_id: city.properties.osm_id,
+        name: city.properties.name,
+        country: city.properties.country,
+        countrycode: city.properties.countrycode,
+        county: city.properties.county,
+        osm_type: city.properties.osm_type,
+        osm_key: city.properties.osm_key,
+        osm_value: city.properties.osm_value,
+        extent: city.properties.extent,
         geometry: city.geometry,
         image: city.image,
-        userId: userId, // <-- Include the user's database ID here
+        // Ensure the backend POST handler expects 'clerkUserId' or 'userId' (use 'clerkUserId' for clarity)
+        clerkUserId: clerkUserId, // <--- Include the Clerk user's ID here
       }),
-      credentials: "include", // Still need this for client-side fetch
+      credentials: "include", // Still needed for client-side fetch to send session cookie (managed by Clerk)
     });
 
-    // ... rest of response handling ...
+    // --- Handle Response ---
     if (!response.ok) {
-      /* ... error handling ... */
+      // Improved error handling to read message from body
+      try {
+        const errorData = await response.json();
+        console.error(
+          "Client: Failed to create city:",
+          response.status,
+          errorData.message
+        );
+        throw new Error(
+          errorData.message || `Error creating city: ${response.status}`
+        );
+      } catch (jsonError) {
+        console.error(
+          "Client: Failed to create city (could not parse error body):",
+          response.status,
+          response.statusText
+        );
+        throw new Error(
+          `Error creating city: ${response.status} ${response.statusText}`
+        );
+      }
     }
+
     console.log("Client: City successfully added to favorites");
+
+    // Refetch cities after successful add (make sure getFavoriteCities uses Clerk auth too)
     const updatedCities = await getFavoriteCities();
     return updatedCities;
   } catch (error: any) {
@@ -91,36 +130,51 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   full = false,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { data: session } = useSession(); // <--- Get session client-side
+
+  // *** REMOVE NextAuth hook ***
+  // const { data: session } = useSession(); // <--- Remove this
+
+  // *** Get Clerk user and auth state using Clerk hooks ***
+  const { isLoaded, isSignedIn } = useUser(); // isLoaded: true when user object is available
+  const { userId } = useAuth(); // userId: Clerk user ID (string) or null/undefined
 
   const handleClick = async () => {
-    if (isLoading) return;
+    // Disable if loading or Clerk hooks not ready or not signed in
+    if (isLoading || !isLoaded || !isSignedIn) return;
     setIsLoading(true);
 
-    // Get the user ID from the client-side session
-    const currentUserId = session?.user?.id; // This should be the DB ID (string) from the session
+    // Get the user ID from the Clerk useAuth hook
+    const currentClerkUserId = userId; // This is the Clerk user ID (string)
 
     try {
       if (city.selected) {
-        // handleDeleteFromFavorite is a Server Action, it gets session internally
+        // handleDeleteFromFavorite is a Server Action, it should get the Clerk user ID using auth() internally
+        // If you didn't update handleDeleteFromFavorite yet, it will still use old NextAuth logic and might fail.
+        // After migration, DELETE API route will use auth() too.
         await handleDeleteFromFavorite(city.properties.osm_id);
-        console.log("Favorite deleted via Server Action.");
+        console.log(
+          "Favorite deleted via Server Action (hopefully using Clerk auth)."
+        );
       } else {
-        // FIX: Pass the userId to handlePostFavorite
-        if (!currentUserId) {
-          console.error("Client: Cannot add favorite, user not logged in.");
-          // Redirect to login, show message, etc.
+        // FIX: Pass the Clerk userId to handlePostFavorite
+        if (!currentClerkUserId) {
+          // Check if Clerk userId is available
+          console.error(
+            "Client: Cannot add favorite, user not logged in (Clerk state)."
+          );
+          // Handle not logged in state (e.g., redirect to Clerk login)
+          // You might use Clerk's <SignInButton /> or redirect logic here
           alert("You must be logged in to favorite cities."); // Basic alert
           return; // Stop the process
         }
-        // Call the client-side handlePostFavorite, passing the userId
-        await handlePostFavorite(city, currentUserId);
-        console.log("Favorite posted via client fetch.");
+        // Call the client-side handlePostFavorite, passing the Clerk userId
+        await handlePostFavorite(city, currentClerkUserId); // <--- Pass the Clerk userId
+        console.log("Favorite posted via client fetch using Clerk userId.");
       }
 
       // After successful operation (add or delete), trigger UI update/revalidation
       handleToggleFavorite(city.properties.osm_id); // Update local state
-      // Optional: router.refresh() or revalidatePath('/') if needed
+      // Consider router.refresh() from 'next/navigation' to revalidate data server-side
       // import { useRouter } from 'next/navigation'; const router = useRouter(); router.refresh();
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -141,7 +195,8 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
         e.preventDefault();
         handleClick(); // Call our async handler
       }}
-      disabled={isLoading} // Disable button while loading
+      // Disable if loading or Clerk hooks not ready or not signed in
+      disabled={isLoading || !isLoaded || !isSignedIn} // <--- Disable based on Clerk state
     >
       {/* Icon changes based on city.selected state */}
       {city.selected ? (

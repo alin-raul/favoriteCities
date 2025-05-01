@@ -2,7 +2,7 @@
 
 import { ModeToggle } from "../mode-toggle/ModeToggle";
 import NavLinks from "./NavLinks";
-import SignInAndOutButton from "./SignInAndOutButton";
+import HeaderButtons from "./SignInAndOutButton";
 import { useNavigationEvents } from "../navigation-events/useNavigationEvents";
 
 type LogoProps = {
@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
           <NavLinks pathname={pathname} />
           <div className="gap-2 flex items-center">
             <ModeToggle />
-            <SignInAndOutButton />
+            <HeaderButtons />
           </div>
         </div>
       </nav>

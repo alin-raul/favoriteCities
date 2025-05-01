@@ -9,6 +9,7 @@ import Sidebar from "@/components/nav-bar/sidebar/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
 import SessionProviderWrapper from "@/components/sessionProviderWrapper/SessionProviderWrapper";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -74,16 +75,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProviderWrapper>
-            <SidebarProvider>
-              <Sidebar />
-              <div className="relative overflow-clip">
-                <Navbar />
-                <main>{children}</main>
-              </div>
-            </SidebarProvider>
-            <Toaster />
-          </SessionProviderWrapper>
+          <ClerkProvider>
+            <SessionProviderWrapper>
+              <SidebarProvider>
+                <Sidebar />
+                <div className="relative overflow-clip">
+                  <Navbar />
+                  <main>{children}</main>
+                </div>
+              </SidebarProvider>
+              <Toaster />
+            </SessionProviderWrapper>
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>

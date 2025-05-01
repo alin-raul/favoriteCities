@@ -1,52 +1,19 @@
-"use client";
+// Example component in your header/navbar
+import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
-import React from "react";
-import { Button } from "../ui/button";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { FaUserCircle } from "react-icons/fa";
-import Image from "next/image";
-import TransitionLink from "../utils/TransitionLink";
+const HeaderButtons = () => (
+  <header>
+    <SignedOut>
+      {" "}
+      {/* Renders if user is NOT signed in */}
+      <SignInButton /> {/* Built-in button to trigger sign-in flow */}
+    </SignedOut>
+    <SignedIn>
+      {" "}
+      {/* Renders if user IS signed in */}
+      <UserButton /> {/* Built-in button for user menu/sign-out/profile */}
+    </SignedIn>
+  </header>
+);
 
-const SignInAndOutButton: React.FC = (): React.JSX.Element => {
-  const { data: session } = useSession();
-
-  return (
-    <>
-      {session ? (
-        <div className="flex items-center">
-          <Button
-            variant="outline"
-            className="rounded-3xl bg-dynamic"
-            onClick={() => signOut({ callbackUrl: "/" })}
-          >
-            Logout
-          </Button>
-          <button className="ml-2 w-8 h-8 flex justify-center items-center rounded-full">
-            <Link href="/user">
-              {session.user?.image ? (
-                <Image
-                  src={session.user.image}
-                  alt="Avatar"
-                  width={100}
-                  height={100}
-                  className="rounded-full"
-                />
-              ) : (
-                <FaUserCircle className="w-6 h-6" />
-              )}
-            </Link>
-          </button>
-        </div>
-      ) : (
-        <TransitionLink href="/login">
-          <Button variant="outline" className="rounded-3xl bg-dynamic">
-            Login
-          </Button>
-        </TransitionLink>
-      )}
-    </>
-  );
-};
-
-export default SignInAndOutButton;
+export default HeaderButtons;
