@@ -57,7 +57,7 @@ const FavoritesPage = async (): Promise<React.ReactNode> => {
           {/* but ensure the client component also handles loading/error states */}
 
           {/* Option 1: Pass cities fetched server-side (requires FavoriteCitiesClient to accept cities prop) */}
-          {/* <FavoriteCitiesClient initialCities={cities} /> */}
+          <FavoriteCitiesClient initialCities={cities} />
 
           {/* Option 2: Keep client-side fetch in FavoriteCitiesClient, display message here if server fetch failed */}
           {fetchError ? (
@@ -132,4 +132,4 @@ const FavoritesPage = async (): Promise<React.ReactNode> => {
   );
 };
 
-export default FavoritesPage; // Export the Server Component
+export default FavoritesPage;
