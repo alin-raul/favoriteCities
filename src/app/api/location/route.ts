@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server"; // <--- Ensure this is imported
+
 export async function GET() {
   try {
     const ipApiResponse = await fetch("http://ip-api.com/json/");
@@ -14,8 +16,9 @@ export async function GET() {
       typeof ipApiData.lat === "number" &&
       typeof ipApiData.lon === "number"
     ) {
-      return new Response(
-        JSON.stringify({ lon: ipApiData.lon, lat: ipApiData.lat }),
+      // *** FIX 1: Use NextResponse.json() ***
+      return NextResponse.json(
+        { lon: ipApiData.lon, lat: ipApiData.lat },
         { status: 200 }
       );
     } else {
@@ -38,9 +41,14 @@ export async function GET() {
       const ipInfoData = await ipInfoResponse.json();
 
       if (ipInfoData.loc) {
-        const [lon, lat] = ipInfoData.loc.split(",");
-        return new Response(
-          JSON.stringify({ lon: parseFloat(lon), lat: parseFloat(lat) }),
+        const [lat, lon] = ipInfoData.loc.split(","); // Note: ipinfo.io returns lat,lon order
+        console.log("Fetched location from ipinfo.io:", {
+          lon: parseFloat(lon),
+          lat: parseFloat(lat),
+        });
+        // *** FIX 2: Use NextResponse.json() ***
+        return NextResponse.json(
+          { lon: parseFloat(lon), lat: parseFloat(lat) }, // Ensure lon/lat order matches your component/schema
           { status: 200 }
         );
       } else {
@@ -48,8 +56,9 @@ export async function GET() {
       }
     } catch (ipInfoError) {
       console.error("Error fetching from ipinfo.io:", ipInfoError);
-      return new Response(
-        JSON.stringify({ error: "Failed to fetch location from both APIs" }),
+      // *** FIX 3: Use NextResponse.json() for the 500 error ***
+      return NextResponse.json(
+        { success: false, error: "Failed to fetch location from both APIs" }, // Provide a success: false flag too
         { status: 500 }
       );
     }

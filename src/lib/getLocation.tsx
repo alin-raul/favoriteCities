@@ -2,6 +2,7 @@
 
 import { middleOfRo } from "@/globals/constants";
 import type { Location } from "@/components/map/Map";
+import { auth } from "@clerk/nextjs/server";
 
 // Define a simple interface for the expected successful response structure
 interface LocationApiResponse {
@@ -10,12 +11,38 @@ interface LocationApiResponse {
 }
 
 export async function getLocation(): Promise<Location> {
+  const { userId: clerkUserId } = await auth();
+
+  if (!clerkUserId) {
+    console.log(
+      "getLocation: User not logged in, returning fallback location."
+    );
+    // If user is NOT logged in, immediately return the fallback without fetching
+    return middleOfRo;
+  }
+  console.log(
+    `getLocation: User ${clerkUserId} is logged in. Proceeding to fetch location.`
+  );
+
   // No longer using process.env.NEXT_PUBLIC_BASE_URL here
-  // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  if (!baseUrl) {
+    console.error(
+      "getLocation: NEXT_PUBLIC_BASE_URL environment variable is not set."
+    );
+    // Decide how to handle this critical configuration error
+    // Returning fallback is one option, throwing a fatal error is another.
+    console.log(
+      "Returning fallback location due to missing base URL:",
+      middleOfRo
+    );
+    return middleOfRo; // Return fallback if base URL is missing
+  }
 
   try {
     // Use relative path - Next.js handles internal server-to-server fetch correctly
-    const apiUrl = "/api/location"; // Simplified URL construction
+    const apiUrl = `${baseUrl}/api/location`; // Simplified URL construction
     // Consider adding cache: 'no-store' if you need real-time location on every request
     const response = await fetch(apiUrl, { cache: "no-store" });
 
